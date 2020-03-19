@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ cr@sh - Secret crush matcher for social networks
-  ~ Copyright (C) 2020 TheDavidDelta
+  ~ Copyright (C) 2020 theda
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -17,10 +18,6 @@
   -->
 
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
-
-    <dimen name="login_linearlayout_buttons_space">16dp</dimen>
-
-    <dimen name="login_button_text">18sp</dimen>
-    <dimen name="login_button_icon">36dp</dimen>
+    <string name="login_twitter">Inicia sessió amb Twitter</string>
+    <string name="login_mastodon">Inicia sessió amb Mastodon</string>
 </resources>

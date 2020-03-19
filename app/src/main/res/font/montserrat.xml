@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ cr@sh - Secret crush matcher for social networks
   ~ Copyright (C) 2020 TheDavidDelta
@@ -15,12 +16,9 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
-
-<resources>
-    <dimen name="fab_margin">16dp</dimen>
-
-    <dimen name="login_linearlayout_buttons_space">16dp</dimen>
-
-    <dimen name="login_button_text">18sp</dimen>
-    <dimen name="login_button_icon">36dp</dimen>
-</resources>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font android:fontWeight="400"
+        android:font="@font/montserrat_regular"/>
+    <font android:fontWeight="700"
+        android:font="@font/montserrat_bold"/>
+</font-family>
