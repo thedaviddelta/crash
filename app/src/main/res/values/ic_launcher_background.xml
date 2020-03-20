@@ -18,6 +18,5 @@
   -->
 
 <resources>
-    <string name="login_twitter">Inicia sesión con Twitter</string>
-    <string name="login_mastodon">Inicia sesión con Mastodon</string>
+    <color name="ic_launcher_background">#F7A3A4</color>
 </resources>
