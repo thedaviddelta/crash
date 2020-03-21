@@ -22,15 +22,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/red100"
     tools:context=".SplashFragment">
 
-    <TextView
+    <ImageView
+        android:id="@+id/imageview_splash_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/ic_logo"
+        android:src="@drawable/ic_logo"
+        app:layout_constraintBottom_toTopOf="@+id/progressbar_splash"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="@fraction/widthpercent_splash_logo" />
+
+    <ProgressBar
+        android:id="@+id/progressbar_splash"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="@dimen/size_splash_progressbar"
+        android:layout_height="@dimen/size_splash_progressbar"
+        app:layout_constraintBottom_toTopOf="@+id/linearlayout_splash_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageview_splash_logo" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout_splash_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/progressbar_splash">
+
+        <TextView
+            android:id="@+id/textview_splash_appname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="@dimen/textsize_splash_appname"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textview_splash_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/splash_info"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="@dimen/textsize_splash_info" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,4 +20,5 @@
 <resources>
     <string name="login_twitter">Inicia sesión con Twitter</string>
     <string name="login_mastodon">Inicia sesión con Mastodon</string>
+    <string name="splash_info">© 2020 TheDavidDelta\nLicenciado bajo GNU GPLv3</string>
 </resources>

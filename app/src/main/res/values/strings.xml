@@ -18,9 +18,11 @@
 
 <resources>
     <string name="app_name" translatable="false">cr@sh</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings" translatable="false">Settings</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_twitter">Log in with Twitter</string>
     <string name="login_mastodon">Log in with Mastodon</string>
+    <string name="ic_logo" translatable="false">cr@sh logo</string>
+    <string name="ic_banner" translatable="false">cr@sh banner</string>
+    <string name="splash_info">© 2020 TheDavidDelta\nLicensed under GNU GPLv3</string>
 </resources>

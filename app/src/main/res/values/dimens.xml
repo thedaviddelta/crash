@@ -17,10 +17,15 @@
   -->
 
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
+    <fraction name="widthpercent_splash_logo">0.7</fraction>
+    <dimen name="size_splash_progressbar">64dp</dimen>
+    <dimen name="textsize_splash_appname">24sp</dimen>
+    <dimen name="textsize_splash_info">20sp</dimen>
+    <dimen name="margin_splash_info">36dp</dimen>
 
-    <dimen name="login_linearlayout_buttons_space">16dp</dimen>
-
-    <dimen name="login_button_text">18sp</dimen>
-    <dimen name="login_button_icon">36dp</dimen>
+    <fraction name="widthpercent_login_banner">0.75</fraction>
+    <dimen name="space_login_linearlayoutbuttons">16dp</dimen>
+    <dimen name="margin_login_linearlayoutbuttons">48dp</dimen>
+    <dimen name="textsize_login_button">18sp</dimen>
+    <dimen name="iconsize_login_button">36dp</dimen>
 </resources>
