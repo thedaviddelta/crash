@@ -21,4 +21,7 @@
     <string name="login_twitter">Inicia sessió amb Twitter</string>
     <string name="login_mastodon">Inicia sessió amb Mastodon</string>
     <string name="splash_info">© 2020 TheDavidDelta\nLlicenciat baix GNU GPLv3</string>
+    <string name="login_error_browser">No s\'ha trobat navegador</string>
+    <string name="login_error_unexpected">Error inesperat</string>
+    <string name="login_loading">Carregant...</string>
 </resources>

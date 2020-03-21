@@ -17,7 +17,8 @@
   ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -31,7 +32,7 @@
         android:contentDescription="@string/ic_banner"
         android:src="@drawable/ic_banner"
         android:tint="@color/red600"
-        app:layout_constraintBottom_toTopOf="@+id/linearlayout_login_buttons"
+        app:layout_constraintBottom_toTopOf="@+id/linearlayout_login"
         app:layout_constraintDimensionRatio="2.75"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,52 +40,74 @@
         app:layout_constraintWidth_percent="@fraction/widthpercent_login_banner" />
 
     <LinearLayout
-        android:id="@+id/linearlayout_login_buttons"
+        android:id="@+id/linearlayout_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_login_linearlayoutbuttons"
         android:orientation="vertical"
+        android:layout_marginBottom="@dimen/margin_login_linearlayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageview_login_banner">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_login_twitter"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/linearlayout_login_buttons"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_twitter"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textsize_login_button"
-            app:backgroundTint="@color/twitterBlue"
-            app:icon="@drawable/ic_twitter_logo"
-            app:iconSize="@dimen/iconsize_login_button" />
+            android:orientation="vertical">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/space_login_linearlayoutbuttons" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_login_twitter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_twitter"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textsize_login_button"
+                app:backgroundTint="@color/twitterBlue"
+                app:icon="@drawable/ic_twitter_logo"
+                app:iconSize="@dimen/iconsize_login_button" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_login_mastodon"
-            android:layout_width="match_parent"
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_login_linearlayoutbuttons" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_login_mastodon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_mastodon"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textsize_login_button"
+                app:backgroundTint="@color/mastodonBlue"
+                app:icon="@drawable/ic_mastodon_logo"
+                app:iconSize="@dimen/iconsize_login_button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_login_loading"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_mastodon"
-            android:textAllCaps="false"
-            android:textSize="@dimen/textsize_login_button"
-            app:backgroundTint="@color/mastodonBlue"
-            app:icon="@drawable/ic_mastodon_logo"
-            app:iconSize="@dimen/iconsize_login_button" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/progressbar_login"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="@dimen/size_login_progressbar"
+                android:layout_height="@dimen/size_login_progressbar" />
+
+            <TextView
+                android:id="@+id/textview_login_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_loading"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="@dimen/textsize_login_loading" />
+        </LinearLayout>
+
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressbar_login"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearlayout_login_buttons" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

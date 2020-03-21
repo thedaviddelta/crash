@@ -25,4 +25,7 @@
     <string name="ic_logo" translatable="false">cr@sh logo</string>
     <string name="ic_banner" translatable="false">cr@sh banner</string>
     <string name="splash_info">© 2020 TheDavidDelta\nLicensed under GNU GPLv3</string>
+    <string name="login_error_browser">No browser found</string>
+    <string name="login_error_unexpected">Unexpected error</string>
+    <string name="login_loading">Loading...</string>
 </resources>

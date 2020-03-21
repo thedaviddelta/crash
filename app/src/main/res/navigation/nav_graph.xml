@@ -27,6 +27,7 @@
         android:name="com.thedaviddelta.crash.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
+
         <action
             android:id="@+id/action_splash_to_login"
             app:destination="@id/LoginFragment" />
@@ -35,5 +36,10 @@
         android:id="@+id/LoginFragment"
         android:name="com.thedaviddelta.crash.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+
+        <deepLink
+            android:id="@+id/oauthDeepLink"
+            app:uri="tdd-oauth://com.thedaviddelta.crash/{platform}?oauth_token={tw_oauth_token}&amp;oauth_verifier={tw_oauth_verifier}" />
+    </fragment>
 </navigation>

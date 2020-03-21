@@ -24,8 +24,10 @@
     <dimen name="margin_splash_info">36dp</dimen>
 
     <fraction name="widthpercent_login_banner">0.75</fraction>
+    <dimen name="margin_login_linearlayout">48dp</dimen>
     <dimen name="space_login_linearlayoutbuttons">16dp</dimen>
-    <dimen name="margin_login_linearlayoutbuttons">48dp</dimen>
     <dimen name="textsize_login_button">18sp</dimen>
     <dimen name="iconsize_login_button">36dp</dimen>
+    <dimen name="size_login_progressbar">80dp</dimen>
+    <dimen name="textsize_login_loading">22sp</dimen>
 </resources>
