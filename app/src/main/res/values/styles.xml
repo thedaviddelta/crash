@@ -24,7 +24,7 @@
         <item name="colorPrimaryVariant">@color/red300</item>
         <item name="colorAccent">@color/red700</item>
         <item name="colorSecondary">@color/red700</item>
-        <item name="colorError">@color/red700</item>
+        <item name="colorError">@color/red900</item>
         <item name="android:colorBackground">@color/pink50</item>
 
         <item name="colorOnPrimary">@color/pinkWhite50</item>

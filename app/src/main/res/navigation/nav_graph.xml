@@ -40,6 +40,6 @@
 
         <deepLink
             android:id="@+id/oauthDeepLink"
-            app:uri="tdd-oauth://com.thedaviddelta.crash/{platform}?oauth_token={tw_oauth_token}&amp;oauth_verifier={tw_oauth_verifier}" />
+            app:uri="tdd-oauth://com.thedaviddelta.crash/{platform}?oauth_token={tw_oauth_token}&amp;oauth_verifier={tw_oauth_verifier}&amp;code={masto_oauth_code}" />
     </fragment>
 </navigation>

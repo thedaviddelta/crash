@@ -28,4 +28,7 @@
     <string name="login_error_browser">No browser found</string>
     <string name="login_error_unexpected">Unexpected error</string>
     <string name="login_loading">Loading...</string>
+    <string name="login_dialog_domain_hint">Enter your instance</string>
+    <string name="login_dialog_domain_ok" translatable="false">OK</string>
+    <string name="login_dialog_domain_invalid">Invalid instance</string>
 </resources>

@@ -1,6 +1,6 @@
 /*
  * cr@sh - Secret crush matcher for social networks
- * Copyright (C) 2020 theda
+ * Copyright (C) 2020 TheDavidDelta
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 package com.thedaviddelta.crash.api
 
-import android.util.Log
 import com.thedaviddelta.crash.BuildConfig
 import io.github.cdimascio.dotenv.dotenv
 import okhttp3.OkHttpClient
@@ -39,7 +38,7 @@ object Api {
 
         const val CALLBACK = "${Api.CALLBACK}/twitter"
 
-        val authClient by lazy {
+        val authClient: TwitterApi by lazy {
             Retrofit.Builder()
                 .baseUrl("https://api.twitter.com")
                 .client(
@@ -56,6 +55,33 @@ object Api {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(TwitterApi::class.java)
+        }
+    }
+
+    object Mastodon {
+        const val CALLBACK = "${Api.CALLBACK}/mastodon"
+
+        val authClient: MastodonApi by lazy {
+            Retrofit.Builder()
+                .baseUrl("https://mastodon.placeholder")
+                .client(
+                    OkHttpClient().newBuilder().addInterceptor {
+                        val req = it.request()
+                        val domain = req.header("domain")
+                            ?: return@addInterceptor it.proceed(req)
+
+                        val url = req.url().newBuilder().host(domain).build()
+                        val newReq = req
+                            .newBuilder()
+                            .url(url)
+                            .removeHeader("domain")
+                            .build()
+                        it.proceed(newReq)
+                    }.build()
+                )
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(MastodonApi::class.java)
         }
     }
 }

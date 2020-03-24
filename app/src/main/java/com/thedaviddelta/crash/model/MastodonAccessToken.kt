@@ -16,15 +16,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.thedaviddelta.crash
+package com.thedaviddelta.crash.model
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.annotations.SerializedName
 
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-}
+data class MastodonAccessToken(
+    @SerializedName("access_token") val accessToken: String
+)

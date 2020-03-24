@@ -24,4 +24,6 @@
     <string name="login_error_browser">No s\'ha trobat navegador</string>
     <string name="login_error_unexpected">Error inesperat</string>
     <string name="login_loading">Carregant...</string>
+    <string name="login_dialog_domain_hint">Introdueix la teva instància</string>
+    <string name="login_dialog_domain_invalid">Instància no vàlida</string>
 </resources>

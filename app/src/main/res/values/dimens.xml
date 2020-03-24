@@ -30,4 +30,6 @@
     <dimen name="iconsize_login_button">36dp</dimen>
     <dimen name="size_login_progressbar">80dp</dimen>
     <dimen name="textsize_login_loading">22sp</dimen>
+
+    <dimen name="margin_login_dialog_layout">30dp</dimen>
 </resources>
