@@ -41,6 +41,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.URLEncoder
+import java.util.*
 
 class LoginFragment : Fragment() {
 
@@ -172,6 +173,8 @@ class LoginFragment : Fragment() {
             button.setOnClickListener okBtn@{
                 val domain = editText.text.toString()
                     .replace(Regex("https?://"), "")
+                    .toLowerCase(Locale.ROOT)
+                    .trim()
 
                 if(domain.isEmpty()){
                     layout.error = getString(R.string.login_dialog_domain_invalid)
