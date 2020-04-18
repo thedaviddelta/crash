@@ -18,24 +18,30 @@
 
 package com.thedaviddelta.crash.api
 
-import com.thedaviddelta.crash.model.TwitterFollowersFollowing
+import com.thedaviddelta.crash.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface TwitterApi {
     @FormUrlEncoded
     @POST("/oauth/request_token")
-    fun requestToken(
-        @Field("oauth_callback") callback: String = Api.Twitter.CALLBACK
-    ): Call<ResponseBody>
+    suspend fun requestToken(
+        @Field("oauth_callback") callback: String
+    ): Response<ResponseBody>
 
     @FormUrlEncoded
     @POST("/oauth/access_token")
-    fun accessToken(
+    suspend fun accessToken(
         @Field("oauth_token") token: String,
         @Field("oauth_verifier") verifier: String
-    ): Call<ResponseBody>
+    ): Response<ResponseBody>
+
+    @GET("/1.1/users/lookup.json")
+    suspend fun getUsers(
+        @Query("user_id") userIds: String
+    ): Response<List<TwitterUser>>
 
     @GET("/1.1/followers/ids.json")
     fun getFollowers(

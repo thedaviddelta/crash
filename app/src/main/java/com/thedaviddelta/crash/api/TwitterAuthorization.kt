@@ -20,6 +20,7 @@ package com.thedaviddelta.crash.api
 
 import android.net.Uri
 import android.util.Base64
+import io.github.cdimascio.dotenv.dotenv
 import okhttp3.FormBody
 import okhttp3.Request
 import java.net.URLEncoder
@@ -28,6 +29,11 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import kotlin.math.absoluteValue
 import kotlin.random.Random
+
+private val dotenv = dotenv {
+    directory = "/assets"
+    filename = "env"
+}
 
 private object OAUTH {
     const val CALLBACK = "oauth_callback"
@@ -41,6 +47,9 @@ private object OAUTH {
 }
 private const val SIGNATURE_METHOD = "HMAC-SHA1"
 
+private val CONSUMER_KEY = dotenv["TWITTER_CONSUMER_KEY"]!!
+private val CONSUMER_SECRET = dotenv["TWITTER_CONSUMER_SECRET"]!!
+
 fun twitterAuthorization(
     request: Request,
     token: String? = null,
@@ -49,8 +58,8 @@ fun twitterAuthorization(
     val url = Uri.parse(request.url().toString())
     val method = request.method()
 
-    val consumerKey = Api.Twitter.CONSUMER_KEY
-    val consumerSecret = Api.Twitter.CONSUMER_SECRET
+    val consumerKey = CONSUMER_KEY
+    val consumerSecret = CONSUMER_SECRET
 
     val nonce = getNonce()
     val timestamp = getTimestamp()

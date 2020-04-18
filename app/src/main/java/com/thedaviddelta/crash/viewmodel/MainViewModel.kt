@@ -16,12 +16,19 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.thedaviddelta.crash.model
+package com.thedaviddelta.crash.viewmodel
 
-import com.google.gson.annotations.SerializedName
+import androidx.lifecycle.*
+import com.thedaviddelta.crash.model.*
 
-data class MastodonAppCredentials (
-    @SerializedName("client_id") val clientId: String,
-    @SerializedName("client_secret") val clientSecret: String,
-    @SerializedName("redirect_uri") val redirectUri: String
-)
+class MainViewModel : ViewModel() {
+    private val _list: MutableLiveData<List<User>> by lazy {
+        MutableLiveData<List<User>>().also { load() }
+    }
+
+    val list: LiveData<List<User>> = _list
+
+    private fun load() {
+        _list.value = listOf()
+    }
+}

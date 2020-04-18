@@ -18,10 +18,11 @@
 
 package com.thedaviddelta.crash.model
 
-import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-data class MastodonAppCredentials (
-    @SerializedName("client_id") val clientId: String,
-    @SerializedName("client_secret") val clientSecret: String,
-    @SerializedName("redirect_uri") val redirectUri: String
-)
+interface Account : Serializable {
+    val id: Long
+    var username: String
+    var fullName: String
+    var avatarUrl: String
+}

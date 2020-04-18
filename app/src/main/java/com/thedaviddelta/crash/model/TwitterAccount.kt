@@ -18,10 +18,28 @@
 
 package com.thedaviddelta.crash.model
 
-import com.google.gson.annotations.SerializedName
-
-data class MastodonAppCredentials (
-    @SerializedName("client_id") val clientId: String,
-    @SerializedName("client_secret") val clientSecret: String,
-    @SerializedName("redirect_uri") val redirectUri: String
-)
+data class TwitterAccount(
+    override val id: Long,
+    override var username: String,
+    override var fullName: String,
+    override var avatarUrl: String,
+    val token: String,
+    val secret: String
+) : Account {
+    companion object {
+        fun from(
+            user: TwitterUser,
+            token: String,
+            secret: String
+        ): TwitterAccount {
+            return TwitterAccount(
+                id = user.id,
+                username = user.username,
+                fullName = user.fullName,
+                avatarUrl = user.avatarUrl,
+                token = token,
+                secret = secret
+            )
+        }
+    }
+}

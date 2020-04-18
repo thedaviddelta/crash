@@ -20,8 +20,10 @@ package com.thedaviddelta.crash.model
 
 import com.google.gson.annotations.SerializedName
 
-data class MastodonAppCredentials (
-    @SerializedName("client_id") val clientId: String,
-    @SerializedName("client_secret") val clientSecret: String,
-    @SerializedName("redirect_uri") val redirectUri: String
-)
+data class TwitterUser(
+    @SerializedName("id") override val id: Long,
+    @SerializedName("screen_name") override val username: String,
+    @SerializedName("name") override val fullName: String,
+    @SerializedName("profile_image_url_https") override val avatarUrl: String,
+    @SerializedName("profile_banner_url") override val bannerUrl: String
+) : User

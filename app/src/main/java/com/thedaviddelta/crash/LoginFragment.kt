@@ -19,7 +19,6 @@
 package com.thedaviddelta.crash
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -30,27 +29,35 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.thedaviddelta.crash.api.Api
-import com.thedaviddelta.crash.model.MastodonAccessToken
-import com.thedaviddelta.crash.model.MastodonAppCredentials
+import com.google.android.material.textfield.TextInputLayout
+import com.thedaviddelta.crash.util.SecureFile
+import com.thedaviddelta.crash.model.*
+import com.thedaviddelta.crash.repository.*
+import com.thedaviddelta.crash.util.Accounts
 import kotlinx.android.synthetic.main.dialog_instance.view.*
 import kotlinx.android.synthetic.main.fragment_login.*
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 import java.util.*
 
 class LoginFragment : Fragment() {
 
     companion object {
+        private const val SHARED_PREFS_NAME = "${BuildConfig.APPLICATION_ID}.login"
+
         private const val TW_TEMP_TOKEN = "twTempToken"
         private const val MASTO_DOMAIN = "mastoDomain"
         private const val MASTO_CLIENT_ID = "mastoClientId"
         private const val MASTO_CLIENT_SECRET = "mastoClientSecret"
     }
+
+    private lateinit var fragActivity: FragmentActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,10 +69,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val activity = activity!!
-        val sharedPreferences = activity.getSharedPreferences(
-            "${BuildConfig.APPLICATION_ID}.sharedprefs.login", Context.MODE_PRIVATE
-        )
+        fragActivity = requireActivity()
+        val secureFile = SecureFile.with(fragActivity)
 
         arguments?.run {
             val platform = getString("platform") ?: return@run
@@ -74,94 +79,99 @@ class LoginFragment : Fragment() {
                     val tempToken = getString("tw_oauth_token") ?: return@run
                     val verifier = getString("tw_oauth_verifier") ?: return@run
 
-                    val storedTempToken = sharedPreferences.getString(TW_TEMP_TOKEN, "")
-                    sharedPreferences.edit().clear().apply()
-                    if (tempToken != storedTempToken)
-                        return@run Toast.makeText(activity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
+                    lifecycleScope.launch {
+                        loading = true
 
-                    loading = true
-                    Api.Twitter.authClient.accessToken(tempToken, verifier).enqueue(object : Callback<ResponseBody> {
-                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                            loading = false
-                            val body = response.body()
-                                ?: return Toast.makeText(
-                                    activity,
-                                    "${getString(R.string.login_error_unexpected)} (${response.code()})",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                        val storedTempToken = withContext(Dispatchers.IO) {
+                            secureFile.sharedPreferences(SHARED_PREFS_NAME)?.let {
+                                val token = it.getString(TW_TEMP_TOKEN, "")
+                                it.edit().clear().apply()
+                                token
+                            }
+                        }
 
-                            val (token, secret, userId, screenName) = body.string().split('&').map { it.split('=')[1] }
-                            Log.i("Login", screenName)
-                        }
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            loading = false
-                            Toast.makeText(activity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
-                        }
-                    })
+                        if (tempToken != storedTempToken)
+                            return@launch error
+
+                        val body = TwitterRepository.accessToken(tempToken, verifier)?.body()?.let {
+                            withContext(Dispatchers.IO) { it.string() }
+                        } ?: return@launch error
+
+                        val (token, secret, userId) = body.split('&').map { it.split('=')[1] }
+
+                        val user = TwitterRepository.getUsers(userId)?.body()?.getOrNull(0)
+                            ?: return@launch error
+
+                        Accounts.add(TwitterAccount.from(user, token, secret))
+                            .let { if (!it) return@launch error }
+
+                        loading = false
+                        findNavController().navigate(R.id.action_login_to_main)
+                    }
                 }
                 "mastodon" -> {
                     val code = getString("masto_oauth_code") ?: return@run
 
-                    val domain = sharedPreferences.getString(MASTO_DOMAIN, null) ?: return@run
-                    val clientId = sharedPreferences.getString(MASTO_CLIENT_ID, null) ?: return@run
-                    val clientSecret = sharedPreferences.getString(MASTO_CLIENT_SECRET, null) ?: return@run
-                    sharedPreferences.edit().clear().apply()
+                    lifecycleScope.launch {
+                        loading = true
 
-                    loading = true
-                    Api.Mastodon.authClient.requestToken(domain, clientId, clientSecret, code).enqueue(object : Callback<MastodonAccessToken> {
-                        override fun onResponse(call: Call<MastodonAccessToken>, response: Response<MastodonAccessToken>) {
-                            loading = false
-                            val accessToken = response.body()?.accessToken
-                                ?: return Toast.makeText(
-                                    activity,
-                                    "${getString(R.string.login_error_unexpected)} (${response.code()})",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            Log.i("Login", accessToken)
-                        }
-                        override fun onFailure(call: Call<MastodonAccessToken>, t: Throwable) {
-                            loading = false
-                            Toast.makeText(activity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
-                        }
-                    })
+                        val (domain, clientId, clientSecret) = withContext(Dispatchers.IO) {
+                            secureFile.sharedPreferences(SHARED_PREFS_NAME)?.let {
+                                val domain = it.getString(MASTO_DOMAIN, null) ?: return@withContext null
+                                val clientId = it.getString(MASTO_CLIENT_ID, null) ?: return@withContext null
+                                val clientSecret = it.getString(MASTO_CLIENT_SECRET, null) ?: return@withContext null
+                                it.edit().clear().apply()
+                                Triple(domain, clientId, clientSecret)
+                            }
+                        } ?: return@launch error
+
+                        val bearer = MastodonRepository.requestToken(domain, clientId, clientSecret, code)?.body()?.accessToken
+                            ?: return@launch error
+
+                        val user = MastodonRepository.verifyCredentials(domain, "Bearer $bearer")?.body()
+                            ?: return@launch error
+
+                        Accounts.add(MastodonAccount.from(user, bearer))
+                            .let { if (!it) return@launch error }
+
+                        loading = false
+                        findNavController().navigate(R.id.action_login_to_main)
+                    }
                 }
             }
         }
 
         button_login_twitter.setOnClickListener {
-            loading = true
-            Api.Twitter.authClient.requestToken().enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    loading = false
-                    val body = response.body()
-                        ?: return Toast.makeText(
-                            activity,
-                            "${getString(R.string.login_error_unexpected)} (${response.code()})",
-                            Toast.LENGTH_LONG
-                        ).show()
+            lifecycleScope.launch {
+                loading = true
 
-                    val (tempToken, tempSecret, callbackConfirmed) = body.string().split('&').map { it.split('=')[1] }
-                    if (callbackConfirmed.toBoolean().not())
-                        Log.w("Login", "Callback not confirmed")
+                val body = TwitterRepository.requestToken()?.body()?.let {
+                    withContext(Dispatchers.IO) { it.string() }
+                } ?: return@launch error
 
-                    sharedPreferences.edit()
-                        .putString(TW_TEMP_TOKEN, tempToken)
-                        .apply()
-                    val uri = "https://api.twitter.com/oauth/authenticate?oauth_token=${tempToken}".toUri()
-                    launchOnBrowser(uri)
+                val (tempToken, tempSecret, callbackConfirmed) = body.split('&').map { it.split('=')[1] }
+                if (callbackConfirmed.toBoolean().not())
+                    Log.w("Login", "Callback not confirmed")
+
+                withContext(Dispatchers.IO) {
+                    secureFile.sharedPreferences(SHARED_PREFS_NAME)
+                        ?.edit()
+                        ?.putString(TW_TEMP_TOKEN, tempToken)
+                        ?.apply()
                 }
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    loading = false
-                    Toast.makeText(activity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
-                }
-            })
+
+                val uri = "https://api.twitter.com/oauth/authenticate?oauth_token=${tempToken}".toUri()
+                launchOnBrowser(uri)
+
+                loading = false
+            }
         }
 
         button_login_mastodon.setOnClickListener {
             val parentViewGroup: ViewGroup? = null
-            val dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_instance, parentViewGroup)
+            val dialogView = LayoutInflater.from(fragActivity).inflate(R.layout.dialog_instance, parentViewGroup)
 
-            val dialog = MaterialAlertDialogBuilder(activity)
+            val dialog = MaterialAlertDialogBuilder(fragActivity)
                 .setView(dialogView)
                 .create()
             dialog.show()
@@ -170,69 +180,73 @@ class LoginFragment : Fragment() {
             val editText = dialogView.edittext_login_dialog_domain
             val button = dialogView.button_login_dialog_ok
 
-            button.setOnClickListener okBtn@{
-                val domain = editText.text.toString()
-                    .replace(Regex("https?://"), "")
-                    .toLowerCase(Locale.ROOT)
-                    .trim()
+            button.setOnClickListener {
+                lifecycleScope.launch {
+                    val domain = editText.text.toString()
+                        .replace(Regex("https?://"), "")
+                        .toLowerCase(Locale.ROOT)
+                        .trim()
 
-                if(domain.isEmpty()){
-                    layout.error = getString(R.string.login_dialog_domain_invalid)
-                    return@okBtn
-                }
+                    if (domain.isEmpty())
+                        return@launch domainError(layout)
 
-                Api.Mastodon.authClient.createApp(domain, getString(R.string.app_name)).enqueue(object : Callback<MastodonAppCredentials> {
-                    override fun onResponse(call: Call<MastodonAppCredentials>, response: Response<MastodonAppCredentials>) {
-                        val body = response.body()
-                            ?: if(response.code() == 404) {
-                                layout.error = getString(R.string.login_dialog_domain_invalid)
-                                return
-                            } else {
-                                Toast.makeText(
-                                    activity,
-                                    "${getString(R.string.login_error_unexpected)} (${response.code()})",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                return dialog.dismiss()
+                    val (clientId, clientSecret, redirectUri) = MastodonRepository.createApp(domain, getString(R.string.app_name))
+                        ?.let { res ->
+                            res.body() ?: return@launch let {
+                                if (res.code() == 404)
+                                    domainError(layout)
+                                else
+                                    dialog.dismiss().also { error }
                             }
+                        } ?: return@launch domainError(layout)
 
-                        sharedPreferences.edit()
-                            .putString(MASTO_DOMAIN, domain)
-                            .putString(MASTO_CLIENT_ID, body.clientId)
-                            .putString(MASTO_CLIENT_SECRET, body.clientSecret)
-                            .apply()
-
-                        val params = mapOf(
-                            "client_id" to body.clientId,
-                            "redirect_uri" to Api.Mastodon.CALLBACK,
-                            "response_type" to "code"
-                        ).map { (k,v) ->
-                            "$k=${URLEncoder.encode(v, "UTF-8")}"
-                        }.joinToString("&")
-
-                        val uri = "https://$domain/oauth/authorize?${params}".toUri()
-                        dialog.dismiss()
-                        launchOnBrowser(uri)
+                    withContext(Dispatchers.IO) {
+                        secureFile.sharedPreferences(SHARED_PREFS_NAME)
+                            ?.edit()
+                            ?.apply {
+                                putString(MASTO_DOMAIN, domain)
+                                putString(MASTO_CLIENT_ID, clientId)
+                                putString(MASTO_CLIENT_SECRET, clientSecret)
+                            }
+                            ?.apply()
                     }
-                    override fun onFailure(call: Call<MastodonAppCredentials>, t: Throwable) {
-                        layout.error = getString(R.string.login_dialog_domain_invalid)
-                    }
-                })
+
+                    val params = mapOf(
+                        "client_id" to clientId,
+                        "redirect_uri" to redirectUri,
+                        "response_type" to "code"
+                    ).map { (k,v) ->
+                        "$k=${URLEncoder.encode(v, "UTF-8")}"
+                    }.joinToString("&")
+
+                    val uri = "https://$domain/oauth/authorize?${params}".toUri()
+                    dialog.dismiss()
+                    launchOnBrowser(uri)
+                }
             }
         }
     }
 
     private fun launchOnBrowser(uri: Uri) {
-        val activity = activity!!
         val color = resources.getColor(R.color.red200, null)
         try {
             CustomTabsIntent.Builder()
                 .setToolbarColor(color)
                 .build()
-                .launchUrl(activity, uri)
+                .launchUrl(fragActivity, uri)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(activity, R.string.login_error_browser, Toast.LENGTH_LONG).show()
+            Toast.makeText(fragActivity, R.string.login_error_browser, Toast.LENGTH_LONG).show()
         }
+    }
+
+    private val error: Unit
+        get() {
+            loading = false
+            Toast.makeText(fragActivity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
+        }
+
+    private fun domainError(layout: TextInputLayout) {
+        layout.error = getString(R.string.login_dialog_domain_invalid)
     }
 
     private var loading = false

@@ -20,26 +20,33 @@ package com.thedaviddelta.crash.api
 
 import com.thedaviddelta.crash.model.MastodonAccessToken
 import com.thedaviddelta.crash.model.MastodonAppCredentials
-import retrofit2.Call
+import com.thedaviddelta.crash.model.MastodonUser
+import retrofit2.Response
 import retrofit2.http.*
 
 interface MastodonApi {
     @FormUrlEncoded
     @POST("/api/v1/apps")
-    fun createApp(
+    suspend fun createApp(
         @Header("domain") domain: String,
         @Field("client_name") clientName: String,
-        @Field("redirect_uris") redirectUris: String = Api.Mastodon.CALLBACK
-    ): Call<MastodonAppCredentials>
+        @Field("redirect_uris") redirectUris: String
+    ): Response<MastodonAppCredentials>
 
     @FormUrlEncoded
     @POST("/oauth/token")
-    fun requestToken(
+    suspend fun requestToken(
         @Header("domain") domain: String,
         @Field("client_id") clientId: String,
         @Field("client_secret") clientSecret: String,
         @Field("code") code: String,
-        @Field("grant_type") grantType: String = "authorization_code",
-        @Field("redirect_uri") redirectUris: String = Api.Mastodon.CALLBACK
-    ): Call<MastodonAccessToken>
+        @Field("grant_type") grantType: String,
+        @Field("redirect_uri") redirectUris: String
+    ): Response<MastodonAccessToken>
+
+    @GET("/api/v1/accounts/verify_credentials")
+    suspend fun verifyCredentials(
+        @Header("domain") domain: String,
+        @Header("Authorization") bearer: String
+    ): Response<MastodonUser>
 }
