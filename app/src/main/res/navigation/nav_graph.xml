@@ -51,6 +51,6 @@
     <fragment
         android:id="@+id/MainFragment"
         android:name="com.thedaviddelta.crash.MainFragment"
-        android:label="main_fragment"
-        tools:layout="@layout/main_fragment" />
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
 </navigation>

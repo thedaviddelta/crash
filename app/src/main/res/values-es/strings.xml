@@ -27,4 +27,7 @@
     <string name="login_dialog_domain_hint">Introduce tu instancia</string>
     <string name="login_dialog_domain_invalid">Instancia no válida</string>
     <string name="menu_main_search">Buscar</string>
+    <string name="splash_error_read">Error recuperando las cuentas guardadas</string>
+    <string name="main_error_mutuals">Error recuperando los mutuals</string>
+    <string name="main_quit_message">Pulsa de nuevo para salir</string>
 </resources>

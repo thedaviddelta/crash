@@ -35,4 +35,7 @@
 
     <dimen name="width_main_toolbar_banner">88dp</dimen>
     <dimen name="height_main_toolbar_banner">32dp</dimen>
+
+    <dimen name="textsize_listitem_main_fullname">26sp</dimen>
+    <dimen name="textsize_listitem_main_username">20sp</dimen>
 </resources>

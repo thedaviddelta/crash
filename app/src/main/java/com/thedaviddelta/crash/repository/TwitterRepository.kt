@@ -22,8 +22,10 @@ import android.util.Log
 import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.BuildConfig
 import com.thedaviddelta.crash.api.TwitterApi
+import com.thedaviddelta.crash.api.TwitterContactType
 import com.thedaviddelta.crash.api.twitterAuthorization
 import com.thedaviddelta.crash.model.TwitterAccount
+import com.thedaviddelta.crash.model.TwitterUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -84,6 +86,42 @@ object TwitterRepository {
         } catch (e: Exception) {
             Log.e("TwitterRepository", "get-users-error ${e.localizedMessage}")
             null
+        }
+    }
+
+    suspend fun getFollowersFollowing(type: TwitterContactType, cursor: Long) = withContext(Dispatchers.IO) {
+        try {
+            client.getFollowersFollowing(type, cursor)
+        } catch (e: Exception) {
+            Log.e("TwitterRepository", "get-followers-following-error ${e.localizedMessage}")
+            null
+        }
+    }
+
+    suspend fun getAllFollowersFollowing(type: TwitterContactType): List<Long>? {
+        val contacts = mutableListOf<Long>()
+        var cursor = -1L
+        while (cursor != 0L) {
+            val (ids, nextCursor) = getFollowersFollowing(type, cursor)?.body()
+                ?: return null
+            contacts += ids
+            cursor = nextCursor
+        }
+        return contacts
+    }
+
+    suspend fun getMutuals(): List<TwitterUser>? {
+        val followers = getAllFollowersFollowing(TwitterContactType.FOLLOWERS)
+            ?: return null
+        val following = getAllFollowersFollowing(TwitterContactType.FOLLOWING)
+            ?: return null
+
+        return followers.intersect(following).chunked(100).fold(mutableListOf()) { acc, ids ->
+            getUsers(ids.joinToString(","))
+                ?.body()?.let {
+                    acc += it
+                    acc
+                } ?: return null
         }
     }
 }

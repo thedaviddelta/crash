@@ -20,7 +20,6 @@ package com.thedaviddelta.crash.api
 
 import com.thedaviddelta.crash.model.*
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -38,13 +37,15 @@ interface TwitterApi {
         @Field("oauth_verifier") verifier: String
     ): Response<ResponseBody>
 
-    @GET("/1.1/users/lookup.json")
+    @FormUrlEncoded
+    @POST("/1.1/users/lookup.json")
     suspend fun getUsers(
-        @Query("user_id") userIds: String
+        @Field("user_id") userIds: String
     ): Response<List<TwitterUser>>
 
-    @GET("/1.1/followers/ids.json")
-    fun getFollowers(
-        @Query("cursor") cursor: Int = -1
-    ): Call<TwitterFollowersFollowing>
+    @GET("/1.1/{type}/ids.json")
+    suspend fun getFollowersFollowing(
+        @Path("type") type: TwitterContactType,
+        @Query("cursor") cursor: Long
+    ): Response<TwitterFollowersFollowing>
 }

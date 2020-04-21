@@ -27,4 +27,7 @@
     <string name="login_dialog_domain_hint">Introdueix la teva instància</string>
     <string name="login_dialog_domain_invalid">Instància no vàlida</string>
     <string name="menu_main_search">Cercar</string>
+    <string name="splash_error_read">Error recuperant les comptes guardades</string>
+    <string name="main_error_mutuals">Error recuperant els mutuals</string>
+    <string name="main_quit_message">Prem de nou per sortir</string>
 </resources>

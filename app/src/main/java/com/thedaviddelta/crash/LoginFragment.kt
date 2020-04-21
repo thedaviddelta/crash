@@ -99,7 +99,7 @@ class LoginFragment : Fragment() {
 
                         val (token, secret, userId) = body.split('&').map { it.split('=')[1] }
 
-                        val user = TwitterRepository.getUsers(userId)?.body()?.getOrNull(0)
+                        val user = TwitterRepository.getUsers(userId)?.body()?.firstOrNull()
                             ?: return@launch error
 
                         Accounts.add(TwitterAccount.from(user, token, secret))

@@ -32,4 +32,11 @@
     <string name="login_dialog_domain_ok" translatable="false">OK</string>
     <string name="login_dialog_domain_invalid">Invalid instance</string>
     <string name="menu_main_search">Search</string>
+    <string name="listitem_main_fullname" translatable="false">Full Name</string>
+    <string name="listitem_main_username" translatable="false">\@username</string>
+    <string name="listitem_main_avatar" translatable="false">Avatar</string>
+    <string name="listitem_main_crush" translatable="false">Crush</string>
+    <string name="splash_error_read">Error retrieving saved accounts</string>
+    <string name="main_error_mutuals">Error retrieving mutuals</string>
+    <string name="main_quit_message">Press again to exit</string>
 </resources>

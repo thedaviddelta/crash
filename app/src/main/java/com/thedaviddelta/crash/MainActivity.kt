@@ -19,12 +19,31 @@
 package com.thedaviddelta.crash
 
 import android.os.Bundle
+import android.os.Handler
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
+
+    private var doubleBack = false
+
+    override fun onBackPressed() {
+        when(nav_host_fragment.childFragmentManager.fragments.first()) {
+            is MainFragment -> {
+                if (doubleBack)
+                    return finish()
+                doubleBack = true
+                Toast.makeText(this, R.string.main_quit_message, Toast.LENGTH_SHORT).show()
+                Handler().postDelayed({
+                    doubleBack = false
+                }, 2000)
+            }
+        }
     }
 }

@@ -16,26 +16,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.thedaviddelta.crash.viewmodel
+package com.thedaviddelta.crash.api
 
-import androidx.lifecycle.*
-import com.thedaviddelta.crash.model.*
-import com.thedaviddelta.crash.repository.TwitterRepository
-import com.thedaviddelta.crash.util.Accounts
+enum class TwitterContactType(private val type: String) {
+    FOLLOWERS("followers"),
+    FOLLOWING("friends");
 
-class MainViewModel : ViewModel() {
-    private val _list: MutableLiveData<List<User>> by lazy {
-        MutableLiveData<List<User>>()
-    }
-
-    val list: LiveData<List<User>> = _list
-
-    suspend fun load(): Boolean {
-        _list.value = when(Accounts.current) {
-            is TwitterAccount -> TwitterRepository.getMutuals() ?: return false
-            is MastodonAccount -> TODO()
-            else -> return false
-        }
-        return true
-    }
+    override fun toString(): String = this.type
 }
