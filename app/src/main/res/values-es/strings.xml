@@ -26,4 +26,5 @@
     <string name="login_loading">Cargando...</string>
     <string name="login_dialog_domain_hint">Introduce tu instancia</string>
     <string name="login_dialog_domain_invalid">Instancia no válida</string>
+    <string name="menu_main_search">Buscar</string>
 </resources>

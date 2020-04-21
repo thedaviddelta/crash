@@ -31,4 +31,5 @@
     <string name="login_dialog_domain_hint">Enter your instance</string>
     <string name="login_dialog_domain_ok" translatable="false">OK</string>
     <string name="login_dialog_domain_invalid">Invalid instance</string>
+    <string name="menu_main_search">Search</string>
 </resources>

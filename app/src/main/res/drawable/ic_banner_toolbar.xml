@@ -17,14 +17,9 @@
   ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <string name="login_twitter">Inicia sessió amb Twitter</string>
-    <string name="login_mastodon">Inicia sessió amb Mastodon</string>
-    <string name="splash_info">© 2020 TheDavidDelta\nLlicenciat baix GNU GPLv3</string>
-    <string name="login_error_browser">No s\'ha trobat navegador</string>
-    <string name="login_error_unexpected">Error inesperat</string>
-    <string name="login_loading">Carregant...</string>
-    <string name="login_dialog_domain_hint">Introdueix la teva instància</string>
-    <string name="login_dialog_domain_invalid">Instància no vàlida</string>
-    <string name="menu_main_search">Cercar</string>
-</resources>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/ic_banner"
+        android:width="@dimen/width_main_toolbar_banner"
+        android:height="@dimen/height_main_toolbar_banner" />
+</layer-list>

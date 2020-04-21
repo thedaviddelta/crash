@@ -32,4 +32,7 @@
     <dimen name="textsize_login_loading">22sp</dimen>
 
     <dimen name="margin_login_dialog_layout">30dp</dimen>
+
+    <dimen name="width_main_toolbar_banner">88dp</dimen>
+    <dimen name="height_main_toolbar_banner">32dp</dimen>
 </resources>

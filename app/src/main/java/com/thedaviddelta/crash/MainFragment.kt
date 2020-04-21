@@ -20,14 +20,13 @@ package com.thedaviddelta.crash
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.main_fragment.*
 
 
 class MainFragment : Fragment() {
@@ -41,9 +40,15 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val searchView = toolbar_main.menu.findItem(R.id.search_menu_main_action).actionView as SearchView
+        searchView.apply {
+            setIconifiedByDefault(false)
+            queryHint = "${getString(R.string.menu_main_search)}..."
+        }
+
         Log.i("Main", Accounts.current?.toString())
     }
-
 }

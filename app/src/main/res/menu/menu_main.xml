@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.thedaviddelta.crash.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:id="@+id/search_menu_main_action"
+        android:icon="?android:attr/actionModeWebSearchDrawable"
+        android:title="@string/menu_main_search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+    <item
+        android:id="@+id/account_menu_main_action"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>
