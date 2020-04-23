@@ -26,6 +26,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -45,10 +46,13 @@ class SplashFragment : Fragment() {
 
         lifecycleScope.launch {
             delay(2000L)
+
+            ImageRepository.initializeCache(activity)
             Accounts.initialize(activity).let {
                 if (!it)
                     return@launch Toast.makeText(activity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
             }
+
             findNavController().navigate(
                 Accounts.current
                     ?.let { R.id.action_splash_to_main }

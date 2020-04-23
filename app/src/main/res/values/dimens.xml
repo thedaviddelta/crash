@@ -36,6 +36,11 @@
     <dimen name="width_main_toolbar_banner">88dp</dimen>
     <dimen name="height_main_toolbar_banner">32dp</dimen>
 
+    <dimen name="padding_listitem_main_layout">10dp</dimen>
+    <dimen name="cornerradius_listitem_main_avatar">50dp</dimen>
+    <dimen name="margin_listitem_main_avatar">12dp</dimen>
     <dimen name="textsize_listitem_main_fullname">26sp</dimen>
     <dimen name="textsize_listitem_main_username">20sp</dimen>
+    <dimen name="textsize_listitem_main_domain">16sp</dimen>
+    <dimen name="margin_listitem_main_crush">8dp</dimen>
 </resources>

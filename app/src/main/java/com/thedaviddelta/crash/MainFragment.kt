@@ -20,13 +20,16 @@ package com.thedaviddelta.crash
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.appbar.MaterialToolbar
 import com.thedaviddelta.crash.adapter.UserAdapter
 import com.thedaviddelta.crash.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -56,6 +59,10 @@ class MainFragment : Fragment() {
             addItemDecoration(DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL))
         }
         viewModel.list.observe(viewLifecycleOwner, Observer(adapter::setItems))
+
+        toolbar_main.logoView?.setOnClickListener {
+            recyclerview_main.scrollToPosition(0)
+        }
 
         swiperefreshlayout_main.apply {
             setOnRefreshListener(::loadUsers)
@@ -90,4 +97,13 @@ class MainFragment : Fragment() {
             swiperefreshlayout_main.isRefreshing = false
         }
     }
+
+    private val MaterialToolbar.logoView: ImageView?
+        get() {
+            children.forEach {
+                if (it is ImageView && it.drawable == logo)
+                    return it
+            }
+            return null
+        }
 }

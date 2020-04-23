@@ -18,12 +18,14 @@
 
 package com.thedaviddelta.crash.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.thedaviddelta.crash.R
 import com.thedaviddelta.crash.model.User
+import com.thedaviddelta.crash.repository.ImageRepository
 import kotlinx.android.synthetic.main.listitem_main.view.*
 
 class UserAdapter(
@@ -59,9 +61,16 @@ class UserAdapter(
     }
 
     inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+        @SuppressLint("SetTextI18n")
         fun bind(item: User) = with(view) {
             textview_listitem_main_fullname.text = item.fullName
-            textview_listitem_main_username.text = item.username
+            textview_listitem_main_username.text = "@${item.username}"
+
+            ImageRepository.loadImage(item.avatarUrl) {
+                imageview_listitem_main_avatar.setImageBitmap(it)
+                constraintlayout_listitem_main_avatar.visibility = View.VISIBLE
+                progressbar_listitem_main_avatar.visibility = View.GONE
+            }
 
             setOnClickListener { listener(item) }
         }
