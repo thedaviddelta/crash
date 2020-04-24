@@ -20,6 +20,7 @@ package com.thedaviddelta.crash.viewmodel
 
 import androidx.lifecycle.*
 import com.thedaviddelta.crash.model.*
+import com.thedaviddelta.crash.repository.MastodonRepository
 import com.thedaviddelta.crash.repository.TwitterRepository
 import com.thedaviddelta.crash.util.Accounts
 
@@ -33,7 +34,7 @@ class MainViewModel : ViewModel() {
     suspend fun load(): Boolean {
         _list.value = when(Accounts.current) {
             is TwitterAccount -> TwitterRepository.getMutuals() ?: return false
-            is MastodonAccount -> TODO()
+            is MastodonAccount -> MastodonRepository.getMutuals() ?: return false
             else -> return false
         }
         return true

@@ -24,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.thedaviddelta.crash.R
+import com.thedaviddelta.crash.model.MastodonUser
 import com.thedaviddelta.crash.model.User
 import com.thedaviddelta.crash.repository.ImageRepository
 import kotlinx.android.synthetic.main.listitem_main.view.*
@@ -70,6 +71,13 @@ class UserAdapter(
                 imageview_listitem_main_avatar.setImageBitmap(it)
                 constraintlayout_listitem_main_avatar.visibility = View.VISIBLE
                 progressbar_listitem_main_avatar.visibility = View.GONE
+            }
+
+            if (item is MastodonUser) {
+                textview_listitem_main_domain.text = "@${item.domain}"
+                textview_listitem_main_domain.visibility = View.VISIBLE
+                if (item.fullName.isBlank())
+                    textview_listitem_main_fullname.text = item.username
             }
 
             setOnClickListener { listener(item) }

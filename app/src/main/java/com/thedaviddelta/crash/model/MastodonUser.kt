@@ -31,5 +31,14 @@ data class MastodonUser(
 ) : User {
     val domain
         get() = Uri.parse(url).host!!
-    operator fun component7() = domain
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other)
+            return true
+        if (other !is MastodonUser)
+            return false
+        return this.id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
 }

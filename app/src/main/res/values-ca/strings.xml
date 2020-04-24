@@ -30,4 +30,5 @@
     <string name="splash_error_read">Error recuperant les comptes guardades</string>
     <string name="main_error_mutuals">Error recuperant els mutuals</string>
     <string name="main_quit_message">Prem de nou per sortir</string>
+    <string name="login_error_network">No s\'ha pogut connectar amb el servidor</string>
 </resources>

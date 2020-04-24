@@ -18,9 +18,10 @@
 
 package com.thedaviddelta.crash.api
 
-enum class TwitterContactType(private val type: String) {
-    FOLLOWERS("followers"),
-    FOLLOWING("friends");
+import java.util.*
 
-    override fun toString(): String = this.type
+enum class ContactType {
+    FOLLOWERS, FOLLOWING, FRIENDS;
+
+    override fun toString(): String = name.toLowerCase(Locale.ROOT)
 }

@@ -93,14 +93,20 @@ class LoginFragment : Fragment() {
                         if (tempToken != storedTempToken)
                             return@launch error
 
-                        val body = TwitterRepository.accessToken(tempToken, verifier)?.body()?.let {
-                            withContext(Dispatchers.IO) { it.string() }
-                        } ?: return@launch error
+                        val body = TwitterRepository.accessToken(tempToken, verifier)
+                            ?.let { res ->
+                                withContext(Dispatchers.IO) {
+                                    res.body()?.string()
+                                } ?: return@launch error
+                            } ?: return@launch netError
 
                         val (token, secret, userId) = body.split('&').map { it.split('=')[1] }
 
-                        val user = TwitterRepository.getUsers(userId)?.body()?.firstOrNull()
-                            ?: return@launch error
+                        val user = TwitterRepository.getUsers(userId)
+                            ?.let { res ->
+                                res.body()?.firstOrNull()
+                                    ?: return@launch error
+                            } ?: return@launch netError
 
                         Accounts.add(TwitterAccount.from(user, token, secret))
                             .let { if (!it) return@launch error }
@@ -125,11 +131,17 @@ class LoginFragment : Fragment() {
                             }
                         } ?: return@launch error
 
-                        val bearer = MastodonRepository.requestToken(domain, clientId, clientSecret, code)?.body()?.accessToken
-                            ?: return@launch error
+                        val bearer = MastodonRepository.requestToken(domain, clientId, clientSecret, code)
+                            ?.let { res ->
+                                res.body()?.accessToken
+                                    ?: return@launch error
+                            } ?: return@launch netError
 
-                        val user = MastodonRepository.verifyCredentials(domain, "Bearer $bearer")?.body()
-                            ?: return@launch error
+                        val user = MastodonRepository.verifyCredentials(domain, "Bearer $bearer")
+                            ?.let { res ->
+                                res.body()
+                                    ?: return@launch error
+                            } ?: return@launch netError
 
                         Accounts.add(MastodonAccount.from(user, bearer))
                             .let { if (!it) return@launch error }
@@ -145,9 +157,12 @@ class LoginFragment : Fragment() {
             lifecycleScope.launch {
                 loading = true
 
-                val body = TwitterRepository.requestToken()?.body()?.let {
-                    withContext(Dispatchers.IO) { it.string() }
-                } ?: return@launch error
+                val body = TwitterRepository.requestToken()
+                    ?.let { res ->
+                        withContext(Dispatchers.IO) {
+                            res.body()?.string()
+                        } ?: return@launch error
+                    } ?: return@launch netError
 
                 val (tempToken, tempSecret, callbackConfirmed) = body.split('&').map { it.split('=')[1] }
                 if (callbackConfirmed.toBoolean().not())
@@ -243,6 +258,12 @@ class LoginFragment : Fragment() {
         get() {
             loading = false
             Toast.makeText(fragActivity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
+        }
+
+    private val netError: Unit
+        get() {
+            loading = false
+            Toast.makeText(fragActivity, R.string.login_error_network, Toast.LENGTH_LONG).show()
         }
 
     private fun domainError(layout: TextInputLayout) {

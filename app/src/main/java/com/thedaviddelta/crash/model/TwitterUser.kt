@@ -29,4 +29,14 @@ data class TwitterUser(
 ) : User {
     override val avatarUrl
         get() = avatarSmallUrl.replace("_normal", "")
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other)
+            return true
+        if (other !is TwitterUser)
+            return false
+        return this.id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
 }

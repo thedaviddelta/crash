@@ -19,10 +19,13 @@
 package com.thedaviddelta.crash.repository
 
 import android.util.Log
+import androidx.core.net.toUri
 import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.BuildConfig
+import com.thedaviddelta.crash.api.ContactType
 import com.thedaviddelta.crash.api.MastodonApi
 import com.thedaviddelta.crash.model.MastodonAccount
+import com.thedaviddelta.crash.model.MastodonUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -103,5 +106,42 @@ object MastodonRepository {
             Log.e("MastodonRepository", "verify-credentials-error ${e.localizedMessage}")
             null
         }
+    }
+
+    suspend fun getFollowersFollowing(type: ContactType, id: Long, limit: Int, cursor: Long?) = withContext(Dispatchers.IO) {
+        try {
+            client.getFollowersFollowing(type, id, limit, cursor)
+        } catch (e: Exception) {
+            Log.e("MastodonRepository", "verify-credentials-error ${e.localizedMessage}")
+            null
+        }
+    }
+
+    suspend fun getAllFollowersFollowing(type: ContactType, id: Long): List<MastodonUser>? {
+        suspend fun contacts(
+            cursor: Long? = null
+        ): List<MastodonUser>? {
+            val res = getFollowersFollowing(type, id, Int.MAX_VALUE, cursor)
+            val list = res?.body() ?: return null
+
+            val link = res.headers().get("link")
+            val nextUrl = link?.split(",")?.getOrNull(0)?.split(";")?.getOrNull(0)
+            val newCursor = nextUrl?.trim('<', '>')?.toUri()?.getQueryParameter("max_id")?.toLongOrNull()
+                ?: return list
+
+            return contacts(newCursor)?.union(list)?.toList()
+        }
+        return contacts(null)
+    }
+
+    suspend fun getMutuals(): List<MastodonUser>? {
+        val id = Accounts.current?.id ?: return null
+
+        val followers = getAllFollowersFollowing(ContactType.FOLLOWERS, id)
+            ?: return null
+        val following = getAllFollowersFollowing(ContactType.FOLLOWING, id)
+            ?: return null
+
+        return followers.intersect(following).toList()
     }
 }

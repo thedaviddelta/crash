@@ -40,4 +40,5 @@
     <string name="main_error_mutuals">Error retrieving mutuals</string>
     <string name="main_quit_message">Press again to exit</string>
     <string name="listitem_main_domain" translatable="false">\@domain.com</string>
+    <string name="login_error_network">Couldn\'t connect to the server</string>
 </resources>

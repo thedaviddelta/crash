@@ -45,7 +45,7 @@ interface TwitterApi {
 
     @GET("/1.1/{type}/ids.json")
     suspend fun getFollowersFollowing(
-        @Path("type") type: TwitterContactType,
+        @Path("type") type: ContactType,
         @Query("cursor") cursor: Long
     ): Response<TwitterFollowersFollowing>
 }

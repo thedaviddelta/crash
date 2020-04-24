@@ -21,8 +21,8 @@ package com.thedaviddelta.crash.repository
 import android.util.Log
 import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.BuildConfig
+import com.thedaviddelta.crash.api.ContactType
 import com.thedaviddelta.crash.api.TwitterApi
-import com.thedaviddelta.crash.api.TwitterContactType
 import com.thedaviddelta.crash.api.twitterAuthorization
 import com.thedaviddelta.crash.model.TwitterAccount
 import com.thedaviddelta.crash.model.TwitterUser
@@ -89,7 +89,7 @@ object TwitterRepository {
         }
     }
 
-    suspend fun getFollowersFollowing(type: TwitterContactType, cursor: Long) = withContext(Dispatchers.IO) {
+    suspend fun getFollowersFollowing(type: ContactType, cursor: Long) = withContext(Dispatchers.IO) {
         try {
             client.getFollowersFollowing(type, cursor)
         } catch (e: Exception) {
@@ -98,7 +98,7 @@ object TwitterRepository {
         }
     }
 
-    suspend fun getAllFollowersFollowing(type: TwitterContactType): List<Long>? {
+    suspend fun getAllFollowersFollowing(type: ContactType): List<Long>? {
         val contacts = mutableListOf<Long>()
         var cursor = -1L
         while (cursor != 0L) {
@@ -111,9 +111,9 @@ object TwitterRepository {
     }
 
     suspend fun getMutuals(): List<TwitterUser>? {
-        val followers = getAllFollowersFollowing(TwitterContactType.FOLLOWERS)
+        val followers = getAllFollowersFollowing(ContactType.FOLLOWERS)
             ?: return null
-        val following = getAllFollowersFollowing(TwitterContactType.FOLLOWING)
+        val following = getAllFollowersFollowing(ContactType.FRIENDS)
             ?: return null
 
         return followers.intersect(following).chunked(100).fold(mutableListOf()) { acc, ids ->
