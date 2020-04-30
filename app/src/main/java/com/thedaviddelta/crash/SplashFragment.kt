@@ -30,7 +30,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
-import com.thedaviddelta.crash.util.SnackbarFactory
+import com.thedaviddelta.crash.util.SnackbarBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -55,7 +55,7 @@ class SplashFragment : Fragment() {
 
             ImageRepository.initializeCache(activity)
             Accounts.initialize(activity).takeIf { !it }?.let {
-                return@launch SnackbarFactory(requireView())
+                return@launch SnackbarBuilder(requireView())
                     .error(R.string.splash_error_read)
                     .during(Snackbar.LENGTH_INDEFINITE)
                     .buildAndShow()

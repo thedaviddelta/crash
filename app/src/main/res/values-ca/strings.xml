@@ -38,4 +38,5 @@
     <string name="menu_accounts_title">Estàs segur?</string>
     <string name="menu_accounts_yes">Sí</string>
     <string name="menu_accounts_cancel">Cancel·lar</string>
+    <string name="menu_main_account">Compte</string>
 </resources>

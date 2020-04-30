@@ -25,41 +25,41 @@ import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 import com.thedaviddelta.crash.R
 
-class SnackbarFactory(private val view: View) {
+class SnackbarBuilder(private val view: View) {
     private val snackbar: Snackbar = Snackbar.make(view, "", Snackbar.LENGTH_LONG)
 
-    fun showing(msg: String): SnackbarFactory {
+    fun showing(msg: String): SnackbarBuilder {
         snackbar.setText(msg)
         return this
     }
 
-    fun showing(@StringRes resId: Int): SnackbarFactory {
+    fun showing(@StringRes resId: Int): SnackbarBuilder {
         snackbar.setText(resId)
         return this
     }
 
-    fun during(duration: Int): SnackbarFactory {
+    fun during(duration: Int): SnackbarBuilder {
         snackbar.duration = duration
         return this
     }
 
-    fun centered(): SnackbarFactory {
+    fun centered(): SnackbarBuilder {
         val text = snackbar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
         text.textAlignment = View.TEXT_ALIGNMENT_CENTER
         return this
     }
 
-    fun tinted(@ColorRes resId: Int): SnackbarFactory {
+    fun tinted(@ColorRes resId: Int): SnackbarBuilder {
         snackbar.setBackgroundTint(view.resources.getColor(resId, null))
         return this
     }
 
-    fun doing(msg: String, listener: (View) -> Unit): SnackbarFactory {
+    fun doing(msg: String, listener: (View) -> Unit): SnackbarBuilder {
         snackbar.setAction(msg, listener)
         return this
     }
 
-    fun doing(@StringRes resId: Int, listener: (View) -> Unit): SnackbarFactory {
+    fun doing(@StringRes resId: Int, listener: (View) -> Unit): SnackbarBuilder {
         snackbar.setAction(resId, listener)
         return this
     }
@@ -72,7 +72,7 @@ class SnackbarFactory(private val view: View) {
         snackbar.show()
     }
 
-    fun error(@StringRes resId: Int): SnackbarFactory {
+    fun error(@StringRes resId: Int): SnackbarBuilder {
         return this.showing(resId)
             .tinted(R.color.red900)
             .centered()

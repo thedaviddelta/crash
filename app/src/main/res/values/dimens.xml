@@ -35,15 +35,17 @@
 
     <dimen name="width_main_toolbar_banner">88dp</dimen>
     <dimen name="height_main_toolbar_banner">32dp</dimen>
+    <dimen name="size_main_toolbar_avatar">26dp</dimen>
 
     <dimen name="cornerradius_rounded_avatar">50dp</dimen>
 
     <dimen name="padding_listitem_main_layout">10dp</dimen>
     <dimen name="margin_listitem_main_avatar">12dp</dimen>
-    <dimen name="textsize_listitem_main_fullname">26sp</dimen>
-    <dimen name="textsize_listitem_main_username">20sp</dimen>
-    <dimen name="textsize_listitem_main_domain">16sp</dimen>
-    <dimen name="margin_listitem_main_crush">8dp</dimen>
+    <dimen name="textsize_listitem_main_fullname">22sp</dimen>
+    <dimen name="textsize_listitem_main_username">18sp</dimen>
+    <dimen name="textsize_listitem_main_domain">14sp</dimen>
+    <dimen name="marginstart_listitem_main_crush">12dp</dimen>
+    <dimen name="marginend_listitem_main_crush">16dp</dimen>
 
     <dimen name="height_accounts_banner">125dp</dimen>
     <dimen name="size_accounts_avatar">96dp</dimen>

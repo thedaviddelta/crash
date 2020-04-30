@@ -21,7 +21,7 @@ package com.thedaviddelta.crash
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import com.thedaviddelta.crash.util.SnackbarFactory
+import com.thedaviddelta.crash.util.SnackbarBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                     return finish()
                 doubleBack = true
 
-                SnackbarFactory(nav_host_fragment.requireView())
+                SnackbarBuilder(nav_host_fragment.requireView())
                     .showing(R.string.main_quit_message)
                     .during(2000)
                     .tinted(R.color.red300)

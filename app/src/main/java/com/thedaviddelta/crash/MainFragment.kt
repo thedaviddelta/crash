@@ -22,6 +22,8 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.graphics.scale
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -32,7 +34,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.thedaviddelta.crash.adapter.UserAdapter
-import com.thedaviddelta.crash.util.SnackbarFactory
+import com.thedaviddelta.crash.repository.ImageRepository
+import com.thedaviddelta.crash.util.Accounts
+import com.thedaviddelta.crash.util.SnackbarBuilder
 import com.thedaviddelta.crash.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.launch
@@ -53,7 +57,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = UserAdapter {
-            SnackbarFactory(requireView())
+            SnackbarBuilder(requireView())
                 .showing(it.id.toString())
                 .during(Snackbar.LENGTH_SHORT)
                 .tinted(R.color.red300)
@@ -66,10 +70,6 @@ class MainFragment : Fragment() {
             addItemDecoration(DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL))
         }
         viewModel.list.observe(viewLifecycleOwner, Observer(adapter::setItems))
-
-        toolbar_main.logoView?.setOnClickListener {
-            recyclerview_main.scrollToPosition(0)
-        }
 
         swiperefreshlayout_main.apply {
             setOnRefreshListener(::loadUsers)
@@ -95,9 +95,20 @@ class MainFragment : Fragment() {
             })
         }
 
-        toolbar_main.menu.findItem(R.id.account_menu_main_action).setOnMenuItemClickListener {
-            findNavController().navigate(R.id.action_main_to_accounts)
-            true
+        toolbar_main.menu.findItem(R.id.account_menu_main_action).apply {
+            setOnMenuItemClickListener {
+                findNavController().navigate(R.id.action_main_to_accounts)
+                true
+            }
+            ImageRepository.loadImage(Accounts.current!!.avatarUrl) {
+                val size = resources.getDimension(R.dimen.size_main_toolbar_avatar).toInt()
+                val scaled = it.scale(size, size, filter = true)
+                icon = RoundedBitmapDrawableFactory.create(resources, scaled).apply { isCircular = true }
+            }
+        }
+
+        toolbar_main.logoView?.setOnClickListener {
+            recyclerview_main.scrollToPosition(0)
         }
     }
 
@@ -105,7 +116,7 @@ class MainFragment : Fragment() {
         lifecycleScope.launch {
             val success = viewModel.load()
             if (!success)
-                SnackbarFactory(requireView())
+                SnackbarBuilder(requireView())
                     .error(R.string.main_error_mutuals)
                     .buildAndShow()
             swiperefreshlayout_main.isRefreshing = false

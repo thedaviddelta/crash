@@ -38,7 +38,7 @@ import com.thedaviddelta.crash.model.MastodonAccount
 import com.thedaviddelta.crash.model.TwitterAccount
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
-import com.thedaviddelta.crash.util.SnackbarFactory
+import com.thedaviddelta.crash.util.SnackbarBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dialog_accounts.*
 import kotlinx.coroutines.launch
@@ -72,7 +72,7 @@ class AccountsDialogFragment : BottomSheetDialogFragment() {
                                 Accounts.remove(account).also {
                                     this@AccountsDialogFragment.dismiss()
                                 }.takeIf { !it }?.let {
-                                    SnackbarFactory(requireActivity().nav_host_fragment.requireView())
+                                    SnackbarBuilder(requireActivity().nav_host_fragment.requireView())
                                         .error(R.string.accounts_error_remove)
                                         .buildAndShow()
                                 }

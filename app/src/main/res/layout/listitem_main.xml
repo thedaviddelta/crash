@@ -99,9 +99,9 @@
         android:id="@+id/imageview_listitem_main_crush"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/margin_listitem_main_crush"
+        android:layout_marginStart="@dimen/marginstart_listitem_main_crush"
+        android:layout_marginEnd="@dimen/marginend_listitem_main_crush"
         android:layout_weight="0.3"
         android:contentDescription="@string/listitem_main_crush"
-        android:visibility="invisible"
         app:srcCompat="@drawable/ic_logo" />
 </LinearLayout>

@@ -36,7 +36,7 @@ import com.thedaviddelta.crash.util.SecureFile
 import com.thedaviddelta.crash.model.*
 import com.thedaviddelta.crash.repository.*
 import com.thedaviddelta.crash.util.Accounts
-import com.thedaviddelta.crash.util.SnackbarFactory
+import com.thedaviddelta.crash.util.SnackbarBuilder
 import kotlinx.android.synthetic.main.dialog_instance.view.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.Dispatchers
@@ -253,7 +253,7 @@ class LoginFragment : Fragment() {
                 .build()
                 .launchUrl(requireActivity(), uri)
         } catch (e: ActivityNotFoundException) {
-            SnackbarFactory(requireView())
+            SnackbarBuilder(requireView())
                 .error(R.string.login_error_browser)
                 .buildAndShow()
         }
@@ -262,7 +262,7 @@ class LoginFragment : Fragment() {
     private val error: Unit
         get() {
             loading = false
-            SnackbarFactory(requireView())
+            SnackbarBuilder(requireView())
                 .error(R.string.login_error_unexpected)
                 .buildAndShow()
         }
@@ -270,7 +270,7 @@ class LoginFragment : Fragment() {
     private val netError: Unit
         get() {
             loading = false
-            SnackbarFactory(requireView())
+            SnackbarBuilder(requireView())
                 .error(R.string.login_error_network)
                 .buildAndShow()
         }
