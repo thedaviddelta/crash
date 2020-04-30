@@ -43,7 +43,7 @@ object TwitterRepository {
                     val req = it.request()
 
                     val (token, secret) = Accounts.current?.let { acc ->
-                        if (acc is TwitterAccount)
+                        if (acc is TwitterAccount && !req.url().encodedPath().contains("token"))
                             Pair(acc.token, acc.secret)
                         else
                             null

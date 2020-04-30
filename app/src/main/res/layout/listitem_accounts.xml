@@ -25,14 +25,15 @@
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:padding="@dimen/padding_listitem_main_layout">
+    android:padding="@dimen/padding_listitem_accounts_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintlayout_listitem_main_avatar"
+        android:id="@+id/constraintlayout_listitem_accounts_avatar"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.55"
-        android:visibility="gone">
+        android:layout_weight="0.5"
+        android:layout_marginStart="@dimen/margin_listitem_accounts_sides"
+        android:layout_marginEnd="@dimen/margin_listitem_accounts_avatar">
 
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
@@ -46,7 +47,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imageview_listitem_main_avatar"
+                android:id="@+id/imageview_listitem_accounts_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/imageview_avatar"
@@ -55,53 +56,49 @@
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ProgressBar
-        android:id="@+id/progressbar_listitem_main_avatar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.55" />
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_listitem_main_avatar"
-        android:layout_weight="1.5"
+        android:layout_margin="@dimen/margin_listitem_accounts_names"
+        android:layout_weight="1.3"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textview_listitem_main_fullname"
+            android:id="@+id/textview_listitem_accounts_fullname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="@string/textview_fullname"
-            android:textSize="@dimen/textsize_listitem_main_fullname" />
+            android:textSize="@dimen/textsize_listitem_accounts_fullname" />
 
         <TextView
-            android:id="@+id/textview_listitem_main_username"
+            android:id="@+id/textview_listitem_accounts_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="@string/textview_username"
-            android:textSize="@dimen/textsize_listitem_main_username" />
-
-        <TextView
-            android:id="@+id/textview_listitem_main_domain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="@string/textview_domain"
-            android:textSize="@dimen/textsize_listitem_main_domain"
-            android:visibility="gone" />
+            android:textSize="@dimen/textsize_listitem_accounts_username" />
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageview_listitem_main_crush"
+        android:id="@+id/imageview_listitem_accounts_platform"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/margin_listitem_main_crush"
-        android:layout_weight="0.3"
-        android:contentDescription="@string/listitem_main_crush"
-        android:visibility="invisible"
+        android:layout_marginEnd="@dimen/margin_listitem_accounts_platform"
+        android:layout_weight="0.35"
+        android:contentDescription="@string/listitem_accounts_platform"
+        android:visibility="visible"
         app:srcCompat="@drawable/ic_logo" />
+
+    <ImageButton
+        android:id="@+id/button_listitem_accounts_remove"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:layout_marginEnd="@dimen/margin_listitem_accounts_sides"
+        android:scaleType="fitCenter"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_remove"
+        android:contentDescription="@string/listitem_accounts_remove"
+        android:tint="?attr/colorError" />
 </LinearLayout>

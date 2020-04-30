@@ -25,4 +25,5 @@ interface Account : Serializable {
     var username: String
     var fullName: String
     var avatarUrl: String
+    var bannerUrl: String?
 }

@@ -31,4 +31,11 @@
     <string name="main_error_mutuals">Error recuperant els mutuals</string>
     <string name="main_quit_message">Prem de nou per sortir</string>
     <string name="login_error_network">No s\'ha pogut connectar amb el servidor</string>
+    <string name="accounts_add">Afegir compte</string>
+    <string name="accounts_info">Info. de l\'app</string>
+    <string name="listitem_accounts_remove">Eliminar</string>
+    <string name="accounts_error_remove">No s\'ha pogut eliminar el compte</string>
+    <string name="menu_accounts_title">Estàs segur?</string>
+    <string name="menu_accounts_yes">Sí</string>
+    <string name="menu_accounts_cancel">Cancel·lar</string>
 </resources>

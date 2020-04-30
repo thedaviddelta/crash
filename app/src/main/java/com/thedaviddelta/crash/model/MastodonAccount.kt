@@ -23,6 +23,7 @@ data class MastodonAccount(
     override var username: String,
     override var fullName: String,
     override var avatarUrl: String,
+    override var bannerUrl: String?,
     val domain: String,
     val bearer: String
 ) : Account {
@@ -36,6 +37,7 @@ data class MastodonAccount(
                 username = user.username,
                 fullName = user.fullName,
                 avatarUrl = user.avatarUrl,
+                bannerUrl = user.bannerUrl,
                 domain = user.domain,
                 bearer = bearer
             )

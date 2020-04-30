@@ -33,8 +33,17 @@ object Accounts {
     private lateinit var list: MutableList<Account>
     private var currentIndex = -1
 
-    val current
+    var current
         get() = list.getOrNull(currentIndex)
+        set(value) {
+            currentIndex = list.indexOf(value).let {
+                if (it == -1) currentIndex else it
+            }
+            sharedPrefs.edit()?.putInt("index", currentIndex)?.apply()
+        }
+
+    val readOnlyList: List<Account>
+        get() = list
 
     suspend fun initialize(context: Context): Boolean {
         secureFile = SecureFile.with(context)
@@ -46,15 +55,21 @@ object Accounts {
     }
 
     suspend fun add(account: Account): Boolean {
-        list.add(account)
+        list.add(account).let {
+            if (!it) return false
+        }
         currentIndex = list.size - 1
         sharedPrefs.edit()?.putInt("index", currentIndex)?.apply()
         return secureFile.writeFile(FILE_NAME, list)
     }
 
-    fun setCurrent(index: Int): Account? {
-        if (index < list.size) currentIndex = index
+    suspend fun remove(account: Account): Boolean {
+        val tempCurrent = current
+        list.remove(account).let {
+            if (!it) return false
+        }
+        current = tempCurrent
         sharedPrefs.edit()?.putInt("index", currentIndex)?.apply()
-        return current
+        return secureFile.writeFile(FILE_NAME, list)
     }
 }

@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.appbar.MaterialToolbar
 import com.thedaviddelta.crash.adapter.UserAdapter
@@ -69,7 +70,7 @@ class MainFragment : Fragment() {
             setColorSchemeColors(
                 resources.getColor(R.color.red700, null)
             )
-            setRefreshing(true).also { loadUsers() }
+            viewModel.list.value ?: setRefreshing(true).also { loadUsers() }
         }
 
         val searchView = toolbar_main.menu.findItem(R.id.search_menu_main_action).actionView as SearchView
@@ -86,6 +87,11 @@ class MainFragment : Fragment() {
                     return true
                 }
             })
+        }
+
+        toolbar_main.menu.findItem(R.id.account_menu_main_action).setOnMenuItemClickListener {
+            findNavController().navigate(R.id.action_main_to_accounts)
+            true
         }
     }
 

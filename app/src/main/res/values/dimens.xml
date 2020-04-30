@@ -36,11 +36,30 @@
     <dimen name="width_main_toolbar_banner">88dp</dimen>
     <dimen name="height_main_toolbar_banner">32dp</dimen>
 
+    <dimen name="cornerradius_rounded_avatar">50dp</dimen>
+
     <dimen name="padding_listitem_main_layout">10dp</dimen>
-    <dimen name="cornerradius_listitem_main_avatar">50dp</dimen>
     <dimen name="margin_listitem_main_avatar">12dp</dimen>
     <dimen name="textsize_listitem_main_fullname">26sp</dimen>
     <dimen name="textsize_listitem_main_username">20sp</dimen>
     <dimen name="textsize_listitem_main_domain">16sp</dimen>
     <dimen name="margin_listitem_main_crush">8dp</dimen>
+
+    <dimen name="height_accounts_banner">125dp</dimen>
+    <dimen name="size_accounts_avatar">96dp</dimen>
+    <dimen name="margin_accounts_avatar">32dp</dimen>
+    <dimen name="textsize_accounts_fullname">22sp</dimen>
+    <dimen name="textsize_accounts_username">18sp</dimen>
+    <dimen name="textsize_accounts_domain">14sp</dimen>
+    <dimen name="margin_accounts_names">8dp</dimen>
+    <dimen name="textsize_accounts_options">12sp</dimen>
+    <dimen name="padding_accounts_options_icons">8dp</dimen>
+
+    <dimen name="padding_listitem_accounts_layout">8dp</dimen>
+    <dimen name="margin_listitem_accounts_avatar">16dp</dimen>
+    <dimen name="margin_listitem_accounts_names">6dp</dimen>
+    <dimen name="textsize_listitem_accounts_fullname">20sp</dimen>
+    <dimen name="textsize_listitem_accounts_username">16sp</dimen>
+    <dimen name="margin_listitem_accounts_platform">14dp</dimen>
+    <dimen name="margin_listitem_accounts_sides">8dp</dimen>
 </resources>

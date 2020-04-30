@@ -25,6 +25,15 @@
     android:layout_height="match_parent"
     tools:context=".LoginFragment">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
+
     <ImageView
         android:id="@+id/imageview_login_banner"
         android:layout_width="0dp"

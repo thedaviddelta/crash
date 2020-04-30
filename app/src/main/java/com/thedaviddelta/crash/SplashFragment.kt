@@ -18,6 +18,8 @@
 
 package com.thedaviddelta.crash
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -44,20 +46,24 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity()
 
+        @SuppressLint("SourceLockedOrientationActivity")
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         lifecycleScope.launch {
             delay(2000L)
 
             ImageRepository.initializeCache(activity)
-            Accounts.initialize(activity).let {
-                if (!it)
-                    return@launch Toast.makeText(activity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
+            Accounts.initialize(activity).takeIf { !it }?.let {
+                return@launch Toast.makeText(activity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
             }
 
             findNavController().navigate(
                 Accounts.current
                     ?.let { R.id.action_splash_to_main }
                     ?: R.id.action_splash_to_login
-            )
+            ).also {
+                activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            }
         }
     }
 }

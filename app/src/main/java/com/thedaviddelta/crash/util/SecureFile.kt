@@ -35,8 +35,12 @@ class SecureFile private constructor(private val context: Context) {
 
     suspend fun <T> writeFile(fileName: String, content: T): Boolean = withContext(Dispatchers.IO) {
         try {
+            val file = File(context.filesDir, fileName)
+            if (file.exists())
+                file.delete()
+
             val encryptedFile = EncryptedFile.Builder(
-                File(context.filesDir, fileName),
+                file,
                 context,
                 masterKeyAlias,
                 EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB

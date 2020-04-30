@@ -26,7 +26,7 @@ data class MastodonUser(
     @SerializedName("username") override val username: String,
     @SerializedName("display_name") override val fullName: String,
     @SerializedName("avatar_static") override val avatarUrl: String,
-    @SerializedName("header_static") override val bannerUrl: String,
+    @SerializedName("header_static") override val bannerUrl: String?,
     @SerializedName("url") val url: String
 ) : User {
     val domain

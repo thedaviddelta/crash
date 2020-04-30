@@ -72,7 +72,14 @@ class LoginFragment : Fragment() {
         fragActivity = requireActivity()
         val secureFile = SecureFile.with(fragActivity)
 
+        toolbar_login.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         arguments?.run {
+            getBoolean("add").takeIf { !it }?.let {
+                toolbar_login.navigationIcon = null
+            }
             val platform = getString("platform") ?: return@run
             when(platform) {
                 "twitter" -> {

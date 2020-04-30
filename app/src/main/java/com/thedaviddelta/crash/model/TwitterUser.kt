@@ -25,7 +25,7 @@ data class TwitterUser(
     @SerializedName("screen_name") override val username: String,
     @SerializedName("name") override val fullName: String,
     @SerializedName("profile_image_url_https") val avatarSmallUrl: String,
-    @SerializedName("profile_banner_url") override val bannerUrl: String
+    @SerializedName("profile_banner_url") override val bannerUrl: String?
 ) : User {
     override val avatarUrl
         get() = avatarSmallUrl.replace("_normal", "")

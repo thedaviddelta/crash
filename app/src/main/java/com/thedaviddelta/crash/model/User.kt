@@ -23,5 +23,5 @@ interface User {
     val username: String
     val fullName: String
     val avatarUrl: String
-    val bannerUrl: String
+    val bannerUrl: String?
 }

@@ -47,10 +47,34 @@
         <action
             android:id="@+id/action_login_to_main"
             app:destination="@id/MainFragment" />
+        <argument
+            android:name="add"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/MainFragment"
         android:name="com.thedaviddelta.crash.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_main_to_accounts"
+            app:destination="@id/AccountsDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/AccountsDialogFragment"
+        android:name="com.thedaviddelta.crash.AccountsDialogFragment"
+        android:label="fragment_dialog_accounts"
+        tools:layout="@layout/fragment_dialog_accounts" >
+        <action
+            android:id="@+id/action_accounts_to_login"
+            app:destination="@id/LoginFragment" >
+            <argument
+                android:name="add"
+                android:defaultValue="true" />
+        </action>
+        <action
+            android:id="@+id/action_accounts_to_main"
+            app:destination="@id/MainFragment" />
+    </dialog>
 </navigation>

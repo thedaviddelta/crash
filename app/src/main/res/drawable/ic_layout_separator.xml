@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ cr@sh - Secret crush matcher for social networks
   ~ Copyright (C) 2020 TheDavidDelta
@@ -16,16 +17,7 @@
   ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/search_menu_main_action"
-        android:icon="?android:attr/actionModeWebSearchDrawable"
-        android:title="@string/menu_main_search"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView" />
-    <item
-        android:id="@+id/account_menu_main_action"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-</menu>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <size android:width="1dp" android:height="1dp" />
+    <solid android:color="@android:color/darker_gray" />
+</shape>

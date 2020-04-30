@@ -23,6 +23,7 @@ data class TwitterAccount(
     override var username: String,
     override var fullName: String,
     override var avatarUrl: String,
+    override var bannerUrl: String?,
     val token: String,
     val secret: String
 ) : Account {
@@ -37,6 +38,7 @@ data class TwitterAccount(
                 username = user.username,
                 fullName = user.fullName,
                 avatarUrl = user.avatarUrl,
+                bannerUrl = user.bannerUrl,
                 token = token,
                 secret = secret
             )
