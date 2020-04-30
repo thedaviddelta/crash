@@ -21,7 +21,6 @@ package com.thedaviddelta.crash
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
@@ -31,7 +30,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar
 import com.thedaviddelta.crash.adapter.UserAdapter
+import com.thedaviddelta.crash.util.SnackbarFactory
 import com.thedaviddelta.crash.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.launch
@@ -52,7 +53,12 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = UserAdapter {
-            Toast.makeText(requireActivity(), it.id.toString(), Toast.LENGTH_SHORT).show()
+            SnackbarFactory(requireView())
+                .showing(it.id.toString())
+                .during(Snackbar.LENGTH_SHORT)
+                .tinted(R.color.red300)
+                .centered()
+                .buildAndShow()
         }
 
         recyclerview_main.apply {
@@ -99,7 +105,9 @@ class MainFragment : Fragment() {
         lifecycleScope.launch {
             val success = viewModel.load()
             if (!success)
-                Toast.makeText(requireActivity(), R.string.main_error_mutuals, Toast.LENGTH_LONG).show()
+                SnackbarFactory(requireView())
+                    .error(R.string.main_error_mutuals)
+                    .buildAndShow()
             swiperefreshlayout_main.isRefreshing = false
         }
     }

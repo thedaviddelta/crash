@@ -25,11 +25,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
+import com.thedaviddelta.crash.util.SnackbarFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -54,7 +55,10 @@ class SplashFragment : Fragment() {
 
             ImageRepository.initializeCache(activity)
             Accounts.initialize(activity).takeIf { !it }?.let {
-                return@launch Toast.makeText(activity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
+                return@launch SnackbarFactory(requireView())
+                    .error(R.string.splash_error_read)
+                    .during(Snackbar.LENGTH_INDEFINITE)
+                    .buildAndShow()
             }
 
             findNavController().navigate(

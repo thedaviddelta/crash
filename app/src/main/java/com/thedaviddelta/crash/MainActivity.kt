@@ -20,8 +20,8 @@ package com.thedaviddelta.crash
 
 import android.os.Bundle
 import android.os.Handler
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.thedaviddelta.crash.util.SnackbarFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -39,7 +39,14 @@ class MainActivity : AppCompatActivity() {
                 if (doubleBack)
                     return finish()
                 doubleBack = true
-                Toast.makeText(this, R.string.main_quit_message, Toast.LENGTH_SHORT).show()
+
+                SnackbarFactory(nav_host_fragment.requireView())
+                    .showing(R.string.main_quit_message)
+                    .during(2000)
+                    .tinted(R.color.red300)
+                    .centered()
+                    .buildAndShow()
+
                 Handler().postDelayed({
                     doubleBack = false
                 }, 2000)

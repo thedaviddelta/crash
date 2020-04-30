@@ -26,10 +26,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -38,6 +36,7 @@ import com.thedaviddelta.crash.util.SecureFile
 import com.thedaviddelta.crash.model.*
 import com.thedaviddelta.crash.repository.*
 import com.thedaviddelta.crash.util.Accounts
+import com.thedaviddelta.crash.util.SnackbarFactory
 import kotlinx.android.synthetic.main.dialog_instance.view.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.Dispatchers
@@ -57,8 +56,6 @@ class LoginFragment : Fragment() {
         private const val MASTO_CLIENT_SECRET = "mastoClientSecret"
     }
 
-    private lateinit var fragActivity: FragmentActivity
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,8 +66,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragActivity = requireActivity()
-        val secureFile = SecureFile.with(fragActivity)
+        val secureFile = SecureFile.with(requireActivity())
 
         toolbar_login.setNavigationOnClickListener {
             findNavController().navigateUp()
@@ -191,9 +187,9 @@ class LoginFragment : Fragment() {
 
         button_login_mastodon.setOnClickListener {
             val parentViewGroup: ViewGroup? = null
-            val dialogView = LayoutInflater.from(fragActivity).inflate(R.layout.dialog_instance, parentViewGroup)
+            val dialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.dialog_instance, parentViewGroup)
 
-            val dialog = MaterialAlertDialogBuilder(fragActivity)
+            val dialog = MaterialAlertDialogBuilder(requireActivity())
                 .setView(dialogView)
                 .create()
             dialog.show()
@@ -255,22 +251,28 @@ class LoginFragment : Fragment() {
             CustomTabsIntent.Builder()
                 .setToolbarColor(color)
                 .build()
-                .launchUrl(fragActivity, uri)
+                .launchUrl(requireActivity(), uri)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(fragActivity, R.string.login_error_browser, Toast.LENGTH_LONG).show()
+            SnackbarFactory(requireView())
+                .error(R.string.login_error_browser)
+                .buildAndShow()
         }
     }
 
     private val error: Unit
         get() {
             loading = false
-            Toast.makeText(fragActivity, R.string.login_error_unexpected, Toast.LENGTH_LONG).show()
+            SnackbarFactory(requireView())
+                .error(R.string.login_error_unexpected)
+                .buildAndShow()
         }
 
     private val netError: Unit
         get() {
             loading = false
-            Toast.makeText(fragActivity, R.string.login_error_network, Toast.LENGTH_LONG).show()
+            SnackbarFactory(requireView())
+                .error(R.string.login_error_network)
+                .buildAndShow()
         }
 
     private fun domainError(layout: TextInputLayout) {

@@ -21,7 +21,7 @@
     <dimen name="size_splash_progressbar">64dp</dimen>
     <dimen name="textsize_splash_appname">24sp</dimen>
     <dimen name="textsize_splash_info">20sp</dimen>
-    <dimen name="margin_splash_info">36dp</dimen>
+    <dimen name="margin_splash_info">16dp</dimen>
 
     <fraction name="widthpercent_login_banner">0.75</fraction>
     <dimen name="margin_login_linearlayout">48dp</dimen>

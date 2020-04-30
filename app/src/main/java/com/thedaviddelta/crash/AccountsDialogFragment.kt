@@ -20,15 +20,17 @@ package com.thedaviddelta.crash
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.thedaviddelta.crash.adapter.AccountAdapter
@@ -36,6 +38,8 @@ import com.thedaviddelta.crash.model.MastodonAccount
 import com.thedaviddelta.crash.model.TwitterAccount
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
+import com.thedaviddelta.crash.util.SnackbarFactory
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dialog_accounts.*
 import kotlinx.coroutines.launch
 
@@ -60,16 +64,17 @@ class AccountsDialogFragment : BottomSheetDialogFragment() {
             findNavController().navigate(R.id.action_accounts_to_main)
         }.onRemove { account, v ->
             PopupMenu(requireActivity(), v).apply {
-                inflate(R.menu.menu_context_accounts)
+                inflate(R.menu.menu_accounts_remove)
                 setOnMenuItemClickListener { item ->
                     when(item.itemId) {
                         R.id.yes_menu_accounts_action -> {
                             lifecycleScope.launch {
-                                Accounts.remove(account).let {
-                                    if (it)
-                                        this@AccountsDialogFragment.dismiss()
-                                    else
-                                        Toast.makeText(requireActivity(), R.string.accounts_error_remove, Toast.LENGTH_LONG).show()
+                                Accounts.remove(account).also {
+                                    this@AccountsDialogFragment.dismiss()
+                                }.takeIf { !it }?.let {
+                                    SnackbarFactory(requireActivity().nav_host_fragment.requireView())
+                                        .error(R.string.accounts_error_remove)
+                                        .buildAndShow()
                                 }
                             }
                             true
@@ -85,7 +90,21 @@ class AccountsDialogFragment : BottomSheetDialogFragment() {
 
         recyclerview_accounts.apply {
             this.adapter = adapter
-            addItemDecoration(DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL))
+            if (rest.isEmpty())
+                visibility = View.GONE
+            addItemDecoration(object : DividerItemDecoration(requireActivity(), VERTICAL) {
+                override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+                    val left = parent.paddingLeft
+                    val right = parent.width - parent.paddingRight
+                    children.drop(1).forEach {
+                        val params = it.layoutParams as RecyclerView.LayoutParams
+                        val top = it.top + params.topMargin
+                        val bottom = top + drawable!!.intrinsicHeight
+                        drawable!!.setBounds(left, top, right, bottom)
+                        drawable!!.draw(c)
+                    }
+                }
+            })
         }
 
         textview_accounts_fullname.text = current.fullName
@@ -103,6 +122,11 @@ class AccountsDialogFragment : BottomSheetDialogFragment() {
 
         button_accounts_add.setOnClickListener {
             findNavController().navigate(R.id.action_accounts_to_login)
+        }
+
+        DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL).drawable.let {
+            linearlayout_accounts.dividerDrawable = it
+            linearlayout_accounts_options.dividerDrawable = it
         }
 
         (dialog as BottomSheetDialog).behavior.peekHeight = Resources.getSystem().displayMetrics.heightPixels
