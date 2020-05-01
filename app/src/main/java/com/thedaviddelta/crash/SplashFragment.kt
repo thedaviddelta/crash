@@ -51,15 +51,22 @@ class SplashFragment : Fragment() {
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         lifecycleScope.launch {
-            delay(2000L)
-
             ImageRepository.initializeCache(activity)
-            Accounts.initialize(activity).takeIf { !it }?.let {
-                return@launch SnackbarBuilder(requireView())
-                    .error(R.string.splash_error_read)
-                    .during(Snackbar.LENGTH_INDEFINITE)
-                    .buildAndShow()
+            Accounts.apply {
+                initialize(activity).takeIf { !it }?.let {
+                    return@launch SnackbarBuilder(requireView())
+                        .error(R.string.splash_error_read)
+                        .during(Snackbar.LENGTH_INDEFINITE)
+                        .buildAndShow()
+                }
+                update().takeIf { !it }?.let {
+                    SnackbarBuilder(requireView())
+                        .error(R.string.splash_error_update)
+                        .buildAndShow()
+                }
             }
+
+            delay(1500L)
 
             findNavController().navigate(
                 Accounts.current

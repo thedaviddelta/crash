@@ -112,7 +112,7 @@ class LoginFragment : Fragment() {
                             } ?: return@launch netError
 
                         Accounts.add(TwitterAccount.from(user, token, secret))
-                            .let { if (!it) return@launch error }
+                            .takeIf { it } ?: return@launch error
 
                         loading = false
                         findNavController().navigate(R.id.action_login_to_main)
@@ -147,7 +147,7 @@ class LoginFragment : Fragment() {
                             } ?: return@launch netError
 
                         Accounts.add(MastodonAccount.from(user, bearer))
-                            .let { if (!it) return@launch error }
+                            .takeIf { it } ?: return@launch error
 
                         loading = false
                         findNavController().navigate(R.id.action_login_to_main)

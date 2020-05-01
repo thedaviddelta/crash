@@ -43,4 +43,27 @@ data class MastodonAccount(
             )
         }
     }
+
+    fun updateFrom(user: MastodonUser): MastodonAccount? {
+        return this.takeIf {
+            it.id == user.id
+            && it.domain == user.domain
+        }?.apply {
+            this.username = user.username
+            this.fullName = user.fullName
+            this.avatarUrl = user.avatarUrl
+            this.bannerUrl = user.bannerUrl
+        }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other)
+            return true
+        if (other !is MastodonAccount)
+            return false
+        return this.id == other.id
+            && this.domain == other.domain
+    }
+
+    override fun hashCode(): Int = 31 * id.hashCode() + domain.hashCode()
 }

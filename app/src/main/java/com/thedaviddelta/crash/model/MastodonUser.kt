@@ -38,7 +38,8 @@ data class MastodonUser(
         if (other !is MastodonUser)
             return false
         return this.id == other.id
+            && this.domain == other.domain
     }
 
-    override fun hashCode(): Int = id.hashCode()
+    override fun hashCode(): Int = 31 * id.hashCode() + domain.hashCode()
 }

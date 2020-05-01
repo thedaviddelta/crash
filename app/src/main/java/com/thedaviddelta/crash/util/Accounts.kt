@@ -22,27 +22,32 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.thedaviddelta.crash.BuildConfig
 import com.thedaviddelta.crash.model.Account
+import com.thedaviddelta.crash.model.MastodonAccount
+import com.thedaviddelta.crash.model.TwitterAccount
+import com.thedaviddelta.crash.repository.MastodonRepository
+import com.thedaviddelta.crash.repository.TwitterRepository
 
 object Accounts {
     private const val FILE_NAME = "${BuildConfig.APPLICATION_ID}.accounts.list.out"
     private const val SHARED_PREFS_NAME = "${BuildConfig.APPLICATION_ID}.accounts.current"
 
     private lateinit var secureFile: SecureFile
-    private lateinit var sharedPrefs: SharedPreferences
 
-    private lateinit var list: MutableList<Account>
-    private var currentIndex = -1
+    private var list: MutableList<Account>? = null
+    private var sharedPrefs: SharedPreferences? = null
 
-    var current
-        get() = list.getOrNull(currentIndex)
+    private var currentIndex: Int = -1
+
+    var current: Account?
+        get() = list?.getOrNull(currentIndex)
         set(value) {
-            currentIndex = list.indexOf(value).let {
-                if (it == -1) currentIndex else it
+            list?.indexOf(value)?.takeIf { it != -1 }?.let {
+                currentIndex = it
+                sharedPrefs?.edit()?.putInt("index", currentIndex)?.apply()
             }
-            sharedPrefs.edit()?.putInt("index", currentIndex)?.apply()
         }
 
-    val readOnlyList: List<Account>
+    val readOnlyList: List<Account>?
         get() = list
 
     suspend fun initialize(context: Context): Boolean {
@@ -50,26 +55,49 @@ object Accounts {
 
         list = secureFile.readFile(FILE_NAME, mutableListOf()) ?: return false
         sharedPrefs = secureFile.sharedPreferences(SHARED_PREFS_NAME) ?: return false
-        currentIndex = sharedPrefs.getInt("index", -1)
+
+        currentIndex = sharedPrefs?.getInt("index", -1) ?: -1
         return true
     }
 
+    suspend fun update(): Boolean {
+        return list?.map {
+            when(it) {
+                is TwitterAccount -> {
+                    TwitterRepository.getUsers(
+                        it.id.toString()
+                    )?.body()?.firstOrNull()?.let(it::updateFrom)
+                }
+                is MastodonAccount -> {
+                    MastodonRepository.verifyCredentials(
+                        it.domain,
+                        "Bearer ${it.bearer}"
+                    )?.body()?.let(it::updateFrom)
+                }
+                else -> null
+            }
+        }?.all { it != null }?.let {
+            secureFile.writeFile(FILE_NAME, list!!) && it
+        } ?: false
+    }
+
     suspend fun add(account: Account): Boolean {
-        list.add(account).let {
-            if (!it) return false
-        }
-        currentIndex = list.size - 1
-        sharedPrefs.edit()?.putInt("index", currentIndex)?.apply()
-        return secureFile.writeFile(FILE_NAME, list)
+        return list?.takeIf {
+            !it.contains(account) && it.add(account)
+        }?.let {
+            current = account
+            secureFile.writeFile(FILE_NAME, it)
+        } ?: false
     }
 
     suspend fun remove(account: Account): Boolean {
-        val tempCurrent = current
-        list.remove(account).let {
-            if (!it) return false
-        }
-        current = tempCurrent
-        sharedPrefs.edit()?.putInt("index", currentIndex)?.apply()
-        return secureFile.writeFile(FILE_NAME, list)
+        return current?.let { tempCurrent ->
+            list?.takeIf {
+                it.remove(account)
+            }?.let {
+                current = tempCurrent
+                secureFile.writeFile(FILE_NAME, it)
+            }
+        } ?: false
     }
 }

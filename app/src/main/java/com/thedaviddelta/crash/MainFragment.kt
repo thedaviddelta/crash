@@ -100,10 +100,12 @@ class MainFragment : Fragment() {
                 findNavController().navigate(R.id.action_main_to_accounts)
                 true
             }
-            ImageRepository.loadImage(Accounts.current!!.avatarUrl) {
-                val size = resources.getDimension(R.dimen.size_main_toolbar_avatar).toInt()
-                val scaled = it.scale(size, size, filter = true)
-                icon = RoundedBitmapDrawableFactory.create(resources, scaled).apply { isCircular = true }
+            Accounts.current?.let { current ->
+                ImageRepository.loadImage(current.avatarUrl) {
+                    val size = resources.getDimension(R.dimen.size_main_toolbar_avatar).toInt()
+                    val scaled = it.scale(size, size, filter = true)
+                    icon = RoundedBitmapDrawableFactory.create(resources, scaled).apply { isCircular = true }
+                }
             }
         }
 
@@ -125,10 +127,8 @@ class MainFragment : Fragment() {
 
     private val MaterialToolbar.logoView: ImageView?
         get() {
-            children.forEach {
-                if (it is ImageView && it.drawable == logo)
-                    return it
-            }
-            return null
+            return children.firstOrNull {
+                it is ImageView && it.drawable == logo
+            } as? ImageView
         }
 }

@@ -36,7 +36,7 @@
     <string name="imageview_avatar" translatable="false">Avatar</string>
     <string name="listitem_main_crush" translatable="false">Crush</string>
     <string name="splash_error_read">Error retrieving saved accounts</string>
-    <string name="main_error_mutuals">Error retrieving mutuals</string>
+    <string name="main_error_mutuals">Couldn\'t retrieve mutuals</string>
     <string name="main_quit_message">Press again to exit</string>
     <string name="textview_domain" translatable="false">\@domain.com</string>
     <string name="login_error_network">Couldn\'t connect to the server</string>
@@ -50,4 +50,5 @@
     <string name="menu_accounts_yes">Yes</string>
     <string name="menu_accounts_cancel">Cancel</string>
     <string name="menu_main_account">Account</string>
+    <string name="splash_error_update">Couldn\'t update accounts info</string>
 </resources>

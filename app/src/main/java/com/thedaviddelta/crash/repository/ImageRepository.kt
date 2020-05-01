@@ -29,6 +29,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Url
+import java.util.concurrent.TimeUnit
 
 object ImageRepository {
     private interface Api {
@@ -38,7 +39,7 @@ object ImageRepository {
         ): Call<ResponseBody>
     }
 
-    private const val CACHE_SIZE: Long = 1024 * 1024 * 32
+    private const val CACHE_SIZE: Long = 1024 * 1024 * 64
 
     private var cache: Cache? = null
 
@@ -53,11 +54,16 @@ object ImageRepository {
                 cache?.let { cache ->
                     OkHttpClient().newBuilder()
                         .cache(cache)
-                        .addNetworkInterceptor {
-                            it.proceed(it.request())
+                        .addInterceptor {
+                            val newReq = it.request()
                                 .newBuilder()
-                                .header("Cache-Control", "immutable")
-                                .build()
+                                .cacheControl(
+                                    CacheControl.Builder()
+                                        .maxAge(365, TimeUnit.DAYS)
+                                        .immutable()
+                                        .build()
+                                ).build()
+                            it.proceed(newReq)
                         }.build()
                 } ?: OkHttpClient()
             )

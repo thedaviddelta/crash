@@ -63,11 +63,13 @@
 
         <LinearLayout
             android:id="@+id/linearlayout_accounts_names"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/size_accounts_avatar"
             android:layout_marginBottom="@dimen/margin_accounts_names"
             android:orientation="vertical"
+            app:layout_constraintWidth_default="wrap"
+            app:layout_constraintWidth_max="@dimen/maxwidth_accounts_names"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

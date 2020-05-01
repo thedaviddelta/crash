@@ -57,7 +57,7 @@ class AccountsDialogFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val current = Accounts.current!!
-        val rest = Accounts.readOnlyList.filter { it != current }
+        val rest = Accounts.readOnlyList!!.filter { it != current }
 
         val adapter = AccountAdapter(rest) {
             Accounts.current = it

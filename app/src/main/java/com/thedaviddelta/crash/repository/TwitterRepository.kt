@@ -42,8 +42,11 @@ object TwitterRepository {
                 OkHttpClient().newBuilder().addInterceptor {
                     val req = it.request()
 
+                    if (req.url().encodedPath() == "/oauth/access_token")
+                        return@addInterceptor it.proceed(req)
+
                     val (token, secret) = Accounts.current?.let { acc ->
-                        if (acc is TwitterAccount && !req.url().encodedPath().contains("token"))
+                        if (acc is TwitterAccount)
                             Pair(acc.token, acc.secret)
                         else
                             null

@@ -53,6 +53,7 @@
     <dimen name="textsize_accounts_fullname">22sp</dimen>
     <dimen name="textsize_accounts_username">18sp</dimen>
     <dimen name="textsize_accounts_domain">14sp</dimen>
+    <dimen name="maxwidth_accounts_names">224dp</dimen>
     <dimen name="margin_accounts_names">8dp</dimen>
     <dimen name="textsize_accounts_options">12sp</dimen>
     <dimen name="padding_accounts_options_icons">8dp</dimen>

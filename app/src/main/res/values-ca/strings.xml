@@ -28,7 +28,7 @@
     <string name="login_dialog_domain_invalid">Instància no vàlida</string>
     <string name="menu_main_search">Cercar</string>
     <string name="splash_error_read">Error recuperant les comptes guardades</string>
-    <string name="main_error_mutuals">Error recuperant els mutuals</string>
+    <string name="main_error_mutuals">No s\'han pogut recuperar els mutuals</string>
     <string name="main_quit_message">Prem de nou per sortir</string>
     <string name="login_error_network">No s\'ha pogut connectar amb el servidor</string>
     <string name="accounts_add">Afegir compte</string>
@@ -39,4 +39,5 @@
     <string name="menu_accounts_yes">Sí</string>
     <string name="menu_accounts_cancel">Cancel·lar</string>
     <string name="menu_main_account">Compte</string>
+    <string name="splash_error_update">No s\'han pogut actualitzar els comptes</string>
 </resources>

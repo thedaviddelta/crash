@@ -44,4 +44,25 @@ data class TwitterAccount(
             )
         }
     }
+
+    fun updateFrom(user: TwitterUser): TwitterAccount? {
+        return this.takeIf {
+            it.id == user.id
+        }?.apply {
+            this.username = user.username
+            this.fullName = user.fullName
+            this.avatarUrl = user.avatarUrl
+            this.bannerUrl = user.bannerUrl
+        }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other)
+            return true
+        if (other !is TwitterAccount)
+            return false
+        return this.id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
 }
