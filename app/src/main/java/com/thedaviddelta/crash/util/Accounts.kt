@@ -26,6 +26,8 @@ import com.thedaviddelta.crash.model.MastodonAccount
 import com.thedaviddelta.crash.model.TwitterAccount
 import com.thedaviddelta.crash.repository.MastodonRepository
 import com.thedaviddelta.crash.repository.TwitterRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 object Accounts {
     private const val FILE_NAME = "${BuildConfig.APPLICATION_ID}.accounts.list.out"
@@ -60,23 +62,25 @@ object Accounts {
         return true
     }
 
-    suspend fun update(): Boolean {
-        return list?.map {
+    suspend fun update(): Boolean = coroutineScope {
+        list?.map {
             when(it) {
-                is TwitterAccount -> {
+                is TwitterAccount -> async {
                     TwitterRepository.getUsers(
-                        it.id.toString()
+                        userIds = it.id.toString()
                     )?.body()?.firstOrNull()?.let(it::updateFrom)
                 }
-                is MastodonAccount -> {
+                is MastodonAccount -> async {
                     MastodonRepository.verifyCredentials(
-                        it.domain,
-                        "Bearer ${it.bearer}"
+                        domain = it.domain,
+                        bearer = "Bearer ${it.bearer}"
                     )?.body()?.let(it::updateFrom)
                 }
                 else -> null
             }
-        }?.all { it != null }?.let {
+        }?.all {
+            it?.await() != null
+        }?.let {
             secureFile.writeFile(FILE_NAME, list!!) && it
         } ?: false
     }

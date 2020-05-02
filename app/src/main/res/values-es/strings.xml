@@ -40,4 +40,6 @@
     <string name="menu_accounts_cancel">Cancelar</string>
     <string name="menu_main_account">Cuenta</string>
     <string name="splash_error_update">No se han podido actualizar las cuentas</string>
+    <string name="about_description"><![CDATA[<h5>Emparejador de crushes secretos para redes sociales<br>© 2020 TheDavidDelta</h5>Lista de dependencias y sub-dependencias Open Source usadas]]></string>
+    <string name="about_license_button">Licencia</string>
 </resources>

@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mikepenz.aboutlibraries.LibsBuilder
 import com.thedaviddelta.crash.adapter.AccountAdapter
 import com.thedaviddelta.crash.model.MastodonAccount
 import com.thedaviddelta.crash.model.TwitterAccount
@@ -122,6 +123,20 @@ class AccountsDialogFragment : BottomSheetDialogFragment() {
 
         button_accounts_add.setOnClickListener {
             findNavController().navigate(R.id.action_accounts_to_login)
+        }
+
+        button_accounts_info.setOnClickListener {
+            LibsBuilder()
+                .withAboutAppName(resources.getString(R.string.app_name))
+                .withActivityTitle(resources.getString(R.string.accounts_info))
+                .withAboutDescription(resources.getString(R.string.about_description))
+                .withAboutSpecial1(resources.getString(R.string.about_license_button))
+                .withAboutSpecial1Description(resources.getString(R.string.about_license))
+                .withAboutVersionShown(false)
+                .withAboutVersionShownName(true)
+                .withLicenseShown(true)
+                .withLicenseDialog(true)
+                .start(requireActivity())
         }
 
         DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL).drawable.let {

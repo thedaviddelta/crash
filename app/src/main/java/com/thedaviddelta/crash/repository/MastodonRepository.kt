@@ -28,6 +28,8 @@ import com.thedaviddelta.crash.model.MastodonAccount
 import com.thedaviddelta.crash.model.MastodonUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -134,14 +136,16 @@ object MastodonRepository {
         return contacts(null)
     }
 
-    suspend fun getMutuals(): List<MastodonUser>? {
-        val id = Accounts.current?.id ?: return null
+    suspend fun getMutuals(): List<MastodonUser>? = coroutineScope {
+        val id = Accounts.current?.id ?: return@coroutineScope null
 
-        val followers = getAllFollowersFollowing(ContactType.FOLLOWERS, id)
-            ?: return null
-        val following = getAllFollowersFollowing(ContactType.FOLLOWING, id)
-            ?: return null
+        val (followers, following) = listOf(
+            async { getAllFollowersFollowing(ContactType.FOLLOWERS, id) },
+            async { getAllFollowersFollowing(ContactType.FOLLOWING, id) }
+        ).map {
+            it.await() ?: return@coroutineScope null
+        }
 
-        return followers.intersect(following).toList()
+        followers.intersect(following).toList()
     }
 }

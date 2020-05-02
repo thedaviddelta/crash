@@ -27,6 +27,8 @@ import com.thedaviddelta.crash.api.twitterAuthorization
 import com.thedaviddelta.crash.model.TwitterAccount
 import com.thedaviddelta.crash.model.TwitterUser
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -113,18 +115,18 @@ object TwitterRepository {
         return contacts
     }
 
-    suspend fun getMutuals(): List<TwitterUser>? {
-        val followers = getAllFollowersFollowing(ContactType.FOLLOWERS)
-            ?: return null
-        val following = getAllFollowersFollowing(ContactType.FRIENDS)
-            ?: return null
+    suspend fun getMutuals(): List<TwitterUser>? = coroutineScope {
+        val (followers, following) = listOf(
+            async { getAllFollowersFollowing(ContactType.FOLLOWERS) },
+            async { getAllFollowersFollowing(ContactType.FRIENDS) }
+        ).map {
+            it.await() ?: return@coroutineScope null
+        }
 
-        return followers.intersect(following).chunked(100).fold(mutableListOf()) { acc, ids ->
-            getUsers(ids.joinToString(","))
-                ?.body()?.let {
-                    acc += it
-                    acc
-                } ?: return null
+        followers.intersect(following).chunked(100).map {
+            async { getUsers(it.joinToString(","))?.body() }
+        }.flatMap {
+            it.await() ?: return@coroutineScope null
         }
     }
 }

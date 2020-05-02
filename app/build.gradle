@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.mikepenz.aboutlibraries.plugin'
 
 android {
     compileSdkVersion 29
@@ -62,4 +63,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "io.github.cdimascio:java-dotenv:$dotenvVersion"
     implementation "androidx.browser:browser:$browserVersion"
+    implementation "com.mikepenz:aboutlibraries-core:$aboutlibrariesVersion"
+    implementation "com.mikepenz:aboutlibraries:$aboutlibrariesVersion"
 }
