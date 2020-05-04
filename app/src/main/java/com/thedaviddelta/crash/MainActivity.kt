@@ -20,18 +20,27 @@ package com.thedaviddelta.crash
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import com.thedaviddelta.crash.util.SnackbarBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    private val statusColor by lazy {
+        window.statusBarColor
     }
 
     private var doubleBack = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        statusColor.let {
+            Log.i("Main", "Initialized! $it")
+        }
+    }
 
     override fun onBackPressed() {
         when(nav_host_fragment.childFragmentManager.fragments.first()) {
@@ -50,6 +59,10 @@ class MainActivity : AppCompatActivity() {
                 Handler().postDelayed({
                     doubleBack = false
                 }, 2000)
+            }
+            is UserFragment -> {
+                nav_host_fragment.findNavController().navigateUp()
+                window.statusBarColor = statusColor
             }
         }
     }

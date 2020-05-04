@@ -167,7 +167,7 @@ class LoginFragment : Fragment() {
                         } ?: return@launch error
                     } ?: return@launch netError
 
-                val (tempToken, tempSecret, callbackConfirmed) = body.split('&').map { it.split('=')[1] }
+                val (tempToken, _, callbackConfirmed) = body.split('&').map { it.split('=')[1] }
                 if (callbackConfirmed.toBoolean().not())
                     Log.w("Login", "Callback not confirmed")
 

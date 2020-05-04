@@ -42,4 +42,5 @@
     <string name="splash_error_update">No s\'han pogut actualitzar els comptes</string>
     <string name="about_description"><![CDATA[<h5>Aparellador de crushes secrets per a xarxes socials<br>© 2020 TheDavidDelta</h5>Llista de dependències i sub-dependències Open Source utilitzades]]></string>
     <string name="about_license_button">Llicència</string>
+    <string name="user_error_empty">Error carregant la info. de l\'usuari</string>
 </resources>

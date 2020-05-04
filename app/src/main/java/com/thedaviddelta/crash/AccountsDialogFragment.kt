@@ -116,9 +116,14 @@ class AccountsDialogFragment : BottomSheetDialogFragment() {
             else -> ""
         }
 
+        if (current is MastodonAccount && current.fullName.isBlank())
+            textview_accounts_fullname.text = current.username
+
         ImageRepository.apply {
             loadImage(current.avatarUrl, imageview_accounts_avatar::setImageBitmap)
-            current.bannerUrl?.let { loadImage(it, imageview_accounts_banner::setImageBitmap) }
+            current.bannerUrl?.let { url ->
+                loadImage(url) { imageview_accounts_banner?.setImageBitmap(it) }
+            }
         }
 
         button_accounts_add.setOnClickListener {

@@ -68,9 +68,9 @@ class UserAdapter(
             textview_listitem_main_username.text = "@${item.username}"
 
             ImageRepository.loadImage(item.avatarUrl) {
-                imageview_listitem_main_avatar.setImageBitmap(it)
-                constraintlayout_listitem_main_avatar.visibility = View.VISIBLE
-                progressbar_listitem_main_avatar.visibility = View.GONE
+                imageview_listitem_main_avatar?.setImageBitmap(it)
+                constraintlayout_listitem_main_avatar?.visibility = View.VISIBLE
+                progressbar_listitem_main_avatar?.visibility = View.GONE
             }
 
             if (item is MastodonUser) {

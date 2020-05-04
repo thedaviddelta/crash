@@ -18,7 +18,9 @@
 
 package com.thedaviddelta.crash.model
 
-interface User {
+import java.io.Serializable
+
+interface User : Serializable {
     val id: Long
     val username: String
     val fullName: String

@@ -42,4 +42,5 @@
     <string name="splash_error_update">No se han podido actualizar las cuentas</string>
     <string name="about_description"><![CDATA[<h5>Emparejador de crushes secretos para redes sociales<br>© 2020 TheDavidDelta</h5>Lista de dependencias y sub-dependencias Open Source usadas]]></string>
     <string name="about_license_button">Licencia</string>
+    <string name="user_error_empty">Error cargando la info. del usuario</string>
 </resources>

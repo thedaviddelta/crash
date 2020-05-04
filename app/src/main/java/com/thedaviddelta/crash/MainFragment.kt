@@ -24,6 +24,7 @@ import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.graphics.scale
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -32,7 +33,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.snackbar.Snackbar
 import com.thedaviddelta.crash.adapter.UserAdapter
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
@@ -57,12 +57,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = UserAdapter {
-            SnackbarBuilder(requireView())
-                .showing(it.id.toString())
-                .during(Snackbar.LENGTH_SHORT)
-                .tinted(R.color.red300)
-                .centered()
-                .buildAndShow()
+            findNavController().navigate(R.id.action_main_to_user, bundleOf("user" to it))
         }
 
         recyclerview_main.apply {

@@ -60,6 +60,9 @@
         <action
             android:id="@+id/action_main_to_accounts"
             app:destination="@id/AccountsDialogFragment" />
+        <action
+            android:id="@+id/action_main_to_user"
+            app:destination="@id/UserFragment" />
     </fragment>
     <dialog
         android:id="@+id/AccountsDialogFragment"
@@ -77,4 +80,13 @@
             android:id="@+id/action_accounts_to_main"
             app:destination="@id/MainFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/UserFragment"
+        android:name="com.thedaviddelta.crash.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" >
+        <argument
+            android:name="user"
+            app:argType="com.thedaviddelta.crash.model.User" />
+    </fragment>
 </navigation>
