@@ -18,27 +18,11 @@
 
 package com.thedaviddelta.crash.model
 
-import com.google.gson.annotations.SerializedName
+import androidx.annotation.DrawableRes
+import com.thedaviddelta.crash.R
 
-class TwitterUser(
-    @SerializedName("id") override val id: Long,
-    @SerializedName("screen_name") override val username: String,
-    @SerializedName("name") override val fullName: String,
-    @SerializedName("profile_image_url_https") val avatarSmallUrl: String,
-    @SerializedName("profile_banner_url") override val bannerUrl: String?
-) : User {
-    override val avatarUrl
-        get() = avatarSmallUrl.replace("_normal", "")
-
-    override lateinit var crush: CrushType
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other)
-            return true
-        if (other !is TwitterUser)
-            return false
-        return this.id == other.id
-    }
-
-    override fun hashCode(): Int = id.hashCode()
+enum class CrushType(@DrawableRes val drawable: Int) {
+    NONE(R.drawable.ic_heart_empty),
+    CRUSH(R.drawable.ic_heart_full),
+    MUTUAL(R.drawable.ic_heart_arrow)
 }

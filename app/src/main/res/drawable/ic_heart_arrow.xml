@@ -1,0 +1,40 @@
+<!--
+  ~ cr@sh - Secret crush matcher for social networks
+  ~ Copyright (C) 2020 TheDavidDelta
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:name="outline"
+        android:pathData="m 20.190305,5.3008197 a 5.1405078,5.1405078 0 0 0 -7.271482,0 L 11.928107,6.2915358 10.937391,5.3008197 A 5.1417142,5.1417142 0 0 0 3.6659104,12.572301 l 0.990716,0.990716 7.2714806,7.271482 7.271482,-7.271482 0.990716,-0.990716 a 5.1405078,5.1405078 0 0 0 0,-7.2714813 z"
+        android:strokeLineCap="round"
+        android:strokeColor="#d63a30"
+        android:strokeWidth="2"
+        android:fillColor="#d63a30"
+        android:strokeLineJoin="round" />
+    <path
+        android:name="arrow"
+        android:fillColor="@android:color/darker_gray"
+        android:strokeWidth="0.15"
+        android:strokeColor="@android:color/black"
+        android:pathData="M 22.683594 0.54882812 A 0.51334807 0.51334807 0 0 0 22.523438 0.59570312 L 20.375 1.0136719 A 0.51436083 0.51436083 0 0 0 20.566406 2.0234375 L 21.175781 1.8945312 L 19.548828 3.5214844 A 5.469778 5.3460976 0 0 1 20.378906 4.1679688 L 21.914062 2.6328125 L 21.785156 3.2421875 A 0.51501534 0.51501534 0 0 0 22.796875 3.4355469 L 23.230469 1.2695312 A 0.51334807 0.51334807 0 0 0 22.972656 0.59570312 A 0.51334807 0.51334807 0 0 0 22.908203 0.56445312 A 0.51334807 0.51334807 0 0 0 22.876953 0.56445312 A 0.51334807 0.51334807 0 0 0 22.861328 0.54882812 A 0.51334807 0.51334807 0 0 0 22.828125 0.54882812 A 0.51334807 0.51334807 0 0 0 22.8125 0.54882812 A 0.51334807 0.51334807 0 0 0 22.78125 0.54882812 A 0.51334807 0.51334807 0 0 0 22.763672 0.54882812 A 0.51334807 0.51334807 0 0 0 22.732422 0.54882812 A 0.51334807 0.51334807 0 0 0 22.683594 0.54882812 z M 11.96875 11.070312 C 11.543521 11.070312 11.199219 11.414615 11.199219 11.839844 C 11.199219 11.850364 11.198799 11.862627 11.199219 11.873047 L 7.3457031 15.726562 L 6.2578125 16.830078 L 6.2480469 16.839844 L 5.7695312 17.326172 L 5.765625 17.322266 L 5.6015625 17.486328 L 3.7402344 17.486328 A 0.51334807 0.51334807 0 0 0 3.6757812 17.486328 A 0.51334807 0.51334807 0 0 0 3.3710938 17.630859 L 0.8203125 20.197266 A 0.51334807 0.51334807 0 0 0 1.1894531 21.080078 L 1.9921875 21.080078 L 1.3339844 21.738281 A 0.521768 0.521768 0 1 0 2.0722656 22.474609 L 2.7304688 21.818359 L 2.7304688 22.619141 A 0.51334807 0.51334807 0 0 0 3.6113281 22.988281 L 6.1777344 20.421875 A 0.51334807 0.51334807 0 0 0 6.3222656 20.052734 L 6.3222656 18.208984 L 11.9375 12.611328 C 11.94792 12.611746 11.95823 12.611328 11.96875 12.611328 C 12.393978 12.611328 12.738281 12.265073 12.738281 11.839844 C 12.738281 11.414615 12.393978 11.070313 11.96875 11.070312 z M 3.9492188 18.513672 L 5.296875 18.513672 L 5.296875 19.828125 L 3.7558594 21.369141 L 3.7558594 20.566406 A 0.51334807 0.51334807 0 0 0 3.2421875 20.052734 L 2.4257812 20.052734 L 3.9492188 18.513672 z"
+        tools:ignore="VectorPath"/>
+</vector>

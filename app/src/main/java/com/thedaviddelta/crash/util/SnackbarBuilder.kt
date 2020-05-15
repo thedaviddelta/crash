@@ -49,6 +49,12 @@ class SnackbarBuilder(private val view: View) {
         return this
     }
 
+    fun inMultipleLines(): SnackbarBuilder {
+        val text = snackbar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        text.maxLines = Int.MAX_VALUE
+        return this
+    }
+
     fun tinted(@ColorRes resId: Int): SnackbarBuilder {
         snackbar.setBackgroundTint(view.resources.getColor(resId, null))
         return this
@@ -62,6 +68,16 @@ class SnackbarBuilder(private val view: View) {
     fun doing(@StringRes resId: Int, listener: (View) -> Unit): SnackbarBuilder {
         snackbar.setAction(resId, listener)
         return this
+    }
+
+    fun untilClose(msg: String): SnackbarBuilder {
+        return this.during(Snackbar.LENGTH_INDEFINITE)
+            .doing(msg) { snackbar.dismiss() }
+    }
+
+    fun untilClose(@StringRes resId: Int = R.string.confirmation_ok): SnackbarBuilder {
+        return this.during(Snackbar.LENGTH_INDEFINITE)
+            .doing(resId) { snackbar.dismiss() }
     }
 
     fun build(): Snackbar {

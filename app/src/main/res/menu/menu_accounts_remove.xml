@@ -19,14 +19,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/title_menu_accounts_action"
-        android:title="@string/menu_accounts_title">
+        android:title="@string/confirmation_sure">
         <menu>
             <item
                 android:id="@+id/yes_menu_accounts_action"
-                android:title="@string/menu_accounts_yes" />
+                android:title="@string/confirmation_yes" />
             <item
                 android:id="@+id/cancel_menu_accounts_action"
-                android:title="@string/menu_accounts_cancel" />
+                android:title="@string/confirmation_cancel" />
         </menu>
     </item>
 </menu>

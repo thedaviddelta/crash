@@ -66,6 +66,7 @@
     <dimen name="margin_listitem_accounts_platform">14dp</dimen>
     <dimen name="margin_listitem_accounts_sides">8dp</dimen>
 
+    <dimen name="height_user_banner">138dp</dimen>
     <dimen name="size_user_avatar">128dp</dimen>
     <dimen name="margin_user_avatar">24dp</dimen>
     <dimen name="textsize_user_fullname">24sp</dimen>

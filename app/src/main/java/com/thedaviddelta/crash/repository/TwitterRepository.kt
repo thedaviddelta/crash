@@ -24,6 +24,7 @@ import com.thedaviddelta.crash.BuildConfig
 import com.thedaviddelta.crash.api.ContactType
 import com.thedaviddelta.crash.api.TwitterApi
 import com.thedaviddelta.crash.api.twitterAuthorization
+import com.thedaviddelta.crash.model.CrushType
 import com.thedaviddelta.crash.model.TwitterAccount
 import com.thedaviddelta.crash.model.TwitterUser
 import kotlinx.coroutines.Dispatchers
@@ -116,17 +117,27 @@ object TwitterRepository {
     }
 
     suspend fun getMutuals(): List<TwitterUser>? = coroutineScope {
-        val (followers, following) = listOf(
+        val id = Accounts.current?.id ?: return@coroutineScope null
+
+        val (followers, following, crushes, crushedBy) = listOf(
             async { getAllFollowersFollowing(ContactType.FOLLOWERS) },
-            async { getAllFollowersFollowing(ContactType.FRIENDS) }
+            async { getAllFollowersFollowing(ContactType.FRIENDS) },
+            async { FirestoreRepository.getTwitterCrushes(id) },
+            async { FirestoreRepository.getTwitterCrushedBy(id) }
         ).map {
             it.await() ?: return@coroutineScope null
         }
 
-        followers.intersect(following).chunked(100).map {
+        followers.intersect(following).union(crushes).chunked(100).map {
             async { getUsers(it.joinToString(","))?.body() }
         }.flatMap {
             it.await() ?: return@coroutineScope null
+        }.map {
+            if (it.id !in crushes)
+                return@map it.apply { crush = CrushType.NONE }
+            if (it.id !in crushedBy)
+                return@map it.apply { crush = CrushType.CRUSH }
+            it.apply { crush = CrushType.MUTUAL }
         }
     }
 }

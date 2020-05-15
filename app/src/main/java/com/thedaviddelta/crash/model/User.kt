@@ -26,4 +26,5 @@ interface User : Serializable {
     val fullName: String
     val avatarUrl: String
     val bannerUrl: String?
+    var crush: CrushType
 }

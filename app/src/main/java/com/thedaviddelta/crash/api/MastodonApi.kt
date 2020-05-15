@@ -50,6 +50,12 @@ interface MastodonApi {
         @Header("Authorization") bearer: String
     ): Response<MastodonUser>
 
+    @GET("/api/v1/accounts/{id}")
+    suspend fun getUser(
+        @Header("domain") domain: String,
+        @Path("id") userId: Long
+    ): Response<MastodonUser>
+
     @GET("/api/v1/accounts/{id}/{type}")
     suspend fun getFollowersFollowing(
         @Path("type") type: ContactType,

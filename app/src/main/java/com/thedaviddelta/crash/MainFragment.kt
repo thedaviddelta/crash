@@ -34,6 +34,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.appbar.MaterialToolbar
 import com.thedaviddelta.crash.adapter.UserAdapter
+import com.thedaviddelta.crash.model.CrushType
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.util.SnackbarBuilder
@@ -56,8 +57,12 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UserAdapter {
-            findNavController().navigate(R.id.action_main_to_user, bundleOf("user" to it))
+        val adapter = UserAdapter { user ->
+            val numCrushes = viewModel.list.value?.count { it.crush != CrushType.NONE } ?: -1
+            findNavController().navigate(
+                R.id.action_main_to_user,
+                bundleOf("user" to user, "numCrushes" to numCrushes)
+            )
         }
 
         recyclerview_main.apply {

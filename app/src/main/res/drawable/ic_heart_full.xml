@@ -1,0 +1,40 @@
+<!--
+  ~ cr@sh - Secret crush matcher for social networks
+  ~ Copyright (C) 2020 TheDavidDelta
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    tools:ignore="VectorPath">
+    <path
+        android:name="outline"
+        android:pathData="m 20.190305,5.3008197 a 5.1405078,5.1405078 0 0 0 -7.271482,0 L 11.928107,6.2915358 10.937391,5.3008197 A 5.1417142,5.1417142 0 0 0 3.6659104,12.572301 l 0.990716,0.990716 7.2714806,7.271482 7.271482,-7.271482 0.990716,-0.990716 a 5.1405078,5.1405078 0 0 0 0,-7.2714813 z"
+        android:strokeLineCap="round"
+        android:strokeColor="#d63a30"
+        android:strokeWidth="2"
+        android:fillColor="#d63a30"
+        android:strokeLineJoin="round" />
+    <path
+        android:name="arrow"
+        android:pathData="M 22.683594 0.54882812 z M 11.96875 11.070312 z M 3.9492188 18.513672 z"
+        android:fillColor="@android:color/darker_gray"
+        android:strokeWidth="0.15"
+        android:strokeColor="@android:color/black" />
+</vector>

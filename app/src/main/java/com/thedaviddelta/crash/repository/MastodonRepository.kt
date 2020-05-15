@@ -24,6 +24,7 @@ import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.BuildConfig
 import com.thedaviddelta.crash.api.ContactType
 import com.thedaviddelta.crash.api.MastodonApi
+import com.thedaviddelta.crash.model.CrushType
 import com.thedaviddelta.crash.model.MastodonAccount
 import com.thedaviddelta.crash.model.MastodonUser
 import kotlinx.coroutines.Dispatchers
@@ -110,11 +111,20 @@ object MastodonRepository {
         }
     }
 
+    suspend fun getUser(domain: String, id: Long) = withContext(Dispatchers.IO) {
+        try {
+            client.getUser(domain, id)
+        } catch (e: Exception) {
+            Log.e("MastodonRepository", "get-user-error ${e.localizedMessage}")
+            null
+        }
+    }
+
     suspend fun getFollowersFollowing(type: ContactType, id: Long, limit: Int, cursor: Long?) = withContext(Dispatchers.IO) {
         try {
             client.getFollowersFollowing(type, id, limit, cursor)
         } catch (e: Exception) {
-            Log.e("MastodonRepository", "verify-credentials-error ${e.localizedMessage}")
+            Log.e("MastodonRepository", "get-followers-following-error ${e.localizedMessage}")
             null
         }
     }
@@ -137,7 +147,11 @@ object MastodonRepository {
     }
 
     suspend fun getMutuals(): List<MastodonUser>? = coroutineScope {
-        val id = Accounts.current?.id ?: return@coroutineScope null
+        val (id, domain) = Accounts.current?.let {
+            if (it is MastodonAccount)
+                it.id to it.domain
+            else null
+        } ?: return@coroutineScope null
 
         val (followers, following) = listOf(
             async { getAllFollowersFollowing(ContactType.FOLLOWERS, id) },
@@ -146,6 +160,25 @@ object MastodonRepository {
             it.await() ?: return@coroutineScope null
         }
 
-        followers.intersect(following).toList()
+        val (crushes, crushedBy) = listOf(
+            async { FirestoreRepository.getMastodonCrushes(id, domain) },
+            async { FirestoreRepository.getMastodonCrushedBy(id, domain) }
+        ).map {
+            it.await() ?: return@coroutineScope null
+        }
+
+        val restCrushes = crushes.subtract(followers.intersect(following).map { it.id to it.domain }).map {
+            (id, domain) -> async { getUser(domain, id) }
+        }.map {
+            it.await()?.body() ?: return@coroutineScope null
+        }
+
+        followers.intersect(following).union(restCrushes).map {
+            if (it.id to it.domain !in crushes)
+                return@map it.apply { crush = CrushType.NONE }
+            if (it.id to it.domain !in crushedBy)
+                return@map it.apply { crush = CrushType.CRUSH }
+            it.apply { crush = CrushType.MUTUAL }
+        }
     }
 }

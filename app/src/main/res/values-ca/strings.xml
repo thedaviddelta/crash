@@ -35,12 +35,24 @@
     <string name="accounts_info">Info. de l\'app</string>
     <string name="listitem_accounts_remove">Eliminar</string>
     <string name="accounts_error_remove">No s\'ha pogut eliminar el compte</string>
-    <string name="menu_accounts_title">Estàs segur?</string>
-    <string name="menu_accounts_yes">Sí</string>
-    <string name="menu_accounts_cancel">Cancel·lar</string>
+    <string name="confirmation_sure">Estàs segur?</string>
+    <string name="confirmation_yes">Sí</string>
+    <string name="confirmation_cancel">Cancel·lar</string>
     <string name="menu_main_account">Compte</string>
     <string name="splash_error_update">No s\'han pogut actualitzar els comptes</string>
     <string name="about_description"><![CDATA[<h5>Aparellador de crushes secrets per a xarxes socials<br>© 2020 TheDavidDelta</h5>Llista de dependències i sub-dependències Open Source utilitzades]]></string>
     <string name="about_license_button">Llicència</string>
     <string name="user_error_empty">Error carregant la info. de l\'usuari</string>
+    <string name="user_add_msg">No podràs desmarcar-ho en una setmana\nCrushes restants: %d</string>
+    <string name="user_add_error">No s\'ha pogut afegir el crush</string>
+    <string name="user_delete_error">No s\'ha pogut eliminar el crush</string>
+    <string name="user_max">Només pots tindre %d crushes</string>
+    <string name="user_time">Encara no pots desmarcar-ho. Temps restant: %d dies, %02d hores, %02d minuts</string>
+    <string name="user_delete_msg">Estàs intentant desmarcar-ho</string>
+    <string name="user_share_message">He afegit a algú com crush. Troba si ets tu!</string>
+    <string name="user_add_successful">S\'ha afegit com crush! Desgraciadament, el teu crush encara no t\'ha marcat a tu, potser no tingui l\'app encara? Comparteix-la en xarxes!</string>
+    <string name="menu_user_share">Compartir</string>
+    <string name="user_add_mutual">És mutu! El teu crush també t\'ha marcat a tu. Assegura\'t d\'enviar-li un Missatge Directe!</string>
+    <string name="user_add_dm">Enviar!</string>
+    <string name="user_delete_successful">Desmarcat correctament</string>
 </resources>

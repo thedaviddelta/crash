@@ -35,12 +35,24 @@
     <string name="accounts_info">Info. de la app</string>
     <string name="listitem_accounts_remove">Eliminar</string>
     <string name="accounts_error_remove">No se pudo eliminar la cuenta</string>
-    <string name="menu_accounts_title">¿Estás seguro?</string>
-    <string name="menu_accounts_yes">Sí</string>
-    <string name="menu_accounts_cancel">Cancelar</string>
+    <string name="confirmation_sure">¿Estás seguro?</string>
+    <string name="confirmation_yes">Sí</string>
+    <string name="confirmation_cancel">Cancelar</string>
     <string name="menu_main_account">Cuenta</string>
     <string name="splash_error_update">No se han podido actualizar las cuentas</string>
     <string name="about_description"><![CDATA[<h5>Emparejador de crushes secretos para redes sociales<br>© 2020 TheDavidDelta</h5>Lista de dependencias y sub-dependencias Open Source usadas]]></string>
     <string name="about_license_button">Licencia</string>
     <string name="user_error_empty">Error cargando la info. del usuario</string>
+    <string name="user_add_msg">No podrás desmarcarlo en una semana\nCrushes restantes: %d</string>
+    <string name="user_add_error">No se pudo añadir el crush</string>
+    <string name="user_delete_error">No se pudo eliminar el crush</string>
+    <string name="user_max">Sólo puedes tener %d crushes</string>
+    <string name="user_time">Todavía no puedes desmarcarlo. Tiempo restante: %d días, %02d horas, %02d minutos</string>
+    <string name="user_delete_msg">Estás intentando desmarcarlo</string>
+    <string name="user_share_message">He añadido a alguien como crush. ¡Descubre si eres tú!</string>
+    <string name="user_add_successful">¡Se ha añadido como crush! Por desgracia, tu crush aún no te ha marcado a tí, ¿quizá no tenga la app todavía? ¡Compartela en redes!</string>
+    <string name="menu_user_share">Compartir</string>
+    <string name="user_add_mutual">¡Es mutuo! Tu crush también te ha marcado a tí. ¡Asegúrate de enviarle un Mensaje Directo!</string>
+    <string name="user_add_dm">¡Enviar!</string>
+    <string name="user_delete_successful">Desmarcado correctamente</string>
 </resources>

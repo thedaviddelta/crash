@@ -27,12 +27,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.util.SnackbarBuilder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SplashFragment : Fragment() {
 
@@ -51,6 +56,17 @@ class SplashFragment : Fragment() {
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         lifecycleScope.launch {
+            Firebase.auth.signInAnonymously().runCatching {
+                withContext(Dispatchers.IO) {
+                    Tasks.await(this@runCatching)
+                }
+            }.onFailure {
+                return@launch SnackbarBuilder(requireView())
+                    .error(R.string.login_error_unexpected)
+                    .during(Snackbar.LENGTH_INDEFINITE)
+                    .buildAndShow()
+            }
+
             ImageRepository.initializeCache(activity)
             Accounts.apply {
                 initialize(activity).takeIf { !it }?.let {

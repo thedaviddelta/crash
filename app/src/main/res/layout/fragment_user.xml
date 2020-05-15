@@ -37,12 +37,11 @@
             <ImageView
                 android:id="@+id/imageview_user_banner"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/height_user_banner"
                 android:contentDescription="@string/imageview_banner"
                 android:scaleType="centerCrop"
                 android:src="?attr/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,6 +54,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/menu_user"
                 app:navigationIcon="@drawable/ic_back_bg" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -82,13 +82,13 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedscroll_user"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:showDividers="middle">
 
@@ -118,6 +118,18 @@
                     android:textSize="@dimen/textsize_user_username" />
 
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/button_user_heart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_heart_empty"
+                android:layout_marginStart="64dp"
+                android:layout_marginEnd="64dp"
+                android:scaleType="fitCenter"/>
 
         </LinearLayout>
 

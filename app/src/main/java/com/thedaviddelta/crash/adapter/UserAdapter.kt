@@ -45,8 +45,10 @@ class UserAdapter(
     override fun getItemCount(): Int = list.size
 
     fun setItems(items: List<User>) {
-        list = items
-        backup = items
+        list = items.sortedByDescending {
+            it.crush
+        }
+        backup = list
         notifyDataSetChanged()
     }
 
@@ -72,6 +74,8 @@ class UserAdapter(
                 constraintlayout_listitem_main_avatar?.visibility = View.VISIBLE
                 progressbar_listitem_main_avatar?.visibility = View.GONE
             }
+
+            imageview_listitem_main_crush.setImageResource(item.crush.drawable)
 
             if (item is MastodonUser) {
                 textview_listitem_main_domain.text = "@${item.domain}"

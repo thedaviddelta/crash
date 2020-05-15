@@ -19,21 +19,33 @@
 package com.thedaviddelta.crash
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
-import com.thedaviddelta.crash.model.MastodonUser
-import com.thedaviddelta.crash.model.User
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.thedaviddelta.crash.model.*
+import com.thedaviddelta.crash.repository.FirestoreRepository
 import com.thedaviddelta.crash.repository.ImageRepository
+import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.util.SnackbarBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.*
+import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class UserFragment : Fragment() {
+
+    companion object {
+        private const val MAX_CRUSHES = 3
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +58,8 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val actWindow = requireActivity().window
+        val fragActivity = requireActivity()
+        val actWindow = fragActivity.window
         val statusColor = actWindow.statusBarColor
 
         toolbar_user.setNavigationOnClickListener {
@@ -54,14 +67,21 @@ class UserFragment : Fragment() {
             actWindow.statusBarColor = statusColor
         }
 
-        val user = arguments?.getSerializable("user")?.let {
-            if (it is User) it else null
+        val (user, numCrushes) = arguments?.run {
+            val user = getSerializable("user")?.let {
+                if (it is User) it else null
+            } ?: return@run null
+            val numCrushes = getInt("numCrushes").takeUnless {
+                it == -1
+            } ?: return@run null
+            user to numCrushes
         } ?: return run {
             findNavController().navigateUp()
             SnackbarBuilder(requireActivity().nav_host_fragment.requireView())
                 .error(R.string.user_error_empty)
                 .buildAndShow()
         }
+        var isFull = numCrushes >= MAX_CRUSHES
 
         textview_user_fullname.text = user.fullName
         textview_user_username.text = "@${user.username}"
@@ -81,6 +101,181 @@ class UserFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        button_user_heart.apply {
+            setImageResource(user.crush.drawable)
+            if (isFull && user.crush == CrushType.NONE)
+                setColorFilter(resources.getColor(R.color.gray, null))
+
+            setOnClickListener {
+                val current = Accounts.current!!
+                when(user.crush) {
+                    CrushType.NONE -> {
+                        if (isFull) {
+                            SnackbarBuilder(requireView())
+                                .showing(resources.getString(R.string.user_max, MAX_CRUSHES))
+                                .tinted(R.color.red300)
+                                .centered()
+                                .buildAndShow()
+                            return@setOnClickListener
+                        }
+                        MaterialAlertDialogBuilder(fragActivity)
+                            .setTitle(R.string.confirmation_sure)
+                            .setMessage(resources.getString(R.string.user_add_msg, MAX_CRUSHES - numCrushes))
+                            .setPositiveButton(R.string.confirmation_yes) { dialog, _ ->
+                                lifecycleScope.launch {
+                                    FirestoreRepository.addCrush(current, user).takeIf { !it }?.let {
+                                        return@launch SnackbarBuilder(requireView())
+                                            .error(R.string.user_add_error)
+                                            .buildAndShow()
+                                    }
+                                    FirestoreRepository.checkIfCrushIsMutual(current, user).takeIf { it }
+                                        ?.run {
+                                            user.crush = CrushType.MUTUAL
+                                            SnackbarBuilder(requireView())
+                                                .showing(R.string.user_add_mutual)
+                                                .inMultipleLines()
+                                                .tinted(R.color.forestGreen)
+                                                .during(Snackbar.LENGTH_INDEFINITE)
+                                                .doing(R.string.user_add_dm) {
+                                                    sendDm(user)
+                                                }.buildAndShow()
+                                        } ?: run {
+                                            user.crush = CrushType.CRUSH
+                                            SnackbarBuilder(requireView())
+                                                .showing(R.string.user_add_successful)
+                                                .inMultipleLines()
+                                                .tinted(R.color.red300)
+                                                .during(Snackbar.LENGTH_INDEFINITE)
+                                                .doing(R.string.menu_user_share) {
+                                                    share()
+                                                }.buildAndShow()
+                                        }
+                                    setImageResource(user.crush.drawable)
+                                }
+                                dialog.dismiss()
+                            }.setNegativeButton(R.string.confirmation_cancel) { dialog, _ ->
+                                dialog.dismiss()
+                            }.show()
+                    }
+                    CrushType.CRUSH,
+                    CrushType.MUTUAL -> {
+                        MaterialAlertDialogBuilder(fragActivity)
+                            .setTitle(R.string.confirmation_sure)
+                            .setMessage(R.string.user_delete_msg)
+                            .setPositiveButton(R.string.confirmation_yes) { dialog, _ ->
+                                lifecycleScope.launch {
+                                    FirestoreRepository.deleteCrush(current, user).takeIf { it != 0L }?.let {
+                                        return@launch if (it == -1L) {
+                                            SnackbarBuilder(requireView())
+                                                .error(R.string.user_delete_error)
+                                                .buildAndShow()
+                                        } else {
+                                            val days = TimeUnit.MILLISECONDS.toDays(it)
+                                            val hours = TimeUnit.MILLISECONDS.toHours(
+                                                it - TimeUnit.DAYS.toMillis(days)
+                                            )
+                                            val minutes = TimeUnit.MILLISECONDS.toMinutes(
+                                                it - TimeUnit.DAYS.toMillis(days) - TimeUnit.HOURS.toMillis(hours)
+                                            )
+                                            SnackbarBuilder(requireView())
+                                                .showing(resources.getString(R.string.user_time, days, hours, minutes))
+                                                .inMultipleLines()
+                                                .tinted(R.color.red300)
+                                                .untilClose()
+                                                .buildAndShow()
+                                        }
+                                    }
+                                    user.crush = CrushType.NONE
+                                    SnackbarBuilder(requireView())
+                                        .showing(R.string.user_delete_successful)
+                                        .tinted(R.color.red300)
+                                        .centered()
+                                        .buildAndShow()
+                                    setImageResource(user.crush.drawable)
+                                    isFull = false
+                                }
+                                dialog.dismiss()
+                            }.setNegativeButton(R.string.confirmation_cancel) { dialog, _ ->
+                                dialog.dismiss()
+                            }.show()
+                    }
+                }
+            }
+        }
+
+        imageview_user_avatar.setOnClickListener {
+            openProfile(user)
+        }
+
+        toolbar_user.menu.findItem(R.id.share_menu_user_action).setOnMenuItemClickListener {
+            share()
+            true
+        }
+    }
+
+    private fun openProfile(user: User) {
+        when(user) {
+            is TwitterUser -> {
+                val url = "https://twitter.com/${user.username}"
+                    .let { Uri.parse(it) }
+                openInSocialNet(url)
+            }
+            is MastodonUser -> {
+                val url = "https://${user.domain}/@${user.username}"
+                    .let { Uri.parse(it) }
+                openInSocialNet(url)
+            }
+        }
+    }
+
+    private fun share() {
+        val current = Accounts.current!!
+        val msg = resources.getString(R.string.user_share_message)
+            .let { Uri.encode(it) }
+        val link = "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
+            .let { Uri.encode(it) }
+
+        when(current) {
+            is TwitterAccount -> {
+                val url = "https://twitter.com/intent/tweet?text=$msg&url=$link"
+                    .let { Uri.parse(it) }
+                openInSocialNet(url)
+            }
+            is MastodonAccount -> {
+                val url = "https://${current.domain}/share?text=$msg&url=$link"
+                    .let { Uri.parse(it) }
+                openInSocialNet(url)
+            }
+        }
+    }
+
+    private fun sendDm(user: User) {
+        when(user) {
+            is TwitterUser -> {
+                val url = "https://twitter.com/messages/compose?recipient_id=${user.id}"
+                    .let { Uri.parse(it) }
+                openInSocialNet(url)
+            }
+            is MastodonUser -> {
+                val current = Accounts.current
+                if (current !is MastodonAccount)
+                    return
+                val mutualDomain = if (user.domain != current.domain) "@${user.domain}" else ""
+
+                val url = "https://${current.domain}/share?text=@${user.username}$mutualDomain"
+                    .let { Uri.parse(it) }
+                openInSocialNet(url)
+            }
+        }
+    }
+
+    private fun openInSocialNet(url: Uri) {
+        Intent().apply {
+            action = Intent.ACTION_VIEW
+            data = url
+            startActivity(this)
         }
     }
 }

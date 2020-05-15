@@ -88,5 +88,9 @@
         <argument
             android:name="user"
             app:argType="com.thedaviddelta.crash.model.User" />
+        <argument
+            android:name="numCrushes"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 </navigation>

@@ -103,5 +103,5 @@
         android:layout_marginEnd="@dimen/marginend_listitem_main_crush"
         android:layout_weight="0.3"
         android:contentDescription="@string/listitem_main_crush"
-        app:srcCompat="@drawable/ic_logo" />
+        app:srcCompat="@drawable/ic_heart_empty" />
 </LinearLayout>

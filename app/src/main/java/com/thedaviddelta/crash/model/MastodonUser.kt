@@ -21,7 +21,7 @@ package com.thedaviddelta.crash.model
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
-data class MastodonUser(
+class MastodonUser(
     @SerializedName("id") override val id: Long,
     @SerializedName("username") override val username: String,
     @SerializedName("display_name") override val fullName: String,
@@ -31,6 +31,8 @@ data class MastodonUser(
 ) : User {
     val domain
         get() = Uri.parse(url).host!!
+
+    override lateinit var crush: CrushType
 
     override fun equals(other: Any?): Boolean {
         if (this === other)
