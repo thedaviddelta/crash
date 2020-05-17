@@ -17,7 +17,7 @@
   ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,114 +25,138 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".UserFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_user"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorlayout_user_appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@color/red100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/marginbottom_user_appbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_user_appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageview_user_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:contentDescription="@string/imageview_banner"
+                    android:scaleType="centerCrop"
+                    android:src="?attr/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:menu="@menu/menu_user"
+                    app:navigationIcon="@drawable/ic_back_bg" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginstart_user_avatar"
+            android:layout_marginTop="@dimen/margintopbottom_user_avatar"
+            android:layout_marginBottom="@dimen/margintopbottom_user_avatar"
+            app:cardCornerRadius="@dimen/cornerradius_rounded_avatar"
+            app:cardElevation="4dp"
+            app:layout_anchor="@id/appbar_user"
+            app:layout_anchorGravity="bottom">
 
             <ImageView
-                android:id="@+id/imageview_user_banner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_user_banner"
-                android:contentDescription="@string/imageview_banner"
-                android:scaleType="centerCrop"
-                android:src="?attr/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/imageview_user_avatar"
+                android:layout_width="@dimen/size_user_avatar"
+                android:layout_height="@dimen/size_user_avatar"
+                android:contentDescription="@string/imageview_avatar"
+                app:srcCompat="@drawable/ic_logo" />
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:menu="@menu/menu_user"
-                app:navigationIcon="@drawable/ic_back_bg" />
+        </androidx.cardview.widget.CardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.cardview.widget.CardView
+    <LinearLayout
+        android:id="@+id/linearlayout_user_names"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_user_avatar"
-        app:cardCornerRadius="@dimen/cornerradius_rounded_avatar"
-        app:cardElevation="4dp"
-        app:layout_anchor="@id/appbar_user"
-        app:layout_anchorGravity="bottom">
+        android:layout_marginStart="@dimen/marginstart_user_names"
+        android:layout_marginBottom="@dimen/marginbottom_user_names"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/coordinatorlayout_user_appbar"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/imageview_user_avatar"
-            android:layout_width="@dimen/size_user_avatar"
-            android:layout_height="@dimen/size_user_avatar"
-            android:contentDescription="@string/imageview_avatar"
-            app:srcCompat="@drawable/ic_logo" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedscroll_user"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:fillViewport="true">
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/textview_user_fullname"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:showDividers="middle">
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@string/textview_fullname"
+            android:textSize="@dimen/textsize_user_fullname" />
 
-            <LinearLayout
-                android:id="@+id/linearlayout_user_names"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/marginstart_user_names"
-                android:layout_marginEnd="@dimen/margin_user_avatar"
-                android:layout_marginBottom="@dimen/marginbottom_user_names"
-                android:orientation="vertical">
+        <TextView
+            android:id="@+id/textview_user_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@string/textview_username"
+            android:textSize="@dimen/textsize_user_username" />
 
-                <TextView
-                    android:id="@+id/textview_user_fullname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:text="@string/textview_fullname"
-                    android:textSize="@dimen/textsize_user_fullname" />
+    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textview_user_username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:text="@string/textview_username"
-                    android:textSize="@dimen/textsize_user_username" />
+    <View
+        android:id="@+id/view_user_separator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_user_separator"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coordinatorlayout_user_appbar" />
 
-            </LinearLayout>
+    <ImageButton
+        android:id="@+id/button_user_heart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/marginstartend_user_heart"
+        android:layout_marginEnd="@dimen/marginstartend_user_heart"
+        android:layout_marginBottom="@dimen/marginbottom_user_heart"
+        android:adjustViewBounds="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/user_imagebutton_heart"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_heart_empty"
+        app:layout_constraintBottom_toBottomOf="@+id/adview_user_banner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_user_separator" />
 
-            <ImageButton
-                android:id="@+id/button_user_heart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:layout_gravity="center"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_heart_empty"
-                android:layout_marginStart="64dp"
-                android:layout_marginEnd="64dp"
-                android:scaleType="fitCenter"/>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adview_user_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:adSize="SMART_BANNER"
+        app:adUnitId="@string/admob_adunit_id_userfragment_banner"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

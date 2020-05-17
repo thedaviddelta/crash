@@ -20,30 +20,25 @@ package com.thedaviddelta.crash
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.findNavController
+import androidx.core.view.children
+import com.google.android.material.appbar.MaterialToolbar
 import com.thedaviddelta.crash.util.SnackbarBuilder
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_user.*
 
 class MainActivity : AppCompatActivity() {
-
-    private val statusColor by lazy {
-        window.statusBarColor
-    }
 
     private var doubleBack = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        statusColor.let {
-            Log.i("Main", "Initialized! $it")
-        }
     }
 
     override fun onBackPressed() {
-        when(nav_host_fragment.childFragmentManager.fragments.first()) {
+        when(val frag = nav_host_fragment.childFragmentManager.fragments.first()) {
             is MainFragment -> {
                 if (doubleBack)
                     return finish()
@@ -61,9 +56,15 @@ class MainActivity : AppCompatActivity() {
                 }, 2000)
             }
             is UserFragment -> {
-                nav_host_fragment.findNavController().navigateUp()
-                window.statusBarColor = statusColor
+                frag.toolbar_user.navigationView?.callOnClick()
             }
         }
     }
+
+    private val MaterialToolbar.navigationView: ImageButton?
+        get() {
+            return children.firstOrNull {
+                it is ImageButton && it.drawable == navigationIcon
+            } as? ImageButton
+        }
 }

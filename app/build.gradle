@@ -16,6 +16,13 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [
+            admobAppId: file("/src/main/assets/env").readLines().collectEntries {
+                def (key, value) = it.tokenize("=")
+                [key, value]
+            }.get("ADMOB_APP_ID")
+        ]
     }
 
     buildTypes {
@@ -68,6 +75,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.0'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.firebase:firebase-auth-ktx:19.3.1'
+    implementation 'com.google.firebase:firebase-ads:19.1.0'
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"

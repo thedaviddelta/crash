@@ -47,7 +47,7 @@
         android:id="@+id/swiperefreshlayout_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/adview_main_banner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar_main" >
@@ -61,5 +61,15 @@
             android:scrollbars="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adview_main_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:adSize="SMART_BANNER"
+        app:adUnitId="@string/admob_adunit_id_mainfragment_banner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

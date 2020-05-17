@@ -66,11 +66,15 @@
     <dimen name="margin_listitem_accounts_platform">14dp</dimen>
     <dimen name="margin_listitem_accounts_sides">8dp</dimen>
 
-    <dimen name="height_user_banner">138dp</dimen>
     <dimen name="size_user_avatar">128dp</dimen>
-    <dimen name="margin_user_avatar">24dp</dimen>
+    <dimen name="marginstart_user_avatar">28dp</dimen>
+    <dimen name="margintopbottom_user_avatar">14dp</dimen>
+    <dimen name="marginbottom_user_appbar">80dp</dimen>
     <dimen name="textsize_user_fullname">24sp</dimen>
     <dimen name="textsize_user_username">20sp</dimen>
     <dimen name="marginstart_user_names">176dp</dimen>
-    <dimen name="marginbottom_user_names">8dp</dimen>
+    <dimen name="marginbottom_user_names">12dp</dimen>
+    <dimen name="marginstartend_user_heart">32dp</dimen>
+    <dimen name="marginbottom_user_heart">64dp</dimen>
+    <dimen name="height_user_separator">1.5dp</dimen>
 </resources>

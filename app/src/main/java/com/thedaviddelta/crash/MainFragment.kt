@@ -32,6 +32,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.appbar.MaterialToolbar
 import com.thedaviddelta.crash.adapter.UserAdapter
 import com.thedaviddelta.crash.model.CrushType
@@ -112,6 +113,8 @@ class MainFragment : Fragment() {
         toolbar_main.logoView?.setOnClickListener {
             recyclerview_main.scrollToPosition(0)
         }
+
+        adview_main_banner.loadAd(AdRequest.Builder().build())
     }
 
     private fun loadUsers() {

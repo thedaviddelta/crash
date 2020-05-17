@@ -67,4 +67,5 @@
     <string name="user_add_mutual">It\'s mutual! Your crash has also added you. Be sure to send a Direct Message!</string>
     <string name="user_add_dm">Send!</string>
     <string name="user_delete_successful">Un-crushed successfully</string>
+    <string name="user_imagebutton_heart" translatable="false">Crush / Un-crush</string>
 </resources>

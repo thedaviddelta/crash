@@ -20,15 +20,19 @@ package com.thedaviddelta.crash
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.thedaviddelta.crash.model.*
@@ -40,12 +44,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
+import kotlin.properties.Delegates
 
 class UserFragment : Fragment() {
 
     companion object {
         private const val MAX_CRUSHES = 3
     }
+
+    private var numCrushes by Delegates.notNull<Int>()
+
+    private val isFull: Boolean
+        get() = numCrushes >= MAX_CRUSHES
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,26 +72,40 @@ class UserFragment : Fragment() {
         val actWindow = fragActivity.window
         val statusColor = actWindow.statusBarColor
 
+        val interstitialAd = InterstitialAd(fragActivity).apply {
+            adUnitId = resources.getString(R.string.admob_adunit_id_user_to_main_interstitial)
+            loadAd(AdRequest.Builder().build())
+        }
+
         toolbar_user.setNavigationOnClickListener {
+            SnackbarBuilder(requireView())
+                .tinted(android.R.color.transparent)
+                .during(1)
+                .buildAndShow()
+
+            if (interstitialAd.isLoaded)
+                interstitialAd.show()
+
             findNavController().navigateUp()
             actWindow.statusBarColor = statusColor
         }
 
-        val (user, numCrushes) = arguments?.run {
-            val user = getSerializable("user")?.let {
-                if (it is User) it else null
-            } ?: return@run null
-            val numCrushes = getInt("numCrushes").takeUnless {
+        adview_user_banner.loadAd(AdRequest.Builder().build())
+
+        val user = arguments?.run {
+            numCrushes = getInt("numCrushes").takeUnless {
                 it == -1
             } ?: return@run null
-            user to numCrushes
+
+            getSerializable("user")?.let {
+                if (it is User) it else null
+            }
         } ?: return run {
             findNavController().navigateUp()
             SnackbarBuilder(requireActivity().nav_host_fragment.requireView())
                 .error(R.string.user_error_empty)
                 .buildAndShow()
         }
-        var isFull = numCrushes >= MAX_CRUSHES
 
         textview_user_fullname.text = user.fullName
         textview_user_username.text = "@${user.username}"
@@ -103,10 +127,19 @@ class UserFragment : Fragment() {
             }
         }
 
+        imageview_user_avatar.setOnClickListener {
+            openProfile(user)
+        }
+
+        toolbar_user.menu.findItem(R.id.share_menu_user_action).setOnMenuItemClickListener {
+            share()
+            true
+        }
+
         button_user_heart.apply {
             setImageResource(user.crush.drawable)
             if (isFull && user.crush == CrushType.NONE)
-                setColorFilter(resources.getColor(R.color.gray, null))
+                alpha = 0.7F
 
             setOnClickListener {
                 val current = Accounts.current!!
@@ -153,6 +186,7 @@ class UserFragment : Fragment() {
                                                 }.buildAndShow()
                                         }
                                     setImageResource(user.crush.drawable)
+                                    numCrushes++
                                 }
                                 dialog.dismiss()
                             }.setNegativeButton(R.string.confirmation_cancel) { dialog, _ ->
@@ -194,7 +228,7 @@ class UserFragment : Fragment() {
                                         .centered()
                                         .buildAndShow()
                                     setImageResource(user.crush.drawable)
-                                    isFull = false
+                                    numCrushes--
                                 }
                                 dialog.dismiss()
                             }.setNegativeButton(R.string.confirmation_cancel) { dialog, _ ->
@@ -205,13 +239,16 @@ class UserFragment : Fragment() {
             }
         }
 
-        imageview_user_avatar.setOnClickListener {
-            openProfile(user)
-        }
-
-        toolbar_user.menu.findItem(R.id.share_menu_user_action).setOnMenuItemClickListener {
-            share()
-            true
+        resources.configuration.orientation.let {
+            val isLandscape = it == Configuration.ORIENTATION_LANDSCAPE
+            ConstraintSet().apply {
+                clone(constraintlayout_user_appbar)
+                setDimensionRatio(
+                    imageview_user_banner.id,
+                    if (isLandscape) "0" else "3"
+                )
+                applyTo(constraintlayout_user_appbar)
+            }
         }
     }
 
