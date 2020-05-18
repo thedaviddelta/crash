@@ -18,9 +18,12 @@
 
 package com.thedaviddelta.crash
 
+import android.animation.LayoutTransition
 import android.os.Bundle
 import android.view.*
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.graphics.scale
@@ -84,7 +87,12 @@ class MainFragment : Fragment() {
         val searchView = toolbar_main.menu.findItem(R.id.search_menu_main_action).actionView as SearchView
         searchView.apply {
             setIconifiedByDefault(false)
-            queryHint = "${getString(R.string.menu_main_search)}..."
+            findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon).setImageDrawable(null)
+            findViewById<LinearLayout>(androidx.appcompat.R.id.search_bar).layoutTransition = LayoutTransition()
+            findViewById<EditText>(androidx.appcompat.R.id.search_src_text).apply {
+                queryHint = "${getString(R.string.menu_main_search)}..."
+                setHintTextColor(resources.getColor(R.color.pinkWhite50Alpha, null))
+            }
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     adapter.filter(newText)

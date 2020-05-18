@@ -110,7 +110,6 @@ class SplashFragment : Fragment() {
                 update().takeIf { !it }?.let {
                     SnackbarBuilder(requireView())
                         .error(R.string.splash_error_update)
-                        .during(1250)
                         .buildAndShow()
                 }
             }

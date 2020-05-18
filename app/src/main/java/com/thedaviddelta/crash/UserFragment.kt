@@ -307,9 +307,9 @@ class UserFragment : Fragment() {
                 val current = Accounts.current
                 if (current !is MastodonAccount)
                     return
-                val mutualDomain = if (user.domain != current.domain) "@${user.domain}" else ""
+                val domain = if (user.domain != current.domain) "@${user.domain}" else ""
 
-                val url = "https://${current.domain}/share?text=@${user.username}$mutualDomain"
+                val url = "https://${current.domain}/share?text=@${user.username}$domain"
                     .let { Uri.parse(it) }
                 openInSocialNet(url)
             }

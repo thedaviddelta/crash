@@ -30,10 +30,14 @@
 
         <action
             android:id="@+id/action_splash_to_login"
-            app:destination="@id/LoginFragment" />
+            app:destination="@id/LoginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_splash_to_main"
-            app:destination="@id/MainFragment" />
+            app:destination="@id/MainFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/LoginFragment"
@@ -46,7 +50,9 @@
             app:uri="tdd-oauth://com.thedaviddelta.crash/{platform}?oauth_token={tw_oauth_token}&amp;oauth_verifier={tw_oauth_verifier}&amp;code={masto_oauth_code}" />
         <action
             android:id="@+id/action_login_to_main"
-            app:destination="@id/MainFragment" />
+            app:destination="@id/MainFragment"
+            app:enterAnim="@anim/appear"
+            app:exitAnim="@anim/disappear" />
         <argument
             android:name="add"
             app:argType="boolean"
@@ -62,7 +68,11 @@
             app:destination="@id/AccountsDialogFragment" />
         <action
             android:id="@+id/action_main_to_user"
-            app:destination="@id/UserFragment" />
+            app:destination="@id/UserFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <dialog
         android:id="@+id/AccountsDialogFragment"
@@ -71,14 +81,20 @@
         tools:layout="@layout/fragment_dialog_accounts" >
         <action
             android:id="@+id/action_accounts_to_login"
-            app:destination="@id/LoginFragment" >
+            app:destination="@id/LoginFragment"
+            app:enterAnim="@anim/appear"
+            app:exitAnim="@anim/disappear"
+            app:popEnterAnim="@anim/appear"
+            app:popExitAnim="@anim/disappear">
             <argument
                 android:name="add"
                 android:defaultValue="true" />
         </action>
         <action
             android:id="@+id/action_accounts_to_main"
-            app:destination="@id/MainFragment" />
+            app:destination="@id/MainFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
     </dialog>
     <fragment
         android:id="@+id/UserFragment"

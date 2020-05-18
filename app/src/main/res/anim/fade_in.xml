@@ -17,21 +17,8 @@
   ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <color name="red50">#ffedf1</color>
-    <color name="red100">#ffd2d8</color>
-    <color name="red200">#f7a3a4</color>
-    <color name="red300">#f08080</color>
-    <color name="red600">#de5145</color>
-    <color name="red700">#CC493F</color>
-    <color name="red900">#ae3b2f</color>
-    <color name="pink50">#f9e6ee</color>
-    <color name="pinkWhite50">#FFF6FA</color>
-    <color name="pinkWhite50Alpha">#A8FFF6FA</color>
-    <color name="pinkBlack900">#16000A</color>
-
-    <color name="twitterBlue">#1da1f2</color>
-    <color name="mastodonBlue">#2b90d9</color>
-
-    <color name="forestGreen">#228B22</color>
-</resources>
+<alpha xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromAlpha="0"
+    android:toAlpha="1"
+    android:interpolator="@android:anim/linear_interpolator"
+    android:duration="200" />

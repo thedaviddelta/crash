@@ -26,6 +26,7 @@ import androidx.core.view.children
 import com.google.android.material.appbar.MaterialToolbar
 import com.thedaviddelta.crash.util.SnackbarBuilder
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_user.*
 
 class MainActivity : AppCompatActivity() {
@@ -39,12 +40,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         when(val frag = nav_host_fragment.childFragmentManager.fragments.first()) {
+            is LoginFragment -> {
+                frag.toolbar_login.navigationView?.callOnClick()
+            }
             is MainFragment -> {
                 if (doubleBack)
                     return finish()
                 doubleBack = true
 
-                SnackbarBuilder(nav_host_fragment.requireView())
+                SnackbarBuilder(frag.requireView())
                     .showing(R.string.main_quit_message)
                     .during(2000)
                     .tinted(R.color.red300)
