@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ cr@sh - Secret crush matcher for social networks
+  ~ Copyright (C) 2020 TheDavidDelta
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <!-- Montserrat (Font) -->
+    <string name="define_plu_font_montserrat" translatable="false" />
+    <string name="library_font_montserrat_author" translatable="false">Julieta Ulanovsky</string>
+    <string name="library_font_montserrat_libraryName" translatable="false">Montserrat (Font)</string>
+    <string name="library_font_montserrat_libraryDescription" translatable="false"><![CDATA[<p>The old posters and signs in the traditional neighborhood of Buenos Aires called Montserrat inspired me to design a typeface that rescues the beauty of urban typography from the first half of the twentieth century. The goal is to rescue what is in Montserrat and set it free, under a free, libre and open source license, the SIL Open Font License.</p><p>As urban development changes this place, it will never return to its original form and loses forever the designs that are so special and unique. To draw the letters, I rely on examples of lettering in the urban space. Each selected example produces its own variants in length, width and height proportions, each adding to the Montserrat family. The old typographies and canopies are irretrievable when they are replaced.</p><p>There are other revivals, but those do not stay close to the originals. The letters that inspired this project have work, dedication, care, color, contrast, light and life, day and night! These are the types that make the city look so beautiful.</p>]]></string>
+    <string name="library_font_montserrat_libraryWebsite" translatable="false">https://fonts.google.com/specimen/Montserrat</string>
+    <string name="library_font_montserrat_libraryVersion" translatable="false">v7.200</string>
+    <string name="library_font_montserrat_isOpenSource" translatable="false">true</string>
+    <string name="library_font_montserrat_repositoryLink" translatable="false">https://github.com/JulietaUla/Montserrat</string>
+    <string name="library_font_montserrat_licenseVersion" translatable="false">OFL-1.1</string>
+    <string name="library_font_montserrat_licenseLink" translatable="false">https://github.com/JulietaUla/Montserrat/blob/master/OFL.txt</string>
+</resources>
