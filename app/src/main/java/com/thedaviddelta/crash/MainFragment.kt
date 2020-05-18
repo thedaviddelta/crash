@@ -32,6 +32,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.appbar.MaterialToolbar
 import com.thedaviddelta.crash.adapter.UserAdapter
@@ -114,7 +115,13 @@ class MainFragment : Fragment() {
             recyclerview_main.scrollToPosition(0)
         }
 
-        adview_main_banner.loadAd(AdRequest.Builder().build())
+        adview_main_banner.loadAd(
+            AdRequest.Builder()
+                .addNetworkExtrasBundle(
+                    AdMobAdapter::class.java,
+                    bundleOf("npa" to "1")
+                ).build()
+        )
     }
 
     private fun loadUsers() {

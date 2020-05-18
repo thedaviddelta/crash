@@ -28,9 +28,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
+import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -72,10 +74,18 @@ class UserFragment : Fragment() {
         val actWindow = fragActivity.window
         val statusColor = actWindow.statusBarColor
 
+        val adRequest = AdRequest.Builder()
+            .addNetworkExtrasBundle(
+                AdMobAdapter::class.java,
+                bundleOf("npa" to "1")
+            ).build()
+
         val interstitialAd = InterstitialAd(fragActivity).apply {
             adUnitId = resources.getString(R.string.admob_adunit_id_user_to_main_interstitial)
-            loadAd(AdRequest.Builder().build())
+            loadAd(adRequest)
         }
+
+        adview_user_banner.loadAd(adRequest)
 
         toolbar_user.setNavigationOnClickListener {
             SnackbarBuilder(requireView())
@@ -89,8 +99,6 @@ class UserFragment : Fragment() {
             findNavController().navigateUp()
             actWindow.statusBarColor = statusColor
         }
-
-        adview_user_banner.loadAd(AdRequest.Builder().build())
 
         val user = arguments?.run {
             numCrushes = getInt("numCrushes").takeUnless {

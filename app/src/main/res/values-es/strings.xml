@@ -22,7 +22,7 @@
     <string name="login_mastodon">Inicia sesión con Mastodon</string>
     <string name="splash_info">© 2020 TheDavidDelta\nLicenciado bajo GNU GPLv3</string>
     <string name="login_error_browser">No se encontró navegador</string>
-    <string name="login_error_unexpected">Error inesperado</string>
+    <string name="error_unexpected">Error inesperado</string>
     <string name="login_loading">Cargando...</string>
     <string name="login_dialog_domain_hint">Introduce tu instancia</string>
     <string name="login_dialog_domain_invalid">Instancia no válida</string>
@@ -40,8 +40,9 @@
     <string name="confirmation_cancel">Cancelar</string>
     <string name="menu_main_account">Cuenta</string>
     <string name="splash_error_update">No se han podido actualizar las cuentas</string>
-    <string name="about_description"><![CDATA[<h5>Emparejador de crushes secretos para redes sociales<br>© 2020 TheDavidDelta</h5>Lista de dependencias y sub-dependencias Open Source usadas]]></string>
+    <string name="about_description"><![CDATA[<h5>Emparejador de crushes secretos para redes sociales<br><a href="https://github.com/TheDavidDelta/crash">Código fuente en GitHub</a><br>© 2020 TheDavidDelta</h5>Lista de dependencias y sub-dependencias Open Source usadas]]></string>
     <string name="about_license_button">Licencia</string>
+    <string name="about_privacy_policy_button">Política priv.</string>
     <string name="user_error_empty">Error cargando la info. del usuario</string>
     <string name="user_add_msg">No podrás desmarcarlo en una semana\nCrushes restantes: %d</string>
     <string name="user_add_error">No se pudo añadir el crush</string>
@@ -55,4 +56,7 @@
     <string name="user_add_mutual">¡Es mutuo! Tu crush también te ha marcado a tí. ¡Asegúrate de enviarle un Mensaje Directo!</string>
     <string name="user_add_dm">¡Enviar!</string>
     <string name="user_delete_successful">Desmarcado correctamente</string>
+    <string name="splash_cookies_msg">Esta aplicación usa cookies para el funcionamiento básico de Google AdMob.\n\nLa aplicación ofrece los anuncios en modo \"no-personalizado\", de forma que ni Google ni sus anunciantes utilizarán las cookies para recoger y almacenar tu información mientras la ultilizas, pero se requieren ciertas cookies para un uso básico.\n\nPulsando \"acepto\", aceptas el uso de estas cookies.\n\nPuedes leer la política de privacidad en el apartado de \"información de la app\".</string>
+    <string name="splash_cookies_title">Cookies</string>
+    <string name="splash_cookies_agree">Acepto</string>
 </resources>

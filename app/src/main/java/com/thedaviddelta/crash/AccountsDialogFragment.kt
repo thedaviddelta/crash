@@ -137,11 +137,15 @@ class AccountsDialogFragment : BottomSheetDialogFragment() {
                 .withAboutDescription(resources.getString(R.string.about_description))
                 .withAboutSpecial1(resources.getString(R.string.about_license_button))
                 .withAboutSpecial1Description(resources.getString(R.string.about_license))
+                .withAboutSpecial2(resources.getString(R.string.about_privacy_policy_button))
+                .withAboutSpecial2Description(resources.getString(R.string.about_privacy_policy))
                 .withAboutVersionShown(false)
                 .withAboutVersionShownName(true)
                 .withLicenseShown(true)
                 .withLicenseDialog(true)
+                .withExcludedLibraries(*resources.getString(R.string.about_excluded_libraries).split(",").toTypedArray())
                 .start(requireActivity())
+            findNavController().navigateUp()
         }
 
         DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL).drawable.let {

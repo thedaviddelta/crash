@@ -22,7 +22,7 @@
     <string name="login_mastodon">Inicia sessió amb Mastodon</string>
     <string name="splash_info">© 2020 TheDavidDelta\nLlicenciat baix GNU GPLv3</string>
     <string name="login_error_browser">No s\'ha trobat navegador</string>
-    <string name="login_error_unexpected">Error inesperat</string>
+    <string name="error_unexpected">Error inesperat</string>
     <string name="login_loading">Carregant...</string>
     <string name="login_dialog_domain_hint">Introdueix la teva instància</string>
     <string name="login_dialog_domain_invalid">Instància no vàlida</string>
@@ -40,8 +40,9 @@
     <string name="confirmation_cancel">Cancel·lar</string>
     <string name="menu_main_account">Compte</string>
     <string name="splash_error_update">No s\'han pogut actualitzar els comptes</string>
-    <string name="about_description"><![CDATA[<h5>Aparellador de crushes secrets per a xarxes socials<br>© 2020 TheDavidDelta</h5>Llista de dependències i sub-dependències Open Source utilitzades]]></string>
+    <string name="about_description"><![CDATA[<h5>Aparellador de crushes secrets per a xarxes socials<br><a href="https://github.com/TheDavidDelta/crash">Codi font en GitHub</a><br>© 2020 TheDavidDelta</h5>Llista de dependències i sub-dependències Open Source utilitzades]]></string>
     <string name="about_license_button">Llicència</string>
+    <string name="about_privacy_policy_button">Política priv.</string>
     <string name="user_error_empty">Error carregant la info. de l\'usuari</string>
     <string name="user_add_msg">No podràs desmarcar-ho en una setmana\nCrushes restants: %d</string>
     <string name="user_add_error">No s\'ha pogut afegir el crush</string>
@@ -55,4 +56,7 @@
     <string name="user_add_mutual">És mutu! El teu crush també t\'ha marcat a tu. Assegura\'t d\'enviar-li un Missatge Directe!</string>
     <string name="user_add_dm">Enviar!</string>
     <string name="user_delete_successful">Desmarcat correctament</string>
+    <string name="splash_cookies_msg">Aquesta app utilitza cookies per al funcionament bàsic de Google AdMob.\n\nL\'app ofereix els anuncis en mode \"no-personalitzat\", de manera que ni Google ni els seus anunciants utilitzaran les cookies per a recollir i emmagatzemar la teva informació mentre la utilitzes, però es necesiten certes cookies per un ús bàsic.\n\nPulsant \"accepto\", acceptes l\'ús d\'aquestes cookies.\n\nPots llegir la política de privacitat a l\'apartat d\'\"informació de l\'app\".</string>
+    <string name="splash_cookies_title">Cookies</string>
+    <string name="splash_cookies_agree">Accepto</string>
 </resources>

@@ -263,7 +263,7 @@ class LoginFragment : Fragment() {
         get() {
             loading = false
             SnackbarBuilder(requireView())
-                .error(R.string.login_error_unexpected)
+                .error(R.string.error_unexpected)
                 .buildAndShow()
         }
 

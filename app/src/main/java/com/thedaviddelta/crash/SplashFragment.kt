@@ -29,18 +29,25 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.tasks.Tasks
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
+import com.thedaviddelta.crash.util.SecureFile
 import com.thedaviddelta.crash.util.SnackbarBuilder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class SplashFragment : Fragment() {
+
+    companion object {
+        private const val SHARED_PREFS_NAME = "${BuildConfig.APPLICATION_ID}.cookies"
+
+        private const val COOKIES_AGREED = "agreed-v1"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +64,28 @@ class SplashFragment : Fragment() {
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         lifecycleScope.launch {
+            val sharedPrefs = SecureFile.with(activity).sharedPreferences(SHARED_PREFS_NAME)
+                ?: return@launch SnackbarBuilder(requireView())
+                    .error(R.string.error_unexpected)
+                    .during(Snackbar.LENGTH_INDEFINITE)
+                    .buildAndShow()
+
+            sharedPrefs.getBoolean(COOKIES_AGREED, false).takeIf { !it }?.let {
+                suspendCoroutine<Unit> {
+                    MaterialAlertDialogBuilder(activity)
+                        .setTitle(R.string.splash_cookies_title)
+                        .setMessage(R.string.splash_cookies_msg)
+                        .setPositiveButton(R.string.splash_cookies_agree) { dialog, _ ->
+                            dialog.dismiss()
+                            it.resume(Unit)
+                        }.create()
+                        .also { it.setCancelable(false) }
+                        .show()
+                }.let {
+                    sharedPrefs.edit().putBoolean(COOKIES_AGREED, true).apply()
+                }
+            }
+
             MobileAds.initialize(activity)
 
             Firebase.auth.signInAnonymously().runCatching {
@@ -65,7 +94,7 @@ class SplashFragment : Fragment() {
                 }
             }.onFailure {
                 return@launch SnackbarBuilder(requireView())
-                    .error(R.string.login_error_unexpected)
+                    .error(R.string.error_unexpected)
                     .during(Snackbar.LENGTH_INDEFINITE)
                     .buildAndShow()
             }
@@ -85,8 +114,6 @@ class SplashFragment : Fragment() {
                         .buildAndShow()
                 }
             }
-
-            delay(1500L)
 
             findNavController().navigate(
                 Accounts.current
