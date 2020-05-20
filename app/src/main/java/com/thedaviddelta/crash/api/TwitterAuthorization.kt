@@ -20,6 +20,7 @@ package com.thedaviddelta.crash.api
 
 import android.net.Uri
 import android.util.Base64
+import com.thedaviddelta.crash.util.Accounts
 import io.github.cdimascio.dotenv.dotenv
 import okhttp3.FormBody
 import okhttp3.Request
@@ -30,11 +31,13 @@ import javax.crypto.spec.SecretKeySpec
 import kotlin.math.absoluteValue
 import kotlin.random.Random
 
+/** Enviroment variables */
 private val dotenv = dotenv {
     directory = "/assets"
     filename = "env"
 }
 
+/** Header's keys names */
 private object OAUTH {
     const val CALLBACK = "oauth_callback"
     const val CONSUMER_KEY = "oauth_consumer_key"
@@ -50,6 +53,16 @@ private const val SIGNATURE_METHOD = "HMAC-SHA1"
 private val CONSUMER_KEY = dotenv["TWITTER_CONSUMER_KEY"]!!
 private val CONSUMER_SECRET = dotenv["TWITTER_CONSUMER_SECRET"]!!
 
+/**
+ * Creates Twitter's Authorization header, needed to authenticate every request to Twitter API because it uses OAuth 1.0
+ *
+ * [Twitter Developers - Authorithing a request](https://developer.twitter.com/en/docs/basics/authentication/oauth-1-0a/authorizing-a-request)
+ *
+ * @param request current request object
+ * @param token (optional) [current Account][Accounts.current]'s token
+ * @param tokenSecret (optional) [current Account][Accounts.current]'s secret
+ * @return OAuth 1.0 `Authorization` header
+ */
 fun twitterAuthorization(
     request: Request,
     token: String? = null,
@@ -72,6 +85,19 @@ fun twitterAuthorization(
     return buildHeader(callback, consumerKey, nonce, signature, timestamp, token)
 }
 
+/**
+ * Builds the header's string given all the needed data
+ *
+ * [Twitter Developers - Authorithing a request](https://developer.twitter.com/en/docs/basics/authentication/oauth-1-0a/authorizing-a-request)
+ *
+ * @param callback URL to be redirected to after successful authentication in OAuth 1.0 2nd step
+ * @param consumerKey Twitter application consumer
+ * @param nonce unique token generated for each unique request
+ * @param signature hash needed by OAuth 1.0 to authenticate the header
+ * @param timestamp current timestamp in seconds
+ * @param token [current Account][Accounts.current]'s token
+ * @return OAuth 1.0 `Authorization` header
+ */
 private fun buildHeader(
     callback: String?,
     consumerKey: String,
@@ -96,6 +122,20 @@ private fun buildHeader(
         .reduce { acc, s -> "$acc, $s" }
 }
 
+/**
+ * Creates a non-encoded signature given all the needed data
+ *
+ * [Twitter Developers - Creating a signature](https://developer.twitter.com/en/docs/basics/authentication/oauth-1-0a/creating-a-signature)
+ *
+ * @param url current request URL
+ * @param method current request method (`GET`, `POST`, etc.)
+ * @param postParams parameters of a `POST` request
+ * @param consumerKey Twitter application consumer
+ * @param nonce unique token generated for each unique request
+ * @param timestamp current timestamp in seconds
+ * @param token [current Account][Accounts.current]'s token
+ * @return non-encoded signature
+ */
 private fun signatureBase(
     url: Uri,
     method: String,
@@ -126,6 +166,16 @@ private fun signatureBase(
     return "${method.toUpperCase(Locale.ROOT)}&${baseUrl.encode}&$encodedParams"
 }
 
+/**
+ * Encodes the signature, needed by OAuth 1.0 to authenticate the header by checking that no param was modified
+ *
+ * [Twitter Developers - Creating a signature](https://developer.twitter.com/en/docs/basics/authentication/oauth-1-0a/creating-a-signature)
+ *
+ * @param consumerSecret Twitter application secret
+ * @param tokenSecret [current Account][Accounts.current]'s secret
+ * @param base non-encoded signature
+ * @return encoded signature
+ */
 private fun signature(
     consumerSecret: String,
     tokenSecret: String?,
@@ -137,14 +187,22 @@ private fun signature(
     return Base64.encodeToString(mac.doFinal(base.toByteArray()), Base64.NO_WRAP).encode
 }
 
+/** Unique token generated for each unique request, for avoiding request repetition */
 private fun getNonce(): String {
     return "${System.nanoTime()}${Random.nextLong().absoluteValue}"
 }
 
+/** Current timestamp in seconds */
 private fun getTimestamp(): String {
     return (System.currentTimeMillis() / 1000).toString()
 }
 
+/**
+ * Gets all parameters from a `POST` request
+ *
+ * @param request current request object
+ * @return map with the post params, or `null` if it isn't a `POST` request
+ */
 private fun getPostParams(request: Request): Map<String, String>? {
     val body = request.body()
     if (request.method() != "POST" || body !is FormBody || body.size() == 0)
@@ -156,4 +214,6 @@ private fun getPostParams(request: Request): Map<String, String>? {
     return params
 }
 
-private val String.encode get() = URLEncoder.encode(this, "UTF-8")
+/** Encodes the calling string using `UTF-8` URL encoding */
+private val String.encode
+    get() = URLEncoder.encode(this, "UTF-8")

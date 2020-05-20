@@ -26,13 +26,32 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
 
+/**
+ * I/O operations with new [Jetpack Security library](https://developer.android.com/jetpack/androidx/releases/security)
+ *
+ * @param context needed for I/O operations
+ */
 class SecureFile private constructor(private val context: Context) {
     companion object {
+        /**
+         * Create an instance with a certain [context]
+         *
+         * @param context needed for IO operations
+         */
         fun with(context: Context) = SecureFile(context)
     }
 
+    /** Master key for encryption/decryption */
     private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 
+    /**
+     * Serializes [content] on a file with the [given name][fileName]
+     *
+     * @param T type of the content
+     * @param fileName name of the file
+     * @param content object to serialize
+     * @return `true` if wrote correctly, or `false` if an error occurred
+     */
     suspend fun <T> writeFile(fileName: String, content: T): Boolean = withContext(Dispatchers.IO) {
         try {
             val file = File(context.filesDir, fileName)
@@ -56,6 +75,14 @@ class SecureFile private constructor(private val context: Context) {
         }
     }
 
+    /**
+     * Deserializes content of a file with the [given name][fileName]
+     *
+     * @param T type of the deserialized content
+     * @param fileName name of the file
+     * @param default value to return if file doesn't exist
+     * @return file's content if read correctly, [default] if file doesn't exist, or `null` if an error occurred
+     */
     @Suppress("UNCHECKED_CAST")
     suspend fun <T> readFile(fileName: String, default: T? = null): T? = withContext(Dispatchers.IO) {
         try {
@@ -79,6 +106,12 @@ class SecureFile private constructor(private val context: Context) {
         }
     }
 
+    /**
+     * Returns secure shared preferences instance
+     *
+     * @param fileName name of the shared preferences file
+     * @return a shared preferences instance, or `null` if an error occurred
+     */
     suspend fun sharedPreferences(fileName: String): SharedPreferences? = withContext(Dispatchers.IO) {
         try {
             EncryptedSharedPreferences.create(

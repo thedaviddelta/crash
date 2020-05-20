@@ -37,6 +37,7 @@ import com.thedaviddelta.crash.model.*
 import com.thedaviddelta.crash.repository.*
 import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.util.SnackbarBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.dialog_instance.view.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.Dispatchers
@@ -45,9 +46,13 @@ import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 import java.util.*
 
+/**
+ * [Fragment] for loging in with a Social Network [Account]
+ */
 class LoginFragment : Fragment() {
 
     companion object {
+        /** OAuth temporal values [secure shared preferences file][SecureFile] name */
         private const val SHARED_PREFS_NAME = "${BuildConfig.APPLICATION_ID}.login"
 
         private const val TW_TEMP_TOKEN = "twTempToken"
@@ -245,6 +250,11 @@ class LoginFragment : Fragment() {
         }
     }
 
+    /**
+     * Launches given [uri] on a [CustomTabs][CustomTabsIntent] window
+     *
+     * @param uri URI to be opened
+     */
     private fun launchOnBrowser(uri: Uri) {
         val color = resources.getColor(R.color.red200, null)
         try {
@@ -259,6 +269,7 @@ class LoginFragment : Fragment() {
         }
     }
 
+    /** Shows generic unexpected error [Snackbar] */
     private val error: Unit
         get() {
             loading = false
@@ -267,6 +278,7 @@ class LoginFragment : Fragment() {
                 .buildAndShow()
         }
 
+    /** Shows network error [Snackbar] */
     private val netError: Unit
         get() {
             loading = false
@@ -275,10 +287,12 @@ class LoginFragment : Fragment() {
                 .buildAndShow()
         }
 
+    /** Sets [given TextInputLayout][layout] error text */
     private fun domainError(layout: TextInputLayout) {
         layout.error = getString(R.string.login_dialog_domain_invalid)
     }
 
+    /** Switches loading view components state */
     private var loading = false
         set(value) {
             linearlayout_login_buttons.visibility = if (value) View.GONE else View.VISIBLE

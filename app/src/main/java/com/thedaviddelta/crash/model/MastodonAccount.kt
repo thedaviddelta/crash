@@ -18,6 +18,12 @@
 
 package com.thedaviddelta.crash.model
 
+/**
+ * Local [Account] model for a registered [Mastodon User][MastodonUser]
+ *
+ * @property domain Instance location
+ * @property bearer OAuth2 user token
+ */
 data class MastodonAccount(
     override val id: Long,
     override var username: String,
@@ -28,6 +34,13 @@ data class MastodonAccount(
     val bearer: String
 ) : Account {
     companion object {
+        /**
+         * Creates a new [MastodonAccount] from [MastodonUser] info and OAuth2 user token
+         *
+         * @param user the [MastodonUser] to take info from
+         * @param bearer OAuth2 user token
+         * @return a new [MastodonAccount] instance
+         */
         fun from(
             user: MastodonUser,
             bearer: String
@@ -44,6 +57,12 @@ data class MastodonAccount(
         }
     }
 
+    /**
+     * Updates account's info from [MastodonUser]
+     *
+     * @param user the [MastodonUser] to take info from
+     * @return the current [account][MastodonAccount] instance, or `null` if [id] or [domain] don't match
+     */
     fun updateFrom(user: MastodonUser): MastodonAccount? {
         return this.takeIf {
             it.id == user.id

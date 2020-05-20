@@ -20,6 +20,15 @@ package com.thedaviddelta.crash.model
 
 import java.io.Serializable
 
+/**
+ * Wrapper for local Account models ([TwitterAccount], [MastodonAccount])
+ *
+ * @property id Unique identifier
+ * @property username Unique but changeable public alias
+ * @property fullName Public name
+ * @property avatarUrl Link to the avatar
+ * @property bannerUrl Link to the banner
+ */
 interface Account : Serializable {
     val id: Long
     var username: String

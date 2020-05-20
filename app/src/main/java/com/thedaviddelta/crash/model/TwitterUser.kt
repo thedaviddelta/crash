@@ -20,11 +20,14 @@ package com.thedaviddelta.crash.model
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Model for [Twitter's User object](https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/user-object)
+ */
 class TwitterUser(
     @SerializedName("id") override val id: Long,
     @SerializedName("screen_name") override val username: String,
     @SerializedName("name") override val fullName: String,
-    @SerializedName("profile_image_url_https") val avatarSmallUrl: String,
+    @SerializedName("profile_image_url_https") private val avatarSmallUrl: String,
     @SerializedName("profile_banner_url") override val bannerUrl: String?
 ) : User {
     override val avatarUrl

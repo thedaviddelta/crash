@@ -29,8 +29,17 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_user.*
 
+/**
+ * The activity of the [Single Activity Application](https://developer.android.com/guide/navigation)
+ */
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        /** Time in milliseconds between two presses to exit */
+        private const val doubleBackTime = 2000
+    }
+
+    /** Checks if user have pressed back twice in [doubleBackTime] */
     private var doubleBack = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,14 +59,14 @@ class MainActivity : AppCompatActivity() {
 
                 SnackbarBuilder(frag.requireView())
                     .showing(R.string.main_quit_message)
-                    .during(2000)
+                    .during(doubleBackTime)
                     .tinted(R.color.red300)
                     .centered()
                     .buildAndShow()
 
                 Handler().postDelayed({
                     doubleBack = false
-                }, 2000)
+                }, doubleBackTime.toLong())
             }
             is UserFragment -> {
                 frag.toolbar_user.navigationView?.callOnClick()
@@ -65,6 +74,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * [ImageButton] of the toolbar [navigation icon][MaterialToolbar.getNavigationIcon], or `null` if not found
+     *
+     * @receiver [toolbar_login], [toolbar_user]
+     */
     private val MaterialToolbar.navigationView: ImageButton?
         get() {
             return children.firstOrNull {

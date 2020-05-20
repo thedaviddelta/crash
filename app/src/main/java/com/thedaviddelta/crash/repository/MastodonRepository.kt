@@ -35,9 +35,14 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Repository for Retrofit's Mastodon service, following [Jetpack App Architecture](https://developer.android.com/jetpack/docs/guide)
+ */
 object MastodonRepository {
+    /** URL to be redirected to after successful browser authentication */
     private const val CALLBACK = "tdd-oauth://${BuildConfig.APPLICATION_ID}/mastodon"
 
+    /** Retrofit client for Mastodon API */
     private val client: MastodonApi by lazy {
         Retrofit.Builder()
             .baseUrl("https://mastodon.placeholder")
@@ -83,6 +88,11 @@ object MastodonRepository {
             .create(MastodonApi::class.java)
     }
 
+    /**
+     * Repository wrapper for [MastodonApi.createApp]
+     *
+     * @return [MastodonApi.createApp]'s result, or `null` if a network error occurred
+     */
     suspend fun createApp(domain: String, clientName: String, redirectUris: String = CALLBACK) = withContext(Dispatchers.IO) {
         try {
             client.createApp(domain, clientName, redirectUris)
@@ -92,6 +102,11 @@ object MastodonRepository {
         }
     }
 
+    /**
+     * Repository wrapper for [MastodonApi.requestToken]
+     *
+     * @return [MastodonApi.requestToken]'s result, or `null` if a network error occurred
+     */
     suspend fun requestToken(domain: String, clientId: String, clientSecret: String, code: String,
             grantType: String = "authorization_code", redirectUris: String = CALLBACK) = withContext(Dispatchers.IO) {
         try {
@@ -102,6 +117,11 @@ object MastodonRepository {
         }
     }
 
+    /**
+     * Repository wrapper for [MastodonApi.verifyCredentials]
+     *
+     * @return [MastodonApi.verifyCredentials]'s result, or `null` if a network error occurred
+     */
     suspend fun verifyCredentials(domain: String, bearer: String) = withContext(Dispatchers.IO) {
         try {
             client.verifyCredentials(domain, bearer)
@@ -111,6 +131,11 @@ object MastodonRepository {
         }
     }
 
+    /**
+     * Repository wrapper for [MastodonApi.getUser]
+     *
+     * @return [MastodonApi.getUser]'s result, or `null` if a network error occurred
+     */
     suspend fun getUser(domain: String, id: Long) = withContext(Dispatchers.IO) {
         try {
             client.getUser(domain, id)
@@ -120,6 +145,11 @@ object MastodonRepository {
         }
     }
 
+    /**
+     * Repository wrapper for [MastodonApi.getFollowersFollowing]
+     *
+     * @return [MastodonApi.getFollowersFollowing]'s result, or `null` if a network error occurred
+     */
     suspend fun getFollowersFollowing(type: ContactType, id: Long, limit: Int, cursor: Long?) = withContext(Dispatchers.IO) {
         try {
             client.getFollowersFollowing(type, id, limit, cursor)
@@ -129,6 +159,13 @@ object MastodonRepository {
         }
     }
 
+    /**
+     * Iterates over [getFollowersFollowing] and returns list of all followers/following
+     *
+     * @param type retrieve [followers][ContactType.FOLLOWERS] or [following][ContactType.FOLLOWING]
+     * @param id [current Account][Accounts.current]'s userId
+     * @return full list of contact's IDs, or `null` if an error occurred
+     */
     suspend fun getAllFollowersFollowing(type: ContactType, id: Long): List<MastodonUser>? {
         suspend fun contacts(
             cursor: Long? = null
@@ -146,6 +183,12 @@ object MastodonRepository {
         return contacts(null)
     }
 
+    /**
+     * Retrieves info from [current Account][Accounts.current]'s `followers`, `following`, `crushes` & `crushedBy` IDs,
+     * filters by '`(followers ⋂ following) ⋃ crushes`', and get list of [MastodonUser] objects
+     *
+     * @return list of [MastodonUser], or `null` if an error occurred
+     */
     suspend fun getMutuals(): List<MastodonUser>? = coroutineScope {
         val (id, domain) = Accounts.current?.let {
             if (it is MastodonAccount)

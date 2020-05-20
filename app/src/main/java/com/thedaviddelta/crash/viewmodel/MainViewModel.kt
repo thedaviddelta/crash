@@ -23,14 +23,25 @@ import com.thedaviddelta.crash.model.*
 import com.thedaviddelta.crash.repository.MastodonRepository
 import com.thedaviddelta.crash.repository.TwitterRepository
 import com.thedaviddelta.crash.util.Accounts
+import com.thedaviddelta.crash.MainFragment
 
+/**
+ * ViewModel instance for [MainFragment]
+ */
 class MainViewModel : ViewModel() {
+    /** List of [contacts][User] wrapped in [MutableLiveData] */
     private val _list: MutableLiveData<List<User>> by lazy {
         MutableLiveData<List<User>>()
     }
 
+    /** List of [contacts][User] wrapped in immutable [LiveData] */
     val list: LiveData<List<User>> = _list
 
+    /**
+     * Updates [list] LiveData content
+     *
+     * @return `true` if updated correctly, or `false` if an error occurred
+     */
     suspend fun load(): Boolean {
         _list.value = when(Accounts.current) {
             is TwitterAccount -> TwitterRepository.getMutuals() ?: return false

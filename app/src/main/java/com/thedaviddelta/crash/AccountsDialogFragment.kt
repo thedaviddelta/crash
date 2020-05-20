@@ -37,6 +37,7 @@ import com.mikepenz.aboutlibraries.LibsBuilder
 import com.thedaviddelta.crash.adapter.AccountAdapter
 import com.thedaviddelta.crash.model.MastodonAccount
 import com.thedaviddelta.crash.model.TwitterAccount
+import com.thedaviddelta.crash.model.Account
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.util.SnackbarBuilder
@@ -44,6 +45,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dialog_accounts.*
 import kotlinx.coroutines.launch
 
+/**
+ * [BottomSheet DialogFragment][BottomSheetDialogFragment] for managing [application Accounts][Account]
+ */
 class AccountsDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(

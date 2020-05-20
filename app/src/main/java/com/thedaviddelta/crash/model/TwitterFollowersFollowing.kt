@@ -18,8 +18,15 @@
 
 package com.thedaviddelta.crash.model
 
+import com.thedaviddelta.crash.api.TwitterApi
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Data class wrapping [TwitterApi.getFollowersFollowing] response
+ *
+ * @property ids List of followers/following
+ * @property nextCursor Last retrieved ID
+ */
 data class TwitterFollowersFollowing (
     @SerializedName("ids") val ids: List<Long>,
     @SerializedName("next_cursor") val nextCursor: Long

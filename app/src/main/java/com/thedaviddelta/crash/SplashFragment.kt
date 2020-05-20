@@ -41,9 +41,13 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+/**
+ * [Fragment] to be shown while loading
+ */
 class SplashFragment : Fragment() {
 
     companion object {
+        /** Cookies agreement [secure shared preferences file][SecureFile] name */
         private const val SHARED_PREFS_NAME = "${BuildConfig.APPLICATION_ID}.cookies"
 
         private const val COOKIES_AGREED = "agreed-v1"

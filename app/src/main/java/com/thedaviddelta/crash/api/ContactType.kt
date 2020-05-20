@@ -20,8 +20,16 @@ package com.thedaviddelta.crash.api
 
 import java.util.*
 
+/**
+ * Type of Social Network retrieved contacts
+ */
 enum class ContactType {
-    FOLLOWERS, FOLLOWING, FRIENDS;
+    /** People that follows you */
+    FOLLOWERS,
+    /** People that you follow (Mastodon) */
+    FOLLOWING,
+    /** People that you follow (Twitter) */
+    FRIENDS;
 
     override fun toString(): String = name.toLowerCase(Locale.ROOT)
 }

@@ -19,7 +19,15 @@
 package com.thedaviddelta.crash.model
 
 import com.google.gson.annotations.SerializedName
+import com.thedaviddelta.crash.api.MastodonApi
 
+/**
+ * Data class wrapping [MastodonApi.createApp] response
+ *
+ * @property clientId Application ID
+ * @property clientSecret Application secret
+ * @property redirectUri Callback URL
+ */
 data class MastodonAppCredentials (
     @SerializedName("client_id") val clientId: String,
     @SerializedName("client_secret") val clientSecret: String,

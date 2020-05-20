@@ -19,7 +19,13 @@
 package com.thedaviddelta.crash.model
 
 import com.google.gson.annotations.SerializedName
+import com.thedaviddelta.crash.api.MastodonApi
 
+/**
+ * Data class wrapping [MastodonApi.requestToken] response
+ *
+ * @property accessToken OAuth2 bearer token
+ */
 data class MastodonAccessToken(
     @SerializedName("access_token") val accessToken: String
 )

@@ -48,14 +48,20 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
+/**
+ * [Fragment] for *crushing* a [mutual][User]
+ */
 class UserFragment : Fragment() {
 
     companion object {
+        /** Max. number of crushes per [Account] */
         private const val MAX_CRUSHES = 3
     }
 
+    /** Number of current crushed mutuals */
     private var numCrushes by Delegates.notNull<Int>()
 
+    /** Indicates if [max. number of crushes][MAX_CRUSHES] is reached */
     private val isFull: Boolean
         get() = numCrushes >= MAX_CRUSHES
 
@@ -260,6 +266,11 @@ class UserFragment : Fragment() {
         }
     }
 
+    /**
+     * Opens profile of [given user][user]
+     *
+     * @param user the user to open the profile of
+     */
     private fun openProfile(user: User) {
         when(user) {
             is TwitterUser -> {
@@ -275,6 +286,9 @@ class UserFragment : Fragment() {
         }
     }
 
+    /**
+     * Shares app on pertinent Social Network
+     */
     private fun share() {
         val current = Accounts.current!!
         val msg = resources.getString(R.string.user_share_message)
@@ -296,6 +310,11 @@ class UserFragment : Fragment() {
         }
     }
 
+    /**
+     * Sends a DM to the [given user][user]
+     *
+     * @param user the user to send the DM to
+     */
     private fun sendDm(user: User) {
         when(user) {
             is TwitterUser -> {
@@ -316,6 +335,11 @@ class UserFragment : Fragment() {
         }
     }
 
+    /**
+     * Opens the given [url] on the Social Network's app
+     *
+     * @param url the URL to open
+     */
     private fun openInSocialNet(url: Uri) {
         Intent().apply {
             action = Intent.ACTION_VIEW

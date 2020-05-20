@@ -21,8 +21,16 @@ package com.thedaviddelta.crash.model
 import androidx.annotation.DrawableRes
 import com.thedaviddelta.crash.R
 
+/**
+ * Type of crush relationship with a mutual
+ *
+ * @property drawable Image to show corresponding to relationship type
+ */
 enum class CrushType(@DrawableRes val drawable: Int) {
+    /** You haven't *crushed* */
     NONE(R.drawable.ic_heart_empty),
+    /** You have *crushed* */
     CRUSH(R.drawable.ic_heart_full),
+    /** Also *crushed* you */
     MUTUAL(R.drawable.ic_heart_arrow)
 }

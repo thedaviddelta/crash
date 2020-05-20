@@ -25,16 +25,30 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.thedaviddelta.crash.model.*
+import com.thedaviddelta.crash.util.Accounts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
+/**
+ * Repository for Firestore service, following [Jetpack App Architecture](https://developer.android.com/jetpack/docs/guide)
+ */
 object FirestoreRepository {
+    /** Firestore `twitter` collection reference */
     private val twitter = Firebase.firestore.collection("twitter")
+    /** Firestore `mastodon` collection reference */
     private val mastodon = Firebase.firestore.collection("mastodon")
 
+    /** Min. time before deleting a crush (1 week) */
     private const val DIFF_TIME = 1 * 7 * 24 * 60 * 60 * 1000
 
+    /**
+     * Checks [account]'s & [crush]'s platforms and adds relationship document to pertinent collection
+     *
+     * @param account [current Account][Accounts.current]
+     * @param crush mutual to be crushed
+     * @return `true` if added correctly, or `false` if an error occurred
+     */
     suspend fun addCrush(account: Account, crush: User): Boolean {
         if (account is TwitterAccount && crush is TwitterUser)
             return addTwitterCrush(account.id, crush.id)
@@ -43,6 +57,13 @@ object FirestoreRepository {
         return false
     }
 
+    /**
+     * Adds relationship document to `twitter` collection
+     *
+     * @param userId ID from [current Account][Accounts.current]
+     * @param crushId ID from mutual to be crushed
+     * @return `true` if added correctly, or `false` if an error occurred
+     */
     suspend fun addTwitterCrush(userId: Long, crushId: Long): Boolean {
         return try {
             twitter.document().set(
@@ -59,6 +80,15 @@ object FirestoreRepository {
         }
     }
 
+    /**
+     * Adds relationship document to `mastodon` collection
+     *
+     * @param userId ID from [current Account][Accounts.current]
+     * @param userDomain instance from [current Account][Accounts.current]
+     * @param crushId ID from mutual to be crushed
+     * @param crushDomain instance from mutual to be crushed
+     * @return `true` if added correctly, or `false` if an error occurred
+     */
     suspend fun addMastodonCrush(userId: Long, userDomain: String, crushId: Long, crushDomain: String): Boolean {
         return try {
             mastodon.document().set(
@@ -77,6 +107,13 @@ object FirestoreRepository {
         }
     }
 
+    /**
+     * Checks [account]'s & [crush]'s platforms and deletes relationship document from pertinent collection
+     *
+     * @param account [current Account][Accounts.current]
+     * @param crush mutual to be un-crushed
+     * @return `0` if deleted correctly, `-1` if an error occurred, or the remaining time before being able to delete
+     */
     suspend fun deleteCrush(account: Account, crush: User): Long {
         if (account is TwitterAccount && crush is TwitterUser)
             return deleteTwitterCrush(account.id, crush.id)
@@ -85,6 +122,13 @@ object FirestoreRepository {
         return -1L
     }
 
+    /**
+     * Deletes relationship document from `twitter` collection
+     *
+     * @param userId ID from [current Account][Accounts.current]
+     * @param crushId ID from mutual to be un-crushed
+     * @return `0` if deleted correctly, `-1` if an error occurred, or the remaining time before being able to delete
+     */
     suspend fun deleteTwitterCrush(userId: Long, crushId: Long): Long {
         return try {
             val doc = twitter.whereEqualTo("id", userId).whereEqualTo("crushId", crushId)
@@ -103,6 +147,15 @@ object FirestoreRepository {
         }
     }
 
+    /**
+     * Deletes relationship document from `mastodon` collection
+     *
+     * @param userId ID from [current Account][Accounts.current]
+     * @param userDomain instance from [current Account][Accounts.current]
+     * @param crushId ID from mutual to be un-crushed
+     * @param crushDomain instance from mutual to be un-crushed
+     * @return `0` if deleted correctly, `-1` if an error occurred, or the remaining time before being able to delete
+     */
     suspend fun deleteMastodonCrush(userId: Long, userDomain: String, crushId: Long, crushDomain: String): Long {
         return try {
             val doc = mastodon.whereEqualTo("id", userId).whereEqualTo("domain", userDomain)
@@ -122,6 +175,12 @@ object FirestoreRepository {
         }
     }
 
+    /**
+     * Retrieves IDs from users crushed by [userId]
+     *
+     * @param userId ID from [current Account][Accounts.current]
+     * @return list of crushes IDs, or `null` if an error occurred
+     */
     suspend fun getTwitterCrushes(userId: Long): List<Long>? {
         return try {
             twitter.whereEqualTo("id", userId).get().await().documents.map {
@@ -133,6 +192,13 @@ object FirestoreRepository {
         }
     }
 
+    /**
+     * Retrieves IDs from users crushed by [userId]@[userDomain]
+     *
+     * @param userId ID from [current Account][Accounts.current]
+     * @param userDomain instance from [current Account][Accounts.current]
+     * @return list of crushes ID & instance pairs, or `null` if an error occurred
+     */
     suspend fun getMastodonCrushes(userId: Long, userDomain: String): List<Pair<Long, String>>? {
         return try {
             mastodon.whereEqualTo("id", userId).whereEqualTo("domain", userDomain)
@@ -147,6 +213,12 @@ object FirestoreRepository {
         }
     }
 
+    /**
+     * Retrieves IDs from users which [userId] is crushed by
+     *
+     * @param userId ID from [current Account][Accounts.current]
+     * @return list of crushedBy IDs, or `null` if an error occurred
+     */
     suspend fun getTwitterCrushedBy(userId: Long): List<Long>? {
         return try {
             twitter.whereEqualTo("crushId", userId).get().await().documents.map {
@@ -158,6 +230,13 @@ object FirestoreRepository {
         }
     }
 
+    /**
+     * Retrieves IDs from users which [userId]@[userDomain] is crushed by
+     *
+     * @param userId ID from [current Account][Accounts.current]
+     * @param userDomain instance from [current Account][Accounts.current]
+     * @return list of crushedBy ID & instance pairs, or `null` if an error occurred
+     */
     suspend fun getMastodonCrushedBy(userId: Long, userDomain: String): List<Pair<Long, String>>? {
         return try {
             mastodon.whereEqualTo("crushId", userId).whereEqualTo("crushDomain", userDomain)
@@ -172,6 +251,13 @@ object FirestoreRepository {
         }
     }
 
+    /**
+     * Checks if given [crush] have also crushed [account]
+     *
+     * @param account [current Account][Accounts.current]
+     * @param crush mutual that have been crushed
+     * @return `true` if it's mutual, or `false` if it isn't
+     */
     suspend fun checkIfCrushIsMutual(account: Account, crush: User): Boolean {
         if (account is TwitterAccount && crush is TwitterUser) {
             val crushedBy = getTwitterCrushedBy(account.id)
@@ -186,7 +272,8 @@ object FirestoreRepository {
         return false
     }
 
-    private suspend fun <T> Task<T>.await(): T = withContext(Dispatchers.IO) {
+    /** Awaits for a task completion */
+    private suspend inline fun <T> Task<T>.await(): T = withContext(Dispatchers.IO) {
         Tasks.await(this@await)
     }
 }

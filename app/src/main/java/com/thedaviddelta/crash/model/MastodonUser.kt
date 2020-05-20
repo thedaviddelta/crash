@@ -21,13 +21,18 @@ package com.thedaviddelta.crash.model
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Model for [Mastodon's Account entity](https://docs.joinmastodon.org/entities/account/)
+ *
+ * @property domain Instance location
+ */
 class MastodonUser(
     @SerializedName("id") override val id: Long,
     @SerializedName("username") override val username: String,
     @SerializedName("display_name") override val fullName: String,
     @SerializedName("avatar_static") override val avatarUrl: String,
     @SerializedName("header_static") override val bannerUrl: String?,
-    @SerializedName("url") val url: String
+    @SerializedName("url") private val url: String
 ) : User {
     val domain
         get() = Uri.parse(url).host!!

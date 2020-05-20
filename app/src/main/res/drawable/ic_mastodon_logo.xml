@@ -1,23 +1,13 @@
 <!--
-  ~ cr@sh - Secret crush matcher for social networks
-  ~ Copyright (C) 2020 TheDavidDelta
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program. If not, see <https://www.gnu.org/licenses/>.
+  ~ Source: https://commons.wikimedia.org/wiki/File:Mastodon_Logotype_(Simple).svg
+  ~ License: https://www.gnu.org/licenses/agpl-3.0.html
   -->
 
-<vector android:height="24dp" android:viewportHeight="375"
-    android:viewportWidth="375" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:height="24dp" android:viewportHeight="375"
+    android:viewportWidth="375" android:width="24dp">
     <path android:fillColor="#2b90d9"
-        android:pathData="m187.13,61.873c-32.123,0.263 -63.022,3.741 -81.03,12.011 0,0 -35.714,15.975 -35.714,70.482 0,12.481 -0.243,27.405 0.153,43.232 1.297,53.305 9.772,105.839 59.056,118.883 22.724,6.015 42.235,7.275 57.947,6.411 28.495,-1.58 44.491,-10.169 44.491,-10.169l-0.94,-20.675c0,0 -20.363,6.42 -43.232,5.638 -22.657,-0.777 -46.577,-2.443 -50.241,-30.261 -0.338,-2.443 -0.508,-5.057 -0.508,-7.801 0,-0 22.242,5.437 50.43,6.728 17.236,0.791 33.398,-1.01 49.815,-2.969 31.482,-3.759 58.895,-23.157 62.34,-40.882 5.428,-27.921 4.981,-68.136 4.981,-68.136 0,-54.507 -35.712,-70.482 -35.712,-70.482 -18.006,-8.27 -48.925,-11.748 -81.048,-12.011zM150.775,104.462c13.38,0 23.511,5.143 30.211,15.43l6.514,10.918 6.514,-10.918c6.698,-10.287 16.829,-15.43 30.211,-15.43 11.564,0 20.881,4.065 27.996,11.995 6.897,7.93 10.331,18.65 10.331,32.139v65.998h-26.148v-64.059c0,-13.503 -5.681,-20.358 -17.046,-20.358 -12.565,0 -18.862,8.13 -18.862,24.207v35.064h-25.993v-35.064c0,-16.077 -6.299,-24.207 -18.864,-24.207 -11.365,0 -17.046,6.854 -17.046,20.358v64.059h-26.148v-65.998c0,-13.489 3.435,-24.208 10.333,-32.139 7.114,-7.93 16.431,-11.995 27.996,-11.995z" android:strokeWidth="1.08298671"/>
+        android:pathData="m187.13,61.873c-32.123,0.263 -63.022,3.741 -81.03,12.011 0,0 -35.714,15.975 -35.714,70.482 0,12.481 -0.243,27.405 0.153,43.232 1.297,53.305 9.772,105.839 59.056,118.883 22.724,6.015 42.235,7.275 57.947,6.411 28.495,-1.58 44.491,-10.169 44.491,-10.169l-0.94,-20.675c0,0 -20.363,6.42 -43.232,5.638 -22.657,-0.777 -46.577,-2.443 -50.241,-30.261 -0.338,-2.443 -0.508,-5.057 -0.508,-7.801 0,-0 22.242,5.437 50.43,6.728 17.236,0.791 33.398,-1.01 49.815,-2.969 31.482,-3.759 58.895,-23.157 62.34,-40.882 5.428,-27.921 4.981,-68.136 4.981,-68.136 0,-54.507 -35.712,-70.482 -35.712,-70.482 -18.006,-8.27 -48.925,-11.748 -81.048,-12.011zM150.775,104.462c13.38,0 23.511,5.143 30.211,15.43l6.514,10.918 6.514,-10.918c6.698,-10.287 16.829,-15.43 30.211,-15.43 11.564,0 20.881,4.065 27.996,11.995 6.897,7.93 10.331,18.65 10.331,32.139v65.998h-26.148v-64.059c0,-13.503 -5.681,-20.358 -17.046,-20.358 -12.565,0 -18.862,8.13 -18.862,24.207v35.064h-25.993v-35.064c0,-16.077 -6.299,-24.207 -18.864,-24.207 -11.365,0 -17.046,6.854 -17.046,20.358v64.059h-26.148v-65.998c0,-13.489 3.435,-24.208 10.333,-32.139 7.114,-7.93 16.431,-11.995 27.996,-11.995z" android:strokeWidth="1.08298671"
+        tools:ignore="VectorPath"/>
 </vector>

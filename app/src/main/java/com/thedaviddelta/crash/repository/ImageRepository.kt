@@ -31,22 +31,42 @@ import retrofit2.http.GET
 import retrofit2.http.Url
 import java.util.concurrent.TimeUnit
 
+/**
+ * Repository for Retrofit's image retrieving service, following [Jetpack App Architecture](https://developer.android.com/jetpack/docs/guide)
+ */
 object ImageRepository {
+    /**
+     * Retrofit service structure for image retrieving
+     */
     private interface Api {
+        /**
+         * Gets an image from a [given URL][url]
+         *
+         * @param url image URL
+         * @return Retrofit response with bitmap wrapped inside a ResponseBody
+         */
         @GET
         fun getImage(
             @Url url: String
         ): Call<ResponseBody>
     }
 
+    /** Max. size of image caching (64 MB) */
     private const val CACHE_SIZE: Long = 1024 * 1024 * 64
 
+    /** Cache folder object */
     private var cache: Cache? = null
 
+    /**
+     * Initializes cache using a [context]
+     *
+     * @param context for getting cache folder
+     */
     fun initializeCache(context: Context) {
         cache = Cache(context.cacheDir, CACHE_SIZE)
     }
 
+    /** Retrofit client for image retrieving */
     private val client: Api by lazy {
         Retrofit.Builder()
             .baseUrl("https://url.placeholder")
@@ -71,6 +91,12 @@ object ImageRepository {
             .create(Api::class.java)
     }
 
+    /**
+     * Gets an image from a given URL and runs callback on retrieve
+     *
+     * @param url image URL
+     * @param onComplete lambda that will be executed on image load
+     */
     fun loadImage(url: String, onComplete: (Bitmap) -> Unit) {
         client.getImage(url).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -84,6 +110,7 @@ object ImageRepository {
         })
     }
 
+    /** Gets the bitmap from an image byte[] */
     private val ByteArray.bitmap
         get() = BitmapFactory.decodeByteArray(this, 0, this.size)
 }

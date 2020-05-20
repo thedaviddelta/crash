@@ -29,17 +29,27 @@ import com.thedaviddelta.crash.repository.TwitterRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
+/**
+ * Controls the whole local [Account]s logic
+ */
 object Accounts {
+    /** Accounts [secure file][SecureFile] name */
     private const val FILE_NAME = "${BuildConfig.APPLICATION_ID}.accounts.list.out"
+    /** [Current Account][current]'s index [secure shared preferences file][SecureFile] name */
     private const val SHARED_PREFS_NAME = "${BuildConfig.APPLICATION_ID}.accounts.current"
 
+    /** [SecureFile] class instance */
     private lateinit var secureFile: SecureFile
 
+    /** List of all local [Account]s registered on the app */
     private var list: MutableList<Account>? = null
+    /** [Secure shared preferences][SecureFile] instance */
     private var sharedPrefs: SharedPreferences? = null
 
+    /** Index of the [current Account][current] inside [Accounts list][list] */
     private var currentIndex: Int = -1
 
+    /** Instance of the [Account] currently active at the app, or `null` if none is active */
     var current: Account?
         get() = list?.getOrNull(currentIndex)
         set(value) {
@@ -49,9 +59,16 @@ object Accounts {
             }
         }
 
+    /** Immutable instance of all local [Account]s registered on the app */
     val readOnlyList: List<Account>?
         get() = list
 
+    /**
+     * Initializes class' [SecureFile] and makes initial read
+     *
+     * @param context for creating [SecureFile] object
+     * @return `true` if read correctly, or `false` if an error occurred
+     */
     suspend fun initialize(context: Context): Boolean {
         secureFile = SecureFile.with(context)
 
@@ -62,6 +79,11 @@ object Accounts {
         return true
     }
 
+    /**
+     * Updates information of [all registered Accounts][list] from the network services
+     *
+     * @return `true` if updated correctly, or `false` if an error occurred
+     */
     suspend fun update(): Boolean = coroutineScope {
         list?.map {
             when(it) {
@@ -85,6 +107,12 @@ object Accounts {
         } ?: false
     }
 
+    /**
+     * Adds the [given Account][account]
+     *
+     * @param account to be added
+     * @return `true` if added correctly, or `false` if an error occurred
+     */
     suspend fun add(account: Account): Boolean {
         return list?.takeIf {
             !it.contains(account) && it.add(account)
@@ -94,6 +122,12 @@ object Accounts {
         } ?: false
     }
 
+    /**
+     * Removes the [given Account][account]
+     *
+     * @param account to be removed
+     * @return `true` if removed correctly, or `false` if an error occurred
+     */
     suspend fun remove(account: Account): Boolean {
         return current?.let { tempCurrent ->
             list?.takeIf {

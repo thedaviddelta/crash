@@ -43,13 +43,17 @@ import com.thedaviddelta.crash.model.CrushType
 import com.thedaviddelta.crash.repository.ImageRepository
 import com.thedaviddelta.crash.util.Accounts
 import com.thedaviddelta.crash.util.SnackbarBuilder
+import com.thedaviddelta.crash.model.Account
 import com.thedaviddelta.crash.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.launch
 
-
+/**
+ * [Fragment] for listing the [Account]'s mutuals
+ */
 class MainFragment : Fragment() {
 
+    /** Instance of [MainViewModel] */
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
@@ -132,6 +136,9 @@ class MainFragment : Fragment() {
         )
     }
 
+    /**
+     * Reloads contacts list and stops refreshing animation
+     */
     private fun loadUsers() {
         lifecycleScope.launch {
             val success = viewModel.load()
@@ -139,10 +146,15 @@ class MainFragment : Fragment() {
                 SnackbarBuilder(requireView())
                     .error(R.string.main_error_mutuals)
                     .buildAndShow()
-            swiperefreshlayout_main.isRefreshing = false
+            swiperefreshlayout_main?.isRefreshing = false
         }
     }
 
+    /**
+     * [ImageView] of the toolbar [logo][MaterialToolbar.getLogo], or `null` if not found
+     *
+     * @receiver [toolbar_main]
+     */
     private val MaterialToolbar.logoView: ImageView?
         get() {
             return children.firstOrNull {
