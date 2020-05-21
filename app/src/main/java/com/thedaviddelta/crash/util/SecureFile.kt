@@ -28,20 +28,17 @@ import java.io.*
 
 /**
  * I/O operations with new [Jetpack Security library](https://developer.android.com/jetpack/androidx/releases/security)
- *
- * @param context needed for I/O operations
  */
 class SecureFile private constructor(private val context: Context) {
     companion object {
         /**
          * Create an instance with a certain [context]
          *
-         * @param context needed for IO operations
+         * @param context needed for I/O operations
          */
         fun with(context: Context) = SecureFile(context)
     }
 
-    /** Master key for encryption/decryption */
     private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 
     /**

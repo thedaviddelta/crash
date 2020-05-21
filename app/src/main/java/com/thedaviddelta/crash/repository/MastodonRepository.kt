@@ -39,10 +39,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Repository for Retrofit's Mastodon service, following [Jetpack App Architecture](https://developer.android.com/jetpack/docs/guide)
  */
 object MastodonRepository {
-    /** URL to be redirected to after successful browser authentication */
     private const val CALLBACK = "tdd-oauth://${BuildConfig.APPLICATION_ID}/mastodon"
 
-    /** Retrofit client for Mastodon API */
     private val client: MastodonApi by lazy {
         Retrofit.Builder()
             .baseUrl("https://mastodon.placeholder")

@@ -54,7 +54,6 @@ object ImageRepository {
     /** Max. size of image caching (64 MB) */
     private const val CACHE_SIZE: Long = 1024 * 1024 * 64
 
-    /** Cache folder object */
     private var cache: Cache? = null
 
     /**
@@ -66,7 +65,6 @@ object ImageRepository {
         cache = Cache(context.cacheDir, CACHE_SIZE)
     }
 
-    /** Retrofit client for image retrieving */
     private val client: Api by lazy {
         Retrofit.Builder()
             .baseUrl("https://url.placeholder")

@@ -31,13 +31,11 @@ import javax.crypto.spec.SecretKeySpec
 import kotlin.math.absoluteValue
 import kotlin.random.Random
 
-/** Enviroment variables */
 private val dotenv = dotenv {
     directory = "/assets"
     filename = "env"
 }
 
-/** Header's keys names */
 private object OAUTH {
     const val CALLBACK = "oauth_callback"
     const val CONSUMER_KEY = "oauth_consumer_key"

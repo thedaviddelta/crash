@@ -29,7 +29,6 @@ import com.thedaviddelta.crash.MainFragment
  * ViewModel instance for [MainFragment]
  */
 class MainViewModel : ViewModel() {
-    /** List of [contacts][User] wrapped in [MutableLiveData] */
     private val _list: MutableLiveData<List<User>> by lazy {
         MutableLiveData<List<User>>()
     }

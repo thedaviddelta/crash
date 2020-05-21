@@ -41,7 +41,6 @@ class UserAdapter(
     private val listener: (User) -> Unit
 ) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
-    /** Copy of non-filtered list */
     private var backup: List<User> = list
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(

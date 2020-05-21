@@ -53,7 +53,6 @@ import kotlinx.coroutines.launch
  */
 class MainFragment : Fragment() {
 
-    /** Instance of [MainViewModel] */
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(

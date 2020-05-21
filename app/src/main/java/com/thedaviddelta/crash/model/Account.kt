@@ -21,7 +21,7 @@ package com.thedaviddelta.crash.model
 import java.io.Serializable
 
 /**
- * Wrapper for local Account models ([TwitterAccount], [MastodonAccount])
+ * Interface wrapping local Account models ([TwitterAccount], [MastodonAccount])
  *
  * @property id Unique identifier
  * @property username Unique but changeable public alias

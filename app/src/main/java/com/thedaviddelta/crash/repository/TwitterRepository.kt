@@ -39,10 +39,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Repository for Retrofit's Twitter service, following [Jetpack App Architecture](https://developer.android.com/jetpack/docs/guide)
  */
 object TwitterRepository {
-    /** URL to be redirected to after successful authentication in 2nd step */
     private const val CALLBACK = "tdd-oauth://${BuildConfig.APPLICATION_ID}/twitter"
 
-    /** Retrofit client for Twitter API */
     private val client: TwitterApi by lazy {
         Retrofit.Builder()
             .baseUrl("https://api.twitter.com")

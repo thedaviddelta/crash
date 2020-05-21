@@ -52,7 +52,6 @@ import java.util.*
 class LoginFragment : Fragment() {
 
     companion object {
-        /** OAuth temporal values [secure shared preferences file][SecureFile] name */
         private const val SHARED_PREFS_NAME = "${BuildConfig.APPLICATION_ID}.login"
 
         private const val TW_TEMP_TOKEN = "twTempToken"

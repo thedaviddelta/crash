@@ -33,20 +33,14 @@ import kotlinx.coroutines.coroutineScope
  * Controls the whole local [Account]s logic
  */
 object Accounts {
-    /** Accounts [secure file][SecureFile] name */
     private const val FILE_NAME = "${BuildConfig.APPLICATION_ID}.accounts.list.out"
-    /** [Current Account][current]'s index [secure shared preferences file][SecureFile] name */
     private const val SHARED_PREFS_NAME = "${BuildConfig.APPLICATION_ID}.accounts.current"
 
-    /** [SecureFile] class instance */
     private lateinit var secureFile: SecureFile
 
-    /** List of all local [Account]s registered on the app */
     private var list: MutableList<Account>? = null
-    /** [Secure shared preferences][SecureFile] instance */
     private var sharedPrefs: SharedPreferences? = null
 
-    /** Index of the [current Account][current] inside [Accounts list][list] */
     private var currentIndex: Int = -1
 
     /** Instance of the [Account] currently active at the app, or `null` if none is active */
@@ -80,7 +74,7 @@ object Accounts {
     }
 
     /**
-     * Updates information of [all registered Accounts][list] from the network services
+     * Updates information of [all registered Accounts][readOnlyList] from the network services
      *
      * @return `true` if updated correctly, or `false` if an error occurred
      */

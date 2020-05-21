@@ -34,9 +34,7 @@ import java.util.*
  * Repository for Firestore service, following [Jetpack App Architecture](https://developer.android.com/jetpack/docs/guide)
  */
 object FirestoreRepository {
-    /** Firestore `twitter` collection reference */
     private val twitter = Firebase.firestore.collection("twitter")
-    /** Firestore `mastodon` collection reference */
     private val mastodon = Firebase.firestore.collection("mastodon")
 
     /** Min. time before deleting a crush (1 week) */

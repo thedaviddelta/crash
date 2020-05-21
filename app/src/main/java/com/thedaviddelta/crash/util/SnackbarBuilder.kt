@@ -126,7 +126,7 @@ class SnackbarBuilder(private val view: View) {
     }
 
     /**
-     * Keeps [Snackbar] opened until action click
+     * Keeps [Snackbar] open until action click
      *
      * @param msg the action button message
      * @return the [builder][SnackbarBuilder] instance

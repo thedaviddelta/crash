@@ -54,14 +54,11 @@ import kotlin.properties.Delegates
 class UserFragment : Fragment() {
 
     companion object {
-        /** Max. number of crushes per [Account] */
         private const val MAX_CRUSHES = 3
     }
 
-    /** Number of current crushed mutuals */
     private var numCrushes by Delegates.notNull<Int>()
 
-    /** Indicates if [max. number of crushes][MAX_CRUSHES] is reached */
     private val isFull: Boolean
         get() = numCrushes >= MAX_CRUSHES
 
